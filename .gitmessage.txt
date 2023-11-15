@@ -1,0 +1,23 @@
+# No more than 50 chars. #### 50 chars is here:  #
+type: subject #id
+
+# Wrap at 72 chars. ################################## which is here:  #
+body
+
+### type
+# feat (nueva funcionalidad)
+# fix (corrección de bugs)
+# research (incorporación de código experimental, puede ser no funcional)
+# refactor (refactorización de código)
+# docs (actualización de documentación)
+# test (incorporación o modificación de tests)
+# conf (modificación de archivos de configuración)
+
+### subject
+# Consists of a brief description of the issue that has been addressed and should begin with a capitalized verb in the past participle
+# Do not end the subject line with a period, using imperative mode in the subject line
+# The corresponding issue will be referenced (if any) such that: `#<ID_issue>`
+
+### body (optional)
+# To be used in case the subject is not sufficiently descriptive
+# If not used remove body line from commit
