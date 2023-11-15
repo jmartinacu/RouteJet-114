@@ -5,16 +5,16 @@ type: subject #id
 body
 
 ### type
-# feat (nueva funcionalidad)
-# fix (corrección de bugs)
-# research (incorporación de código experimental, puede ser no funcional)
-# refactor (refactorización de código)
-# docs (actualización de documentación)
-# test (incorporación o modificación de tests)
-# conf (modificación de archivos de configuración)
+# feat (new functionality)
+# fix (fix bugs)
+# research (incorporation of experimental code, may be non-functional)
+# refactor (code refactor)
+# docs (documentation update)
+# test (incorporation or modification of tests)
+# conf (modification of configuration files)
 
 ### subject
-# Consists of a brief description of the issue that has been addressed and should begin with a capitalized verb in the past participle
+# Consists of a brief description of the issue that has been addressed and should begin with a capitalized verb
 # Do not end the subject line with a period, using imperative mode in the subject line
 # The corresponding issue will be referenced (if any) such that: `#<ID_issue>`
 
