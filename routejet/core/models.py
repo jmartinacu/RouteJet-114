@@ -1,3 +1,11 @@
+# core/models.py
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
+
+
+class UserProfile(AbstractUser):
+    additional_field = models.CharField(max_length=30, blank=True)
+
+    class Meta:
+        swappable = 'AUTH_USER_MODEL'
