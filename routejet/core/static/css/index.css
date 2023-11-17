@@ -36,3 +36,10 @@
   align-items: center;
   margin-top: 27px;
 }
+
+.index-div-image {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+}
