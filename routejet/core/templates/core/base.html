@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static "css/base.css" %}">
+  {% block header %}{% endblock header %}
 </head>
 <body>
   <header>
@@ -17,7 +18,7 @@
     <h1><strong>RouteJet</strong></h1>
     <nav>
       <button>Registro</button>
-      <button>Iniciar Session</button>
+      <button>Iniciar Sesion</button>
     </nav>
     </section>
     <section class="base-header-secondary">

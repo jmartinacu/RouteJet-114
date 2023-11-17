@@ -1,0 +1,38 @@
+.index-div-first-section-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.index-section-description {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.index-section-description > p {
+  margin-left: 134px;
+  padding-right: 60px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.index-section-description > img {
+  margin-right: 92px;
+}
+
+.index-div-second-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.index-section-images {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 27px;
+}
