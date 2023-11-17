@@ -1,5 +1,12 @@
+:root {
+  --h1-font-weight: 400;
+  --h2-font-weight: 400;
+  --primary-bg-color: #fff;
+  --seconday-bg-color: #AEC4C4;
+}
+
 body {
-  background-color: #FFFFFF;
+  background-color: var(--primary-bg-color);
   min-height: 100vh;
   margin: 0;
   display: flex;
@@ -21,7 +28,7 @@ footer {
 header > section > h1 {
   color: #426B1F;
   font-size: 40px;
-  font-weight: 400;
+  font-weight: var(--h1-font-weight);
   line-height: 40px;
   letter-spacing: -0.01em;
   text-align: left;
@@ -39,7 +46,7 @@ header > section > nav {
 }
 
 .base-header-secondary {
-  background-color: #AEC4C4;
+  background-color: var(--seconday-bg-color);
   width: 1440px;
   height: 60px;
   display: flex;
@@ -49,7 +56,7 @@ header > section > nav {
 
 .base-header-secondary > h2 {
   font-size: 25px;
-  font-weight: 400;
+  font-weight: var(--h2-font-weight);
   line-height: 40px;
   text-align: left;
   padding-left: 98px;
