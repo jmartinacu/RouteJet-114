@@ -47,7 +47,6 @@ header > section > nav {
 
 .base-header-secondary {
   background-color: var(--seconday-bg-color);
-  width: 1440px;
   height: 60px;
   display: flex;
   justify-content: left;

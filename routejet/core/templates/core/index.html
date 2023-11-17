@@ -1,7 +1,60 @@
 {% extends "core/base.html" %}
 
+{% load static %}
+
 {% block title %} Escaparate {% endblock title %}
 
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
+{% endblock header %}
+
+{% block description %}¿Dónde te gustaría viajar?{% endblock description %}
+
 {% block content %}
-  <h1>Funciona</h1> 
+  <article>
+    <div class="index-div-first-section-header">
+      <h3>¿Quienes somos?</h3>
+    </div>
+    <section class="index-section-description">
+      <p>
+        En <strong>RouteJet</strong>, nos dedicamos a hacer realidad tus viajes soñados. Con una pasión por la excelencia y la satisfacción del cliente, ofrecemos rutas exclusivas y experiencias inolvidables
+      </p>
+      <img 
+        src="{% static "images/mundo.jpeg" %}" 
+        alt="Imagen de los monumentos mas importantes"
+        width="500"
+        height="250"
+      >
+    </section>
+    <h3 class="index-div-second-section-header">Destinos destacados:</h3>
+    <section class="index-section-images">
+      <div>
+        <h4>Sevilla</h4>
+        <img 
+          src="{% static "images/sevilla.jpeg" %}" 
+          alt="Image de Sevilla"
+          width="400"
+          height="200"
+        >
+      </div>
+      <div>
+        <h4>Barcelona</h4>
+        <img 
+          src="{% static "images/barcelona.jpeg" %}" 
+          alt="Image de Barcelona"
+          width="400"
+          height="200"
+        >
+      </div>
+      <div>
+        <h4>Madrid</h4>
+        <img 
+          src="{% static "images/madrid.jpeg" %}" 
+          alt="Image de Madrid"
+          width="400"
+          height="200"
+        >
+      </div>
+    </section>
+  </article>
 {% endblock content %}
