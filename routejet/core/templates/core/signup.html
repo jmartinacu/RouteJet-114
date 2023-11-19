@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Create an Account</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Agrega enlaces a las bibliotecas de Bootstrap y Font Awesome si aún no lo has hecho -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('https://images.pexels.com/photos/346885/pexels-photo-346885.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+       .card {
+            border-radius: 15px;
+            width: 80%; /* Reducir el tamaño de la tarjeta */
+            width: 400px; /* Limitar el tamaño máximo */
+            margin: auto; /* Centrar la tarjeta */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            margin-right: 500px;
+            margin-top: 50px;
+
+
+        }
+
+        .gradient-custom-3 {
+            background: linear-gradient(to right, #fc00ff, #00dbde);
+        }
+
+        .text-body {
+            color: #000 !important; /* Ajusta el color del texto según tus preferencias */
+        }
+
+        .btn-custom {
+            background: linear-gradient(to right, #4e73df, #9453a3) !important;            
+            color: #fff !important;
+        }
+    </style>
+</head>
+<body>
+
+
+<section class="vh-100">
+    <div class="container">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <h2 class="text-uppercase text-center mb-5">Registrar</h2>
+                        <form>
+                            <div class="form-outline mb-4">
+                                <input type="text" id="form3Example1cg" class="form-control form-control-lg" />
+                                <label class="form-label" for="form3Example1cg">Nombre de usuario</label>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
+                                <label class="form-label" for="form3Example3cg">Correo electrónico</label>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
+                                <label class="form-label" for="form3Example4cg">Contraseña</label>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="password" id="form3Example4cdg" class="form-control form-control-lg" />
+                                <label class="form-label" for="form3Example4cdg">Repita su contraseña</label>
+                            </div>
+
+                            <div class="d-flex justify-content-center">
+                                <button type="button" class="btn btn-custom btn-block btn-lg text-body">Registrate</button>
+                            </div>
+
+                            <p class="text-center text-muted mt-5 mb-0">Tienes una cuenta? <a href="/login/"
+                                    class="fw-bold text-body"><u>logueate aquí</u></a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

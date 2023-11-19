@@ -1,14 +1,20 @@
 # core/views.py
 from django.contrib.auth.views import LoginView
 from django.views.generic.edit import CreateView
-from core.forms import SignUpForm, LoginForm
+from .forms import SignUpForm 
+from django.shortcuts import render
 
-class SignUpView(CreateView):
-    form_class = SignUpForm
-    template_name = 'core/register.html'  
-    success_url = '/login/'
 
-class CustomLoginView(LoginView):
-    form_class = LoginForm
-    template_name = 'core/login.html' 
-    success_url = '/profile/'
+def signup(request):
+  if request.method == 'POST':
+    form = SignUpForm(request.POST)
+
+    if form.is_valid():
+      form.save()
+      return redirect('/login/' )
+  else:
+    form = SignUpForm()
+
+  return render(request, 'core/signup.html', {
+    'form': form
+  })
