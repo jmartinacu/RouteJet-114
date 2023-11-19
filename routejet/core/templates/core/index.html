@@ -8,7 +8,51 @@
   <link rel="stylesheet" href="{% static "css/index.css" %}">
 {% endblock header %}
 
-{% block description %}¿Dónde te gustaría viajar?{% endblock description %}
+{% block description %}
+
+  <h2>¿Dónde te gustaría viajar?</h2>
+  <div id="header">
+     <a href="#modal">
+      <img 
+        src="{% static "images/shopping_cart.png" %}"
+        width="30"
+        height="30"
+        style="margin-left:800px"
+      >
+     </a>
+    </div>
+     <section id="modal" class="modal">
+      <div class="modal__container">
+        <h2>Resumen de tu compra</h2>
+        <div class="modal_columns">
+          <div class="modal_column">
+            <h3>Destino</h3>
+            <h4>Sevilla</h4>
+            <h4>Barcelona</h4>
+            <h4>Madrid</h4>            
+          </div>
+          <div class="modal_column">
+            <h3>Precio</h3>
+            <h4>100€</h4>
+            <h4>200€</h4>
+            <h4>300€</h4>
+          </div> 
+          <div class="modal_column">
+            <h3>Unidades</h3>
+            <h4>1</h4>
+            <h4>2</h4>
+            <h4>4</h4>
+          </div> 
+        </div>
+        <h5 class="modal_total">Total: 1700€</h5>
+        <a href="#header" class="modal_close">Seguir navegado</a>
+      </div>
+        
+     </section>
+
+
+
+{% endblock description %}
 
 {% block content %}
   <article>
