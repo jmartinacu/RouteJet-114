@@ -8,12 +8,17 @@
   <link rel="stylesheet" href="{% static "css/index.css" %}">
 {% endblock header %}
 
-{% block description %}¿Dónde te gustaría viajar?{% endblock description %}
+{% block description %}¿Quienes somos?{% endblock description %}
 
 {% block content %}
   <article>
     <div class="index-div-first-section-header">
-      <h3>¿Quienes somos?</h3>
+      <h3>¿Dónde te gustaría viajar?</h3>
+        <form action="" role="search">
+          <label for="search">
+            <input type="search" placeholder="Destino...">
+          </label>
+        </form>
     </div>
     <section class="index-section-description">
       <p>
