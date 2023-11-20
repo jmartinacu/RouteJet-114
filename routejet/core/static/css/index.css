@@ -1,0 +1,110 @@
+::-webkit-input-placeholder {
+  text-align: center;
+}
+
+:-moz-placeholder {
+  text-align: center;
+}
+
+.index-div-first-section-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.index-div-first-section-header > form > label {
+  display: relative;
+}
+
+.index-div-first-section-header > form > label > input {
+  display: inline-block;
+  width: 550px;
+  height: 2em;
+  border-radius: 100px;
+  border: 1px solid #000;
+  text-align: center;
+}
+
+.index-section-description {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.index-section-description > p {
+  display: inline-block;
+  width: 500px;
+  height: 200px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.index-div-second-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.index-section-images {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 27px;
+}
+
+.index-div-image {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+}
+.modal{
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+
+  --opacity:0;
+  --pointer:none; 
+
+  opacity: var(--opacity);
+  pointer-events: var(--pointer);
+  transition: opacity .5s;
+}
+
+.modal:target{
+  --opacity:1;
+  --pointer:unset;
+}
+
+.modal__container{
+  background-color: rgba(255, 255, 255, 0.838);
+  width: 600px;
+  height: 500px;
+  margin-left: auto;
+  overflow: hidden;
+  text-align: center;
+}
+
+.modal_columns{
+  display: flex;
+}
+.modal_column{
+  flex:1;
+}
+.modal_close{
+  margin-top: auto;
+  display: block;
+  text-align: center;
+}
+.modal_total{
+  display:block;
+  border-top:1px solid #000;
+  padding-top: 10px;
+}

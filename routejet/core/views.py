@@ -1,9 +1,12 @@
 # core/views.py
 from django.contrib.auth.views import LoginView
 from django.views.generic.edit import CreateView
-from .forms import SignUpForm 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
+from .forms import SignUpForm 
+
+def home(request):
+  return render(request, 'core/index.html')
 
 def signup(request):
   if request.method == 'POST':
@@ -18,3 +21,4 @@ def signup(request):
   return render(request, 'core/signup.html', {
     'form': form
   })
+

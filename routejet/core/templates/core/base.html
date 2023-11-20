@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-with, initial-scale=1.0">
+  <title>{% block title %}{% endblock title %} - RouteJet</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static "css/base.css" %}">
+  {% block header %}{% endblock header %}
+</head>
+<body>
+  <header>
+    <section class="base-header-primary">
+    <h1><strong>RouteJet</strong></h1>
+    <nav>
+      <a class="btn btn-outline-success" href="{% url "core:index" %}" role="button">Registro</a>
+      <a class="btn btn-outline-success" href="{% url "core:index" %}" role="button">Iniciar Sesion</a>
+    </nav>
+    </section>
+    <section class="base-header-secondary">
+      <h2>{% block description %}{% endblock description %}</h2>
+        <div id="header">
+          <a href="#modal">
+           <img 
+             src="{% static "images/shopping_cart.png" %}"
+             width="30"
+             height="30"
+             style="margin-left:800px"
+           >
+          </a>
+         </div>
+          <section id="modal" class="modal">
+           <div class="modal__container">
+             <h2>Resumen de tu compra</h2>
+             <div class="modal_columns">
+               <div class="modal_column">
+                 <h3>Destino</h3>
+                 <h4>Sevilla</h4>
+                 <h4>Barcelona</h4>
+                 <h4>Madrid</h4>            
+               </div>
+               <div class="modal_column">
+                 <h3>Precio</h3>
+                 <h4>100€</h4>
+                 <h4>200€</h4>
+                 <h4>300€</h4>
+               </div> 
+               <div class="modal_column">
+                 <h3>Unidades</h3>
+                 <h4>1</h4>
+                 <h4>2</h4>
+                 <h4>4</h4>
+               </div> 
+             </div>
+             <h5 class="modal_total">Total: 1700€</h5>
+             <a href="" class="modal_close">Seguir navegado</a>
+           </div>
+          </section>
+  </header>
+  <main>
+    {% block content %}
+    {% endblock content %} 
+  </main>
+  <footer class="text-center text-lg-start bg-light text-muted">
+    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+      <div class="me-5 d-none d-lg-block">
+        <span>Conecta con nosotros en nuestras redes sociales:</span>
+      </div>
+      <div>
+        <a href="https://www.facebook.com/UniversidaddeSevillaoficial" target="_blank" class="me-4 text-reset">
+          <i class="fab fa-facebook-f"></i>
+          Facebook
+        </a>
+        <a href="https://twitter.com/unisevilla" target="_blank" class="me-4 text-reset">
+          <i class="fab fa-twitter"></i>
+          Twitter
+        </a>
+        <a href="https://www.youtube.com/user/UniversidaddeSevilla" target="_blank" class="me-4 text-reset">
+          <i class="fab fa-youtube"></i>
+          YouTube
+        </a>
+        <a href="https://www.instagram.com/unisevilla/" target="_blank" class="me-4 text-reset">
+          <i class="fab fa-instagram"></i>
+          Instagram
+        </a>
+        <a href="https://www.linkedin.com/school/universidad-de-sevilla/" target="_blank" class="me-4 text-reset">
+          <i class="fab fa-linkedin"></i>
+          Linkedin
+        </a>
+      </div>
+    </section>
+    <section class="">
+      <div class="container text-center text-md-start mt-5">
+        <div class="row mt-3">
+          <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+            <h6 class="text-uppercase fw-bold mb-4">
+              <i class="fas fa-gem me-3"></i> Universidad de Sevilla
+            </h6>
+            <p>
+              Somos una de las universidades más antiguas, teniendo mas de 500 años de historia, y la tercera universidad mas grande de España
+            </p>
+          </div>
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+            <h6 class="text-uppercase fw-bold mb-4">
+              Productos
+            </h6>
+            <p>
+              <a href="{% url "core:index" %}" class="text-reset">RouteJet</a>
+            </p>
+            <p>
+              <a href="https://www.informatica.us.es/" target="_blank" class="text-reset">Universidad de Informática</a>
+            </p>
+          </div>
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+            <h6 class="text-uppercase fw-bold mb-4">Contacto</h6>
+            <p><i class="fas fa-home me-3"></i> Sevilla, Av. de la Reina Mercedes 41012, ES</p>
+            <p>
+              <i class="fas fa-envelope me-3"></i>
+              routejet@routejet.com
+            </p>
+            <p><i class="fas fa-phone me-3"></i> + 34 686 84 90 09</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+      © 2023 Copyright:
+      <a class="text-reset fw-bold" href="{% url "core:index" %}">routejet.com</a>
+    </div>
+  </footer>
+</body>
+</html>
