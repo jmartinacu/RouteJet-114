@@ -12,7 +12,7 @@ class Product(models.Model):
     end_date = models.DateField()
     available = models.BooleanField(default=True)
     num_products = models.IntegerField(default=100)
-    slug = models.SlugField(max_length=200, unique=True,null=True, blank=True)
+  
 
 
 
