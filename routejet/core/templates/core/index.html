@@ -8,18 +8,18 @@
   <link rel="stylesheet" href="{% static "css/index.css" %}">
 {% endblock header %}
 
-{% block description %}
+{% block description %}¿Quienes somos?{% endblock description %}
 
-  <h2>¿Dónde te gustaría viajar?</h2>
-  
-
-
-{% endblock description %}
 
 {% block content %}
   <article>
     <div class="index-div-first-section-header">
-      <h3>¿Quienes somos?</h3>
+      <h3>¿Dónde te gustaría viajar?</h3>
+        <form action="" role="search">
+          <label for="search">
+            <input type="search" placeholder="Destino...">
+          </label>
+        </form>
     </div>
     <section class="index-section-description">
       <p>
@@ -34,7 +34,7 @@
     </section>
     <h3 class="index-div-second-section-header">Destinos destacados:</h3>
     <section class="index-section-images">
-      <div>
+      <div class="index-div-image">
         <h4>Sevilla</h4>
         <img 
           src="{% static "images/sevilla.jpeg" %}" 
@@ -43,7 +43,8 @@
           height="200"
         >
       </div>
-      <div>
+
+      <div class="index-div-image">
         <h4>Barcelona</h4>
         <img 
           src="{% static "images/barcelona.jpeg" %}" 
@@ -52,7 +53,7 @@
           height="200"
         >
       </div>
-      <div>
+      <div class="index-div-image">
         <h4>Madrid</h4>
         <img 
           src="{% static "images/madrid.jpeg" %}" 

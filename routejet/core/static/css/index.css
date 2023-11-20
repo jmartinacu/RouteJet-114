@@ -1,26 +1,44 @@
+::-webkit-input-placeholder {
+  text-align: center;
+}
+
+:-moz-placeholder {
+  text-align: center;
+}
+
 .index-div-first-section-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   margin-top: 10px;
 }
 
+.index-div-first-section-header > form > label {
+  display: relative;
+}
+
+.index-div-first-section-header > form > label > input {
+  display: inline-block;
+  width: 550px;
+  height: 2em;
+  border-radius: 100px;
+  border: 1px solid #000;
+  text-align: center;
+}
+
 .index-section-description {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   margin-top: 10px;
 }
 
 .index-section-description > p {
-  margin-left: 134px;
-  padding-right: 60px;
-  text-align: center;
+  display: inline-block;
+  width: 500px;
+  height: 200px;
   font-size: 20px;
-}
-
-.index-section-description > img {
-  margin-right: 92px;
+  text-align: center;
 }
 
 .index-div-second-section-header {
@@ -37,6 +55,12 @@
   margin-top: 27px;
 }
 
+.index-div-image {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+}
 .modal{
   position: fixed;
   top: 0;
@@ -83,7 +107,4 @@
   display:block;
   border-top:1px solid #000;
   padding-top: 10px;
-
 }
-
-
