@@ -1,4 +1,24 @@
-from django.shortcuts import render
+# core/views.py
+from django.contrib.auth.views import LoginView
+from django.views.generic.edit import CreateView
+from django.shortcuts import render, redirect
+
+from .forms import SignUpForm 
 
 def home(request):
   return render(request, 'core/index.html')
+
+def signup(request):
+  if request.method == 'POST':
+    form = SignUpForm(request.POST)
+
+    if form.is_valid():
+      form.save()
+      return redirect('/login/' )
+  else:
+    form = SignUpForm()
+
+  return render(request, 'core/signup.html', {
+    'form': form
+  })
+

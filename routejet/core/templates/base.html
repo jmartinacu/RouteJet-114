@@ -1,0 +1,34 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}routeJet{% endblock %}</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <h1>{% block header %}routeJet{% endblock %}</h1>
+        <!-- Podemos agregar más elementos de encabezado aquí -->
+    </header>
+
+    <nav>
+        <!-- Podemos agregar tu barra de navegación aquí -->
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <!-- Podemos agregar tu pie de página aquí -->
+    </footer>
+</body>
+</html>
