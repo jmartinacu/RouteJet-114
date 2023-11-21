@@ -5,7 +5,7 @@
 {% block title %} Regístrate {% endblock title %}
 
 {% block header %}
-  <link rel="stylesheet" href="{% static "css/signup.css" %}">
+  <link rel="stylesheet" href="{% static "css/signup.css" %}" >
 {% endblock header %}
 
 {% block content %}
@@ -15,28 +15,50 @@
         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="card">
             <div class="card-body p-6">
-            <form method="post" action=".">
+              <form method="post" action=".">
                 {% csrf_token %}
-              <h3 class="text-uppercase text-center mb-5">Regístrate</h3>
+                <h3 class="text-uppercase text-center mb-5">Regístrate</h3>
 
-              <div class="mb-4">
-                <label for="form2Example18" class="form-label">Nombre de usuario</label>
-                <input type="text" name="username" id="form2Example18" class="form-control" />
-              </div>
                 <div class="mb-4">
-                <label for="form2Example28" class="form-label">Correo electrónico</label>
-                <input type="email" name="email" id="form2Example28" class="form-control" />
-              </div>
 
-              <div class="mb-4">
-                <label for="form2Example28" class="form-label">Contraseña</label>
-                <input type="password" name="password" id="form2Example28" class="form-control" />
-              </div>
-              <div class="mb-4">
-                <label for="form2Example28" class="form-label">Confirmación de Contraseña</label>
-                <input type="password" name="password" id="form2Example28" class="form-control" />
-              </div>
-                    
+             <label for="form2Example18" class="form-label" style="width: 100%; margin: 0 auto; text-align: center; margin-bottom: 10px;">Nombre de usuario</label>
+              <div class="input-container" style="width: 80%; margin: 0 auto; text-align: center;">
+
+                  {{ form.username }}
+                </div>
+
+                <div class="mb-4">
+                <label for="form2Example18" class="form-label" style="width: 100%; margin: 0 auto; text-align: center; margin-bottom: 10px;">Correo electrónico</label>
+              <div class="input-container" style="width: 80%; margin: 0 auto; text-align: center;">
+                  {{ form.email }}
+                </div>
+
+                <div class="mb-4">
+                  <label for="form2Example18" class="form-label" 
+                                      style="width: 100%; margin: 0 auto; text-align: center; margin-bottom: 10px;">
+                  Contraseña</label>
+                  <div class="input-container" style="width: 80%; margin: 0 auto; text-align: center;">
+                  {{ form.password1 }}
+                </div>
+
+                <div class="mb-4">
+                <label for="form2Example18" class="form-label" 
+                                      style="width: 100%; margin: 0 auto; text-align: center; margin-bottom: 10px;">
+                  Confirmación de Contraseña</label>
+                  <div class="input-container" style="width: 80%; margin: 0 auto; text-align: center;  margin-bottom: 10px; ">
+    
+                  {{ form.password2 }}
+                </div>
+
+                {% if form.errors or form.non_field_errors %}
+                  <div class="mb-3 p-6 bg-red-100 rounded-x1"> 
+                    {% for field in form %}
+                      {{ field.errors }}
+                    {% endfor %}
+                    {{ form.non_field_errors }}
+                  </div>
+                {% endif %}
+
                 <div class="form-group text-center">
                   <button type="submit" class="btn btn-custom btn-lg text-body">Registrarse</button>
                 </div>
