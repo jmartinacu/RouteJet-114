@@ -17,8 +17,12 @@
     <section class="base-header-primary">
     <h1><strong>RouteJet</strong></h1>
     <nav>
-      <a class="btn btn-outline-success" href="{% url "core:index" %}" role="button">Registro</a>
-      <a class="btn btn-outline-success" href="{% url "core:index" %}" role="button">Iniciar Sesion</a>
+      {% if request.user.is_authenticated %}
+        <h2>Estas logeado</h2>
+      {% else %}
+        <a class="btn btn-outline-success" href="{% url "core:signup" %}" role="button">Registro</a>
+        <a class="btn btn-outline-success" href="{% url "core:login" %}" role="button">Iniciar Sesion</a>
+      {% endif %}
     </nav>
     </section>
     <section class="base-header-secondary">
