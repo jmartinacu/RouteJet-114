@@ -162,3 +162,5 @@ cython_debug/
 # vscode
 
 .vscode
+
+product_images/
