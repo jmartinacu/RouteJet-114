@@ -5,38 +5,29 @@ from django.core.exceptions import ValidationError
 import re
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={
-        'placeholder': 'Nombre de usuario',
-        'class': 'w-full py-4 px-6 rounded-xl'
-    }))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Contraseña',
-        'class': 'w-full py-4 px-6 rounded-xl'
-    }))
+  username = forms.CharField(widget=forms.TextInput(attrs={
+    'placeholder': 'Usuario',
+  }))
+
+  password = forms.CharField(widget=forms.PasswordInput(attrs={
+    'placeholder': 'Contraseña',
+  }))
 
 class SignUpForm(UserCreationForm):
-    email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
+  email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
 
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password1', 'password2')
+  username = forms.CharField(widget=forms.TextInput(attrs={
+    'placeholder': 'Usuario',
+  }))
 
-    username = forms.CharField(widget=forms.TextInput(attrs={
-        'placeholder': 'Nombre de usuario',
-        'class': 'w-full py-4 px-6 rounded-xl'
-    }))
+  email = forms.CharField(widget=forms.EmailInput(attrs={
+    'placeholder': 'Email',
+  }))
 
-    email = forms.EmailField(widget=forms.EmailInput(attrs={
-        'placeholder': 'correo electrónico',
-        'class': 'w-full py-4 px-6 rounded-xl'
-    }))
+  password1 = forms.CharField(widget=forms.PasswordInput(attrs={
+    'placeholder': 'Contraseña',
+  }))
 
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Contraseña',
-        'class': 'w-full py-4 px-6 rounded-xl'
-    }))
-
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Repetir la contraseña',
-        'class': 'w-full py-4 px-6 rounded-xl'
-    }))
+  password2 = forms.CharField(widget=forms.PasswordInput(attrs={
+    'placeholder': 'Repite tu contraseña',
+  }))
