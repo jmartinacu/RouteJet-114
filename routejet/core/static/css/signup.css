@@ -1,24 +1,20 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-image: url('https://images.pexels.com/photos/346885/pexels-photo-346885.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
-    background-size: cover;
-    background-position: center;
     height: 100vh;
     margin: 0;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    background-color: #fef0f7; 
 }
 
 .card {
     border-radius: 15px;
-    width: 80%; /* Reducir el tamaño de la tarjeta */
-    width: 400px; /* Limitar el tamaño máximo */
-    margin: auto; /* Centrar la tarjeta */
+    width: 400px; 
+    margin: auto; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
     margin-right: 500px;
-    margin-top: 50px;
+    margin-top: 80px;
+    margin-bottom: 20px;
 
 
 }
