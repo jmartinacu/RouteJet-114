@@ -13,6 +13,7 @@ class Product(models.Model):
     end_date = models.DateField()
     available = models.BooleanField(default=True)
     num_products = models.IntegerField(default=100)
+    slug = models.SlugField(default='default-slug')
 
     def save(self, *args, **kwargs):
         if self.num_products < 1:
@@ -33,15 +34,19 @@ def post_save_image(sender, instance, **kwargs):
         instance.image.delete(save=False)
     except:
         pass
-        """ Clean Old Image file """
-        try:
-            instance.img.delete(save=False)
-        except:
-            pass
 
-          
+    try:
+        instance.img.delete(save=False)
+    except:
+        pass
+
     class Meta:
-        ordering = ('country', 'city', 'start_date', 'end_date')
+        ordering = ['country', 'city', 'start_date']
+        indexes = [
+            models.Index(fields=['id', 'slug']),
+            models.Index(fields=['country']),
+            models.Index(fields=['city']),
+        ]
 
     def __str__(self):
         return f"{self.country} {self.city} {self.start_date} {self.end_date}"
