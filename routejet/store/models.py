@@ -28,6 +28,7 @@ class Order(models.Model):
 
   def save(self, *args, **kwargs):
     user=self.user
+    self.total_price = 0
     if self.city == None:
       self.city = user.city
     if self.address == None:
