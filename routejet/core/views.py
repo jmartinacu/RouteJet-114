@@ -27,3 +27,6 @@ def logout_view(request):
   logout(request)
   return redirect('/')
 
+def overview(request):
+  return render(request, 'core/overview.html')
+
