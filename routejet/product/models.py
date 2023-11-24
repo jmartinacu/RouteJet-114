@@ -4,7 +4,6 @@ from django.db.models.signals import post_delete
 from django.forms import ValidationError
 from django.core.validators import MinValueValidator
 
-
 class Product(models.Model):
     country = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
