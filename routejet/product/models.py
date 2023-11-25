@@ -24,7 +24,6 @@ class Product(models.Model):
             self.available = False
         else:
             self.available = True
-        self.slug = slugify(f"{self.country} {self.city}", allow_unicode=True)
         super(Product, self).save(*args, **kwargs)
 
 
