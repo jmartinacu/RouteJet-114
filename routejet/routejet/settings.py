@@ -144,3 +144,4 @@ AUTH_USER_MODEL = 'core.RouteJetUser'
 
 
 
+CAST_SESSION_ID = 'cart'
