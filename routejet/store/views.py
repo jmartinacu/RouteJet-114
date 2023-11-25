@@ -10,7 +10,8 @@ def cart_add(request, product_id):
   product = get_object_or_404(Product, id=product_id)
   if cart[product_id]['quantity'] >= product.num_products:
     return render(request, 'store/cart.html', {
-      'add_to_car_error': f'No hay suficientes viajes a {product.city}'
+      'cart': cart,
+      'add_to_car_error': f'No hay suficientes viajes a {product.city}',
     })
   cart.add(product=product)
   return redirect('store:cart_detail')
