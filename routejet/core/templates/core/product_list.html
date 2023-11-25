@@ -1,0 +1,25 @@
+<!-- FILEPATH: /home/manuel/Route-Jet/RouteJet-114/routejet/core/templates/core/product_list.html -->
+{% extends "core/base.html" %}
+
+{% block title %}Product List{% endblock %}
+
+{% block head %}
+    <h1>Catalogo</h1>
+{% endblock %}
+
+{% block content %}
+{% load static %}  
+{% for product in products %}
+<div class="item">
+    <a href="{{ product.get_absolute_url }}">
+        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}"  width="400" height="341">
+    </a>
+    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+    <br>
+    {{ product.description }}
+    <br>
+
+    ${{ product.price }}
+</div>
+{% endfor %}
+{% endblock %}
