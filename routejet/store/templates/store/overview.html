@@ -1,0 +1,50 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %} Escaparate {% endblock title %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
+{% endblock header %}
+
+{% block description %}
+<h2>Proceso de compra</h2>
+{% endblock description %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class=" p-3">
+        <form method="POST" class=>
+          {% csrf_token %}
+          {{ form.as_p }}
+          <p><input type='submit' value="Place order"></p>
+        </form>
+      </div>
+    </div>
+      <div class="col-md-6">
+          <div class="p-3">
+              <h3>Resumen de tu compra</h3>
+              {% for p in productos  %}
+              <div class="row">
+                <div class="col">
+                  <h5> {{p.city}},{{p.country}}  </h5>
+                </div>
+                <div class="col">
+                  <h6> {{p.start_date}}/{{p.end_date}}  </h6>
+                </div>
+                <div class="col">
+                  <h6> {{p.price}}€ </h6>
+                </div>
+            </div>
+              {% endfor %}
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endblock content %}
