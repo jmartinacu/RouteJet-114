@@ -24,6 +24,7 @@ class Product(models.Model):
             self.available = False
         else:
             self.available = True
+        self.slug = slugify(self.country + "-"+self.city )
         super(Product, self).save(*args, **kwargs)
 
 
