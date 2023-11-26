@@ -7,7 +7,7 @@
 {% block content %}
 
   {% if cart.len == 0 %}
-    <h1>El carro esta vacio</h1>
+    <h1>El carro esta vacío</h1>
   {% else %}
   <table class="cart-table-cart">
     <thead>
@@ -59,9 +59,11 @@
 
   <p>
     <a href="{% url "core:index" %}">
-      Continua comprando
+      <button type="button" class="btn btn-success" style="margin-top:100px">Seguir comprando</button>
     </a>
-    <a href="{% url "store:order_create" %}" >Termina la compra</a>
+    <a href="{% url "store:order_create" %}" >
+      <button type="button" class="btn btn-success" style="margin-top:100px">Finalizar compras</button>
+    </a>
   </p>
 {% endblock content %}
 
