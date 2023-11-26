@@ -27,13 +27,13 @@ class Order(models.Model):
   address = models.CharField(max_length=100)
 
   def save(self, *args, **kwargs):
+    user = self.user
+    self.total_price = 0
     if self.city == None:
-      self.city = self.user.city
+      self.city = user.city
     if self.address == None:
-      self.address = self.user.address
-    self.total_price = 0.00
+      self.address = user.address
     super(Order, self).save(*args, **kwargs)
-    products = self.products.all()
     for product in self.products.all():
       self.total_price += product.price
     super(Order, self).save(*args, **kwargs)
