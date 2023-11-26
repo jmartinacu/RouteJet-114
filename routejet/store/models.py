@@ -15,6 +15,7 @@ class Order(models.Model):
   address = models.CharField(max_length=250)
   postal_code = models.CharField(max_length=20)
   paid = models.BooleanField(default=False)
+  stripe = models.BooleanField()
   state = models.CharField(
     max_length=3, 
     choices=ShipmentState.choices, 

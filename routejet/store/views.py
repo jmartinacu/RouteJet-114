@@ -1,12 +1,14 @@
-from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
+from django.urls import reverse
+
 
 from .cart import Cart
 from store.models import Order, OrderItem
 from product.models import Product
 from .forms import OrderCreateForm
 from core.models import RouteJetUser
+from .utils import stripe_payment
 
 def get_or_none(classmodel, **kwargs):
   try:
@@ -26,7 +28,11 @@ def order_create(request):
                                  price=item['price'], 
                                  quantity=item['quantity'])
       cart.clear()
-      return redirect('core:index')
+      if order.stripe:
+        session = stripe_payment(request, order)
+        return redirect(session.url, code=303)
+      else: 
+        return redirect(reverse('core:index'))
   else:
     user = get_or_none(RouteJetUser, username=request.user.username)
     if user == None:
@@ -35,30 +41,11 @@ def order_create(request):
       form = OrderCreateForm({'email' : user.email, 'address' : user.address, 'city' : user.city})
     return render(request, 'store/overview.html', {'cart': cart, 'form': form})
 
-# def overview(request):
-#     user_orders=Order.objects.filter(user=request.user)
-#     user_order=user_orders.first()
-#     if user_order:
-#         order_products= OrderProducts.objects.filter(order=user_order)
-#         products=[product.product for product in order_products]
-#     else:
-#         products=[]
-#     if request.method == 'POST':
-#         form = OrderCreateForm(request.POST)
-#         if form.is_valid():
-#             order = form.save(commit=False)
-#             order.user = request.user 
-#             order.save() 
-#             order_products= OrderProducts.objects.filter(order=user_order)
-#             products=[product.product for product in order_products]
-#             for item in products:
-#                 order.products.add(item)
-#             order.save()
-            
-#     else:
-#         form = OrderCreateForm()
+def payment_completed(request):
+  return render(request, 'store/completed.html')
 
-    # return render(request, 'store/overview.html', {"usuario":request.user, "productos":products,'form': form})
+def payment_canceled(request):
+  return render(request, 'store/canceled.html')
 
 @require_POST
 def cart_add(request, product_id):
