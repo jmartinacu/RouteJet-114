@@ -30,7 +30,7 @@
     <section class="base-header-secondary">
       <h2>{% block description %}{% endblock description %}</h2>
       <div id="header">
-        <a href="#modal">
+        <a href="{% url "store:cart_detail" %}">
           <img 
             src="{% static "images/shopping_cart.png" %}"
             width="30"
@@ -39,34 +39,6 @@
           >
         </a>
       </div>
-      <section id="modal" class="modal">
-        <div class="modal__container">
-          <h2>Resumen de tu compra</h2>
-          <div class="modal_columns">
-            <div class="modal_column">
-              <h3>Destino</h3>
-              <h4>Sevilla</h4>
-              <h4>Barcelona</h4>
-              <h4>Madrid</h4>            
-            </div>
-            <div class="modal_column">
-              <h3>Precio</h3>
-              <h4>100€</h4>
-              <h4>200€</h4>
-              <h4>300€</h4>
-            </div> 
-            <div class="modal_column">
-              <h3>Unidades</h3>
-              <h4>1</h4>
-              <h4>2</h4>
-              <h4>4</h4>
-            </div> 
-          </div>
-          <h5 class="modal_total">Total: 1700€</h5>
-          <a href="" class="modal_close">Seguir comprando</a>
-          <button onClick="window.location.href='/overview'" type="button" class="btn btn-success" style="margin-top:100px">Finalizar compras</button>
-        </div>
-      </section>
   </header>
   <main>
     {% block content %}

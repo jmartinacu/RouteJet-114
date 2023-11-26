@@ -12,12 +12,15 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+<<<<<<< HEAD
 import environ
 
 env = environ.Env(
   DEBUG=(bool, False)
 )
 environ.Env.read_env()
+=======
+>>>>>>> feature/5-shopping_cart
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -135,6 +138,9 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -151,3 +157,4 @@ AUTH_USER_MODEL = 'core.RouteJetUser'
 
 
 
+CART_SESSION_ID = 'cart'
