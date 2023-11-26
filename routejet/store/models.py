@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from core.models import RouteJetUser
 from product.models import Product
 
+
 class StripePayment(models.Model):
     stripe_checkout_id = models.CharField(max_length=500)
     payment_bool = models.BooleanField(default=False)
@@ -24,9 +25,7 @@ class Order(models.Model):
         EXPRESS = 7.99
         FREE_THRESHOLD = 400.00
 
-        
-
-    user = models.ForeignKey(RouteJetUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(RouteJetUser, on_delete=models.CASCADE, null=True)
     products = models.ManyToManyField(Product, related_name='product', through='OrderProducts')
     stripe_payment = models.ForeignKey(StripePayment, on_delete=models.CASCADE, null=True)
     total_price = models.DecimalField(decimal_places=2, max_digits=6)
