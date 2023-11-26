@@ -9,7 +9,7 @@ class OrderProductInLine(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
   inlines = (OrderProductInLine,)
-  list_display = ('user', 'total_price', 'state', 'city', 'address')
+  list_display = ('user', 'total_price', 'state', 'city', 'address','shipping_type')
   readonly_fields = ('total_price',)
   exclude = ('stripe_payment',)
 
