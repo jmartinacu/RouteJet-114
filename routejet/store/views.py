@@ -27,3 +27,17 @@ def overview(request):
         form = OrderCreateForm()
 
     return render(request, 'store/overview.html', {"usuario":request.user, "productos":products,'form': form})
+
+def history(request):
+    orders=Order.objects.filter(user=request.user)
+    #orders = Order.objects.all()
+    return render(request, 'store/history.html',{'orders':orders})
+    #user_orders=Order.objects.filter(user=request.user)
+    #return render(request, 'store/history.html', {"usuario":request.user, "ordenes":user_orders})
+
+def getProductsbyOrders(orders):
+    products=[]
+    for order in orders:
+        order_products= OrderProducts.objects.filter(order=order)
+        products=[product.product for product in order_products]
+    return products

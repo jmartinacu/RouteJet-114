@@ -1,0 +1,55 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %} Historial de compras {% endblock title %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
+{% endblock header %}
+
+{% block description %}
+<h2>Historial de reservas</h2>
+{% endblock description %}
+
+{% block content %}
+<h2 class="text-center">Historial de Reservas</h2>
+<div class="table-responsive">
+  <table class="table mx-auto">
+    <thead>
+      <tr>
+        <th>ID de Orden</th>
+        <th>Total Price</th>
+        <th>Estado</th>
+        <th>Ciudad</th>
+        <th>Dirección</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+        <tr>
+          <td>{{ order.id }}</td>
+          <td>{{ order.total_price }}</td>
+          <td>{{ order.get_state_display }}</td>
+          <td>{{ order.city }}</td>
+          <td>{{ order.address }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .table {
+    width: 80%;
+    margin: auto;
+  }
+
+  .destino-clickable {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;
+  }
+</style>
+
+</script>{% endblock content %}
