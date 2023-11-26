@@ -8,7 +8,7 @@ from .models import Product
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('country', 'city', 'start_date', 'end_date')
-    list_filter = ('country', 'city', 'start_date', 'end_date', )
-    search_fields = ('country', 'city', 'start_date', 'end_date',)
+    list_filter = ('country', 'city', 'start_date', 'end_date' )
+    list_editable = ('start_date', 'end_date')
     ordering = ('country', 'city', 'start_date', 'end_date')
-   
+    prepopulated_fields = {'slug': ('country', 'city')}

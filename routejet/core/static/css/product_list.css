@@ -1,0 +1,41 @@
+.item{
+
+}
+
+.city a{
+    text-decoration: none;
+    color: inherit;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 48px;
+    color: #9f0a0a;
+    margin-left: 90px;
+}
+
+.image{
+    margin-left: 63px;
+    max-width: 100%;
+    height: auto;
+}
+
+.description{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 29px;
+    color: #000000;
+    margin-left: 70px;
+}
+
+.price{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 23px;
+    line-height: 40px;
+    color: #000000;
+    margin-left: 70px;
+}

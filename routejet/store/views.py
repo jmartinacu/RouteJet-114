@@ -1,10 +1,22 @@
+
+
 from product.models import Product
-from django.shortcuts import render
+from django.forms import SlugField
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
+from django.views import View
+from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.urls import path, include
+from . import views
 
-def product_catalog(request):
+
+def product_list(request): 
     products = Product.objects.all()
-    return render(request, 'templates/catalog.html', {'products': products})
+    return render(request, 'core/product_list.html', {'products': products})
 
-def product_detail(request, product_id):
-    product = Product.objects.get(pk=product_id)
-    return render(request, 'product/templates/product_detail.html', {'product': product})
+
+
+
+
+
