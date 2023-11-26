@@ -58,10 +58,10 @@
   {% endif %}
 
   <p>
-    <a href="">
+    <a href="{% url "core:index" %}">
       Continua comprando
     </a>
-    <a href="" >Termina la compra</a>
+    <a href="{% url "store:order_create" %}" >Termina la compra</a>
   </p>
 {% endblock content %}
 

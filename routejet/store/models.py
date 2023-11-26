@@ -1,45 +1,49 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from core.models import RouteJetUser
 from product.models import Product
-
-class StripePayment(models.Model):
-  stripe_checkout_id = models.CharField(max_length=500)
-  payment_bool = models.BooleanField(default=False)
 
 class Order(models.Model):
   class ShipmentState(models.TextChoices):
     PREADMISSION = "PA", _("Pre-admisión")
     ONTHEWAY = "OTW", _("En camino")
     DELIVERED = "D", _("Entregado")
-
-  user = models.ForeignKey(RouteJetUser, on_delete=models.CASCADE)
-  products = models.ManyToManyField(Product, related_name='product', through='OrderProducts')
-  stripe_payment = models.ForeignKey(StripePayment, on_delete=models.CASCADE, null=True)
-  total_price = models.DecimalField(decimal_places=2, max_digits=6)
+  first_name = models.CharField(max_length=50)
+  last_name = models.CharField(max_length=50)
+  email = models.EmailField()
+  city = models.CharField(max_length=100)
+  address = models.CharField(max_length=250)
+  postal_code = models.CharField(max_length=20)
+  paid = models.BooleanField(default=False)
   state = models.CharField(
     max_length=3, 
     choices=ShipmentState.choices, 
     default=ShipmentState.PREADMISSION
   )
-  city = models.CharField(max_length=100)
-  address = models.CharField(max_length=100)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
-  def save(self, *args, **kwargs):
-    user = self.user
-    self.total_price = 0
-    if self.city == None:
-      self.city = user.city
-    if self.address == None:
-      self.address = user.address
-    super(Order, self).save(*args, **kwargs)
-    for product in self.products.all():
-      self.total_price += product.price
-    super(Order, self).save(*args, **kwargs)
+  class Meta:
+    ordering = ['-created']
+    indexes = [
+      models.Index(fields=['-created'])
+    ]
+  
+  def __str__(self) -> str:
+    return f'Order {self.id}'
+  
+  def get_total_cost(self):
+    return sum([item.get_cost() for item in self.items.all()])
 
-class OrderProducts(models.Model):
-  product = models.ForeignKey(Product, on_delete=models.CASCADE)
-  order = models.ForeignKey(Order, on_delete=models.CASCADE)
+class OrderItem(models.Model):
+  order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+  product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
+  price = models.DecimalField(max_digits=10, decimal_places=2)
+  quantity = models.PositiveIntegerField(default=1)
 
+  def __str__(self) -> str:
+    return str(self.id)
+  
+  def get_cost(self):
+    return self.price * self.quantity
 
