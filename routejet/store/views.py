@@ -1,37 +1,60 @@
-from django.shortcuts import render, redirect
+from store.models import Order, OrderProducts
+from product.models import Product
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import OrderCreateForm
-from .models import Order, OrderProducts
+from django.views.decorators.http import require_POST
+from .cart import Cart
+
+
+
 
 def overview(request):
-    user_orders = Order.objects.filter(user=request.user)
-    user_order = user_orders.first()
 
-    if user_order:
-        order_products = OrderProducts.objects.filter(order=user_order)
-        products = [product.product for product in order_products]
+    cart=Cart(request)
+    products=[product for product in cart]
+    if request.user.is_authenticated:
+       usuario=request.user
     else:
-        products = []
-
+       usuario=None
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
         if form.is_valid():
             order = form.save(commit=False)
-            order.user = request.user
-            order.save()
-
-            # Actualiza el tipo de envío de la orden
+            order.user=usuario
             order.shipping_type = form.cleaned_data['shipping_type']
+           
+            for item in cart:
+               order.add(item['product'], item['quantity'], item['price'])
             order.save()
-
-            order_products = OrderProducts.objects.filter(order=user_order)
-            products = [product.product for product in order_products]
-
-            for item in products:
-                order.products.add(item)
-
-            order.save()
-
+            cart.clear()
+            return render(request, 'store/overview.html', {"usuario":usuario, "productos":products,'form': form})
+            
     else:
         form = OrderCreateForm()
 
     return render(request, 'store/overview.html', {"usuario": request.user, "productos": products, 'form': form})
+
+
+@require_POST
+def cart_add(request, product_id):
+  cart = Cart(request)
+  product = get_object_or_404(Product, id=product_id)
+  if cart[product_id]['quantity'] >= product.num_products:
+    return render(request, 'store/cart.html', {
+      'add_to_car_error': f'No hay suficientes viajes a {product.city}'
+    })
+  cart.add(product=product)
+  return redirect('store:cart_detail')
+
+@require_POST
+def cart_remove(request, product_id):
+  cart = Cart(request)
+  product = get_object_or_404(Product, id=product_id)
+  cart[product_id]['quantity'] -= 1
+  if cart[product_id]['quantity'] == 0:
+    cart.remove(product)
+  return redirect('store:cart_detail')
+
+def cart_detail(request):
+  cart = Cart(request)
+  return render(request, 'store/cart.html', { 'cart': cart })

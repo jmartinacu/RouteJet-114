@@ -1,0 +1,67 @@
+{% extends "core/base.html" %}
+
+{% block title %} Carrito {% endblock title %}
+
+{% block description %}Tu carrito de compra{% endblock description %}
+
+{% block content %}
+
+  {% if cart.len == 0 %}
+    <h1>El carro esta vacío</h1>
+  {% else %}
+  <table class="cart-table-cart">
+    <thead>
+      <tr>
+        <th>Imagen</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio producto</th>
+        <th>Precio total</th>
+        <th>Eliminar</th>
+        <th>Agregar</th>
+      </tr>
+    </thead>
+  </table>
+  <tbody>
+    {% for item in cart %}
+      {% with product=item.product %}
+        <tr>
+          <td>
+            <img src="{% if product.image %}{{ product.image.url }}{% endif %}" alt="Image del viaje">
+          </td>
+          <td> {{ product.name }} </td>
+          <td> {{ item.quantity }} </td>
+          <td> {{ product.price }}</td>
+          <td> {{ item.total_price }}</td>
+          <td>
+            <form action="{% url "store:cart_remove" product.id %}" method="post">
+              <input type="submit" value="Eliminar">
+              {% csrf_token %}
+            </form>
+          </td>
+          <td>
+            <form action="{% url "store:cart_add" product.id %}" method="post">
+              <input type="submit" value="Agregar">
+              {% csrf_token %}
+            </form>
+          </td>
+        </tr> 
+      {% endwith %}
+    {% endfor %}
+    <tr class="cart-tr-total">
+      <td>Total</td>
+      <td colspan="4"></td>
+      <td>{{ cart.get_total_price }}</td>
+    </tr>
+  </tbody>
+
+  {% endif %}
+
+  <p>
+    <button onClick="" type="button" class="btn btn-success" style="margin-top:100px">Seguir comprando</button>
+    <button onClick="window.location.href='/overview'" type="button" class="btn btn-success" style="margin-top:100px">Finalizar compras</button>
+  </p>
+{% endblock content %}
+
+  
+
