@@ -61,9 +61,8 @@ def save(self, *args, **kwargs):
         self.shipping_price = ShippingPrice.NORMAL
     elif self.shipping_type == ShippingType.EXPRESS:
         self.shipping_price = ShippingPrice.EXPRESS
-    order.total_price = calculate_total_price(order)
-
-
+              
+    self.total_price += self.shipping_price
     super(Order, self).save(*args, **kwargs)
 
 class OrderProducts(models.Model):
