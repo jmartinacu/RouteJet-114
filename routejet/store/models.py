@@ -14,7 +14,7 @@ class Order(models.Model):
     ONTHEWAY = "OTW", _("En camino")
     DELIVERED = "D", _("Entregado")
 
-  user = models.ForeignKey(RouteJetUser, on_delete=models.CASCADE)
+  user = models.ForeignKey(RouteJetUser, on_delete=models.CASCADE, null=True)
   products = models.ManyToManyField(Product, related_name='product', through='OrderProducts')
   stripe_payment = models.ForeignKey(StripePayment, on_delete=models.CASCADE, null=True)
   total_price = models.DecimalField(decimal_places=2, max_digits=6)
