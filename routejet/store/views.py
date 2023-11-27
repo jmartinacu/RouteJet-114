@@ -38,7 +38,7 @@ def order_create(request):
     if user == None:
       form = OrderCreateForm()
     else: 
-      form = OrderCreateForm({'email' : user.email, 'address' : user.address, 'city' : user.city})
+      form = OrderCreateForm(initial={'email' : user.email, 'address' : user.address, 'city' : user.city})
     return render(request, 'store/overview.html', {'cart': cart, 'form': form})
 
 def payment_completed(request):
