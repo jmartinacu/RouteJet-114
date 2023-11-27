@@ -1,5 +1,3 @@
-
-
 from product.models import Product
 from django.forms import SlugField
 from django.http import HttpResponse

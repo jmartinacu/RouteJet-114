@@ -8,30 +8,35 @@
     line-height: 48px;
     color: #9f0a0a;
     margin-left: 90px;
+    margin-top: 50px;
+}
+
+.container{
+    display: flex;
+    width: 100%;
+    margin-bottom: 50px;
 }
 
 .image{
-    margin-left: 63px;
+    flex:1;
     max-width: 100%;
     height: auto;
 }
 
 .description{
+    flex:2;
     font-family: 'Inter';
     font-style: normal;
-    font-weight: 400;
-    font-size: 17px;
-    line-height: 29px;
     color: #000000;
-    margin-left: 70px;
+    font-size: 17px;
+    margin-left: 40px;
 }
 
 .price{
+    flex:3;
     font-family: 'Inter';
     font-style: normal;
-    font-weight: 400;
-    font-size: 23px;
-    line-height: 40px;
     color: #000000;
+    font-size: 23px;
     margin-left: 70px;
 }
