@@ -5,6 +5,17 @@ from django.utils.translation import gettext_lazy as _
 from core.models import RouteJetUser
 from product.models import Product
 
+    # class ShippingPrice(models.DecimalField):
+    #     NORMAL = 3.99
+    #     EXPRESS = 7.99
+    #     FREE_THRESHOLD = 400.00
+
+FREE_THRESHOLD = 400
+
+SHIPPING_PRICE = {
+  'NORMAL': 3.99,
+  'EXPRESS': 7.99,
+}
 
 class StripePayment(models.Model):
     stripe_checkout_id = models.CharField(max_length=500)
@@ -19,11 +30,6 @@ class Order(models.Model):
     class ShippingType(models.TextChoices):
         NORMAL = 'NORMAL', _('Normal')
         EXPRESS = 'EXPRESS', _('Express')
-        
-    class ShippingPrice(models.DecimalField):
-        NORMAL = 3.99
-        EXPRESS = 7.99
-        FREE_THRESHOLD = 400.00
 
     user = models.ForeignKey(RouteJetUser, on_delete=models.CASCADE, null=True)
     products = models.ManyToManyField(Product, related_name='product', through='OrderProducts')
@@ -53,13 +59,12 @@ def save(self, *args, **kwargs):
     for product in self.products.all():
         self.total_price += product.price
 
-    # Calcula y asigna el precio de envío según el tipo seleccionado
-    if self.total_price > ShippingPrice.FREE_THRESHOLD:
+    if self.total_price > FREE_THRESHOLD:
         self.shipping_price = 0.00
-    elif self.shipping_type == ShippingType.NORMAL:
-        self.shipping_price = ShippingPrice.NORMAL
-    elif self.shipping_type == ShippingType.EXPRESS:
-        self.shipping_price = ShippingPrice.EXPRESS
+    elif self.shipping_type == Order.ShippingType.NORMAL:
+        self.shipping_price = SHIPPING_PRICE['NORMAL']
+    elif self.shipping_type == Order.ShippingType.EXPRESS:
+        self.shipping_price = SHIPPING_PRICE['EXPRESS']
               
     self.total_price += self.shipping_price
     super(Order, self).save(*args, **kwargs)

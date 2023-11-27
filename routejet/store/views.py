@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import OrderCreateForm
 from django.views.decorators.http import require_POST
 from .cart import Cart
+from django.conf import settings
 
 
 
@@ -27,12 +28,12 @@ def overview(request):
                order.add(item['product'], item['quantity'], item['price'])
             order.save()
             cart.clear()
-            return render(request, 'store/overview.html', {"usuario":usuario, "productos":products,'form': form})
+            return render(request, 'store/overview.html', {"usuario":usuario, "productos":products,'form': form, 'settings': settings})
             
     else:
         form = OrderCreateForm()
 
-    return render(request, 'store/overview.html', {"usuario": request.user, "productos": products, 'form': form})
+    return render(request, 'store/overview.html', {"usuario": request.user, "productos": products, 'form': form, 'settings': settings})
 
 
 @require_POST
