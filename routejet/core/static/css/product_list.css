@@ -6,7 +6,7 @@
     font-weight: 400;
     font-size: 40px;
     line-height: 48px;
-    color: #9f0a0a;
+    color: #0a9f2f;
     margin-left: 90px;
     margin-top: 50px;
 }
@@ -39,4 +39,17 @@
     color: #000000;
     font-size: 23px;
     margin-left: 70px;
+}
+
+.unavailable-city {
+    text-decoration: none;
+    color: inherit;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 48px;
+    color: red; 
+    margin-left: 90px;
+    margin-top: 50px;
 }

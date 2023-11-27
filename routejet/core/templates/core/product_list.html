@@ -6,7 +6,6 @@
 {% block title %}Product List{% endblock %}
 
 {% block header %}
-  <link rel="stylesheet" href="{% static "css/index.css" %}">
   <link rel="stylesheet" href="{% static "css/product_list.css" %}">
 {% endblock header %}
 
@@ -17,8 +16,17 @@
 {% for product in products %}
 <div class="item">
     <div class="city">
+        {% if product.available %}
         <a href="{{ product.get_absolute_url }}">{{ product.city }}</a>
+        {% endif %}
+        
     </div>
+    <div class="unavailable-city">
+        {% if not product.available %}
+        <a href="{{ product.get_absolute_url }}" class="unavailable-city">{{ product.city }}</a>
+        {% endif %}
+    </div>
+    
     <div class="container">
         <div class="image">
             <a href="{{ product.get_absolute_url }}">
