@@ -2,6 +2,8 @@ from store.models import Order, OrderProducts
 from product.models import Product
 from django.shortcuts import render
 from .forms import OrderCreateForm
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
 
 def overview(request):
     user_orders=Order.objects.filter(user=request.user)
@@ -28,12 +30,10 @@ def overview(request):
 
     return render(request, 'store/overview.html', {"usuario":request.user, "productos":products,'form': form})
 
+@login_required(login_url='/login')
 def history(request):
     orders=Order.objects.filter(user=request.user)
-    #orders = Order.objects.all()
     return render(request, 'store/history.html',{'orders':orders})
-    #user_orders=Order.objects.filter(user=request.user)
-    #return render(request, 'store/history.html', {"usuario":request.user, "ordenes":user_orders})
 
 def getProductsbyOrders(orders):
     products=[]
@@ -41,3 +41,7 @@ def getProductsbyOrders(orders):
         order_products= OrderProducts.objects.filter(order=order)
         products=[product.product for product in order_products]
     return products
+
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'store/order_detail.html', {'order': order})

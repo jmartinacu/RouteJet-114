@@ -3,7 +3,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import path, include
 
 from core.views import signup, logout_view
-from store.views import overview, history
+from store.views import overview, history, order_detail
 from . import views
 from .forms import LoginForm
 
@@ -16,5 +16,5 @@ urlpatterns = [
     path('logout/',logout_view, name='logout'),
     path('overview/', overview, name='overview'),
     path('history/', history, name='history'),
-    
+    path('order/<int:order_id>/', order_detail, name='order_detail'),
 ]

@@ -28,7 +28,7 @@
     <tbody>
       {% for order in orders %}
         <tr>
-          <td>{{ order.id }}</td>
+          <td class="destino-clickable"><a href="{% url "core:order_detail" order.id %}">{{ order.id }}</a></td>          
           <td>{{ order.total_price }}</td>
           <td>{{ order.get_state_display }}</td>
           <td>{{ order.city }}</td>

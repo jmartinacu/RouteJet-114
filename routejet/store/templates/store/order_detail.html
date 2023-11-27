@@ -1,0 +1,73 @@
+{% extends "core/base.html" %}
+
+{% block title %} Detalles de la Orden {{ order.id }} {% endblock title %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <h2 class="mb-3">Detalles de la Orden {{ order.id }}</h2>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Información del Cliente</h4>
+      <p><strong>Usuario:</strong> {{ order.user.username }}</p>
+      <p><strong>Email:</strong> {{ order.user.email }}</p>
+    </div>
+
+    <div class="col-md-6">
+      <h4>Información de Pago</h4>
+      {% if order.stripe_payment %}
+        <p><strong>ID de pago:</strong> {{ order.stripe_payment.stripe_checkout_id }}</p>
+        <p><strong>Pago realizado:</strong> {% if order.stripe_payment.payment_bool %}Sí{% else %}No{% endif %}</p>
+      {% else %}
+        <p><em>No se ha registrado información de pago para esta orden.</em></p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h4>Productos en la Orden</h4>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in order.products.all %}
+            <tr>
+              <td>{{ product.name }}</td>
+              <td>{{ product.price }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <h4>Dirección de Envío</h4>
+      <p><strong>Ciudad:</strong> {{ order.city }}</p>
+      <p><strong>Dirección:</strong> {{ order.address }}</p>
+    </div>
+
+    <div class="col-md-6">
+      <h4>Estado de Envío</h4>
+      <p><strong>Estado:</strong> {{ order.get_state_display }}</p>
+      <!-- Puedes agregar lógica adicional según el estado (por ejemplo, detalles de seguimiento) -->
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h4>Total</h4>
+      <p><strong>Total Price:</strong> {{ order.total_price }}</p>
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}
