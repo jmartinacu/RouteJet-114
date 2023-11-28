@@ -6,6 +6,7 @@ from django.views import View
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
+from django.db.models import Q
 from . import views
 
 
@@ -14,7 +15,13 @@ def product_list(request):
     return render(request, 'core/product_list.html', {'products': products})
 
 
+from django.shortcuts import render
 
 
-
+def search_products(request):
+    query = request.GET.get('q')
+    results = []
+    if query:
+        results = Product.objects.filter(Q(city__icontains=query) )
+    return render(request, 'core/product_filter.html', {'results': results, 'query': query})
 
