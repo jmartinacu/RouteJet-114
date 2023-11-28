@@ -1,0 +1,32 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %} Ficha Producto {% endblock %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/detail.css" %}">
+{% endblock header %}
+
+{% block description %} {{ product.name }} {% endblock description %}
+
+{% block content %}
+  <article class="detail-article-main">
+      <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+      <section>
+        <h1>
+          <a href="{{ product.category.get_absolute_url }}">
+            Pais {{ product.category }}
+          </a>
+        </h1>
+        <h2>Ciudad: {{ product.city }}</h2>
+        <p class="price">Precio: {{ product.price }}€</p>
+        <p>Numero de tickets: {{ product.num_products }}</p>
+        {{ product.description|linebreaks }}
+      </section>
+  </article>
+  <nav class="detail-nav-submit">
+    <button><a href="">Añade al carrito</a></button>
+    <button><a href="">Compra ahora </a></button>
+  </nav>
+{% endblock content %}

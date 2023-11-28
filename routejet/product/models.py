@@ -4,19 +4,24 @@ from django.db.models.signals import post_delete
 from django.forms import ValidationError
 from django.core.validators import MinValueValidator
 from django.utils.text import slugify
+from django.urls import reverse
 
+from store.models import Category
 
 class Product(models.Model):
-    country = models.CharField(max_length=100)
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
-    description = models.TextField()
+    slug = models.SlugField(max_length=100, unique=True, auto_created=True)
+    image = models.ImageField(upload_to='products/', blank=True)
+    description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.00)])
-    image = models.ImageField(upload_to='product_images', blank=True)
+    available = models.BooleanField(default=True)
+    num_products = models.PositiveIntegerField()
     start_date = models.DateField()
     end_date = models.DateField()
-    available = models.BooleanField(default=True)
-    num_products = models.IntegerField(default=100, validators=[MinValueValidator(0)])
-    slug = models.SlugField(max_length=100,unique=True,auto_created=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
 
     def save(self, *args, **kwargs):
@@ -24,7 +29,8 @@ class Product(models.Model):
             self.available = False
         else:
             self.available = True
-        self.slug = slugify(self.country + "-"+self.city )
+        if self.slug != self.name:
+          self.slug = slugify(self.name)
         super(Product, self).save(*args, **kwargs)
 
 
@@ -34,15 +40,19 @@ class Product(models.Model):
             raise ValidationError('La fecha de fin no puede ser anterior a la fecha de inicio.')
 
     class Meta:
-        ordering = ['country', 'city', 'start_date']
+        ordering = ['name', 'city', 'start_date']
         indexes = [
             models.Index(fields=['id', 'slug']),
-            models.Index(fields=['country']),
-            models.Index(fields=['city']),
+            models.Index(fields=['name']),
+            models.Index(fields=['-created']),
         ]
 
-        def __str__(self):
-            return f"{self.country} {self.city} {self.start_date} {self.end_date}"
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse("product:product_detail", args=[self.id, self.slug])
+    
     
 @receiver(post_delete, sender=Product)
 def post_save_image(sender, instance, **kwargs):
