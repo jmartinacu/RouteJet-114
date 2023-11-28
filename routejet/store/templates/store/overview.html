@@ -1,0 +1,54 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %} Pedido {% endblock title %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
+{% endblock header %}
+
+{% block description %}
+  <h2>Proceso de compra</h2>
+{% endblock description %}
+
+
+{% block content %}
+
+  <article class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class=" p-3">
+          <form method="POST" class=>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p><input type='submit' value="Place order"></p>
+          </form>
+        </div>
+      </div>
+        <div class="col-md-6">
+            <div class="p-3">
+                <h3>Tu pedido: </h3>
+                {% for item in cart %}
+                  <div class="row">
+                    <div class="col">
+                      <h5> {{item.product.city}},{{item.product.country}}  </h5>
+                    </div>
+                    <div class="col">
+                      <h6> {{item.product.start_date}}/{{item.product.end_date}}  </h6>
+                    </div>
+                    <div class="col">
+                      <h6> {{ item.price }}€ </h6>
+                    </div>
+                    <div class="col">
+                      <h6> {{ item.quantity }}</h6>
+                    </div>
+                  </div>
+                {% endfor %}
+                <p>Total: {{ cart.get_total_price }}€</p>
+            </div>
+        </div>
+    </div>
+  </article>
+
+{% endblock content %}

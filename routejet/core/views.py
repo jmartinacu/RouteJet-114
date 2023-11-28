@@ -7,7 +7,7 @@ from django.contrib.auth import logout
 from .forms import SignUpForm 
 
 def home(request):
-  return render(request, 'core/index.html')
+  return render(request, 'core/index.html',{"usuario":request.user})
 
 def signup(request):
   if request.method == 'POST':
@@ -22,6 +22,7 @@ def signup(request):
   return render(request, 'core/signup.html', {
     'form': form
   })
+
 def logout_view(request):
   logout(request)
   return redirect('/')

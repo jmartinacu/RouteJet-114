@@ -1,8 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
 from django import forms
 from django.core.exceptions import ValidationError
-import re
+
+from .models import RouteJetUser
 
 class LoginForm(AuthenticationForm):
   username = forms.CharField(widget=forms.TextInput(attrs={
@@ -14,14 +14,14 @@ class LoginForm(AuthenticationForm):
   }))
 
 class SignUpForm(UserCreationForm):
+  class Meta:
+    model = RouteJetUser
+    fields = ('username', 'email', 'password1', 'password2')
+
   email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
 
   username = forms.CharField(widget=forms.TextInput(attrs={
     'placeholder': 'Usuario',
-  }))
-
-  email = forms.CharField(widget=forms.EmailInput(attrs={
-    'placeholder': 'Email',
   }))
 
   password1 = forms.CharField(widget=forms.PasswordInput(attrs={

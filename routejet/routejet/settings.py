@@ -12,6 +12,15 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+<<<<<<< HEAD
+import environ
+
+env = environ.Env(
+  DEBUG=(bool, False)
+)
+environ.Env.read_env()
+=======
+>>>>>>> develop
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +30,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ahyop#*)k0ns=qk=x+%&(+qyh2@(v$^-x4hutwb&)9c4a5#q3#'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -43,7 +52,6 @@ INSTALLED_APPS = [
     'feedback',
     'product',
     'store',
-    
 ]
 
 
@@ -62,7 +70,7 @@ ROOT_URLCONF = 'routejet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'core' / 'templates'], 
+        'DIRS': [], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,8 +144,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "/"
 
+# User model
 
+AUTH_USER_MODEL = 'core.RouteJetUser'
 
+# STRIPE 
 
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+STRIPE_API_VERSION = env('STRIPE_API_VERSION')
 
+CART_SESSION_ID = 'cart'
 
+AUTH_USER_MODEL = 'core.RouteJetUser'
