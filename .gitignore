@@ -163,4 +163,4 @@ cython_debug/
 
 .vscode
 
-product_images/*
+media/product_images/*
