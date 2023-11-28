@@ -1,6 +1,6 @@
-from collections.abc import Iterable
 from django.db import models
 from django.utils.text import slugify
+from django.urls import reverse
 
 class Category(models.Model):
   country = models.CharField(max_length=200)
@@ -21,10 +21,9 @@ class Category(models.Model):
   
   def __str__(self) -> str:
      return self.country
+  
+  def get_absolute_url(self):
+      return reverse("store:product_list_by_category", args=[self.slug])
+  
 
-# class Product(models.Model):
-
-#     # ...
-#     def get_absolute_url(self):
-#         return reverse('store:product_detail', args=[self.id, self.slug])
 

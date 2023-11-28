@@ -1,15 +1,18 @@
+from django.shortcuts import render, get_object_or_404
+
 from product.models import Product
-from django.forms import SlugField
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render, redirect
-from django.views import View
-from django.contrib import admin
-from django.contrib.auth import views as auth_views
-from django.urls import path, include
-from . import views
+from .models import Category
 
-
-def product_list(request): 
-    products = Product.objects.all()
-    return render(request, 'store/product_list.html', {'products': products})
+def product_list(request, category_slug=None): 
+  category = None
+  categories = Category.objects.all()
+  products = Product.objects.filter(available=True)
+  if category_slug:
+    category = get_object_or_404(Category, slug=category_slug)
+    products = Product.objects.filter(category=category)
+  return render(request, 'store/product_list.html', {
+    'products': products,
+    'category': category,
+    'categories': categories,
+  })
 

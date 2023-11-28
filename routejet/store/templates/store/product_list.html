@@ -3,7 +3,7 @@
 
 {% load static %}
 
-{% block title %}Product List{% endblock %}
+{% block title %} Catalogo {% endblock %}
 
 {% block header %}
   <link rel="stylesheet" href="{% static "css/product_list.css" %}">
@@ -13,20 +13,31 @@
 
 {% block content %}
 
+  <div class="product_list-div-categories">
+    <h3>Categorias</h3>
+    <ul>
+      <li {% if not category %} class="selected" {% endif %}>
+        <a href="{% url "store:product_list" %}"> All </a>
+      </li>
+      {% for c in categories %}
+        <li {% if category.slug == c.slug %} class="selected" {% endif %}>
+          <a href="{{ c.get_absolute_url }}">{{ c.country }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
   {% for product in products %}
     <div class="item">
         <div class="city">
             {% if product.available %}
-            <a href="{{ product.get_absolute_url }}">{{ product.city }}</a>
+              <a href="{{ product.get_absolute_url }}">{{ product.city }}</a>
             {% endif %}
-        
         </div>
-        <div class="unavailable-city">
+        {% comment %} <div class="unavailable-city">
             {% if not product.available %}
             <a href="{{ product.get_absolute_url }}" class="unavailable-city">{{ product.city }}</a>
             {% endif %}
-        </div>
-    
+        </div> {% endcomment %}
         <div class="container">
             <div class="image">
                 <a href="{{ product.get_absolute_url }}">
