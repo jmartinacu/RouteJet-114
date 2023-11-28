@@ -15,11 +15,14 @@
   <article>
     <div class="index-div-first-section-header">
       <h3>¿Dónde te gustaría viajar?</h3>
-        <form action="" role="search">
-          <label for="search">
-            <input type="search" placeholder="Destino...">
-          </label>
-        </form>
+      <form action="{% url 'search_products' %}" role="search" method="get">
+        {% csrf_token %}
+        <label for="search">
+            <input type="search" name="q" placeholder="Destino.">
+            
+        </label>
+    </form>
+    
     </div>
     <section class="index-section-description">
       <p>
