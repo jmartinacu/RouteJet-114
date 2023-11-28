@@ -163,4 +163,4 @@ cython_debug/
 
 .vscode
 
-routejet/media/product_images/*
+routejet/media/products/*
