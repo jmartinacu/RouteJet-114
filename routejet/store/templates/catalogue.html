@@ -1,0 +1,21 @@
+<!-- catalog.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalogue de produits</title>
+</head>
+<body>
+    <h1>Catalogue de produits</h1>
+    <ul>
+        {% for product in products %}
+            <li>
+                <h3><a href="{% url 'product_detail' product.id %}"></a>{{ product.city }}</h3>
+                <p>{{ product.description }}</p>
+                <p>Prix : {{ product.price }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
