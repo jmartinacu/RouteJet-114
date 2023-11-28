@@ -15,13 +15,14 @@ def signup(request):
 
     if form.is_valid():
       form.save()
-      return redirect('/login/' )
+      return redirect('core:login')
   else:
     form = SignUpForm()
 
   return render(request, 'core/signup.html', {
     'form': form
   })
+
 def logout_view(request):
   logout(request)
   return redirect('/')

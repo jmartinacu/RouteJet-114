@@ -1,0 +1,31 @@
+ul {
+  list-style: none;
+}
+
+a:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.product_list-article-main {
+  display: flex;  
+  margin-top: 10px;
+  padding: 1rem;
+}
+
+.selected {
+  border-radius: 4px;
+  border-color: black;
+}
+
+.product_list-section-products {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 10px;
+}
+
+.product_list-div-product {
+  max-width: max-content;
+  margin: 0 auto;
+}

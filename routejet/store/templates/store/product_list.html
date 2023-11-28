@@ -2,10 +2,10 @@
 
 {% load static %}
 
-{% block title %} Catalogo {% endblock %}
+{% block title %} Catalog {% endblock %}
 
 {% block header %}
-  <link rel="stylesheet" href="{% static "store/css/product_list.css" %}">
+  <link rel="stylesheet" href="{% static "css/product_list.css" %}">
 {% endblock header %}
 
 {% block description %}Catalogo de viajes{% endblock description %}
@@ -27,32 +27,30 @@
     </section>
     <section class="product_list-section-products">
       {% for product in products %}
-        <div class="item">
+        <div class="product_list-div-product">
             {% comment %} <div class="unavailable-city">
                 {% if not product.available %}
                 <a href="{{ product.get_absolute_url }}" class="unavailable-city">{{ product.city }}</a>
                 {% endif %}
             </div> {% endcomment %}
-            <div class="container">
-              <div class="image">
-                  <a href="{{ product.get_absolute_url }}">
-                      <img class="product-image" src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" style="width: 350px; height: 200px;">
+            <div>
+                <a href="{{ product.get_absolute_url }}">
+                    <img class="product_list-image-product" src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" style="width: 350px; height: 200px;">
 
-                  </a>
-              </div>
-              <div class="city">
-                  {% if product.available %}
-                    <a href="{{ product.get_absolute_url }}">{{ product.city }}</a>
-                  {% endif %}
-              </div>
-              <div class="description">
-                  <span style="font-size: 23px">Descripción del viaje :</span>
-                  <span><br>{{ product.description }}</span>
-              </div>
-              <div class="price">
-                  <span>Precio del viaje ($) :</span>
-                  <span style="font-weight: bold">${{ product.price }}</span>
-              </div>
+                </a>
+            </div>
+            <div class="city">
+                {% if product.available %}
+                  <a href="{{ product.get_absolute_url }}">{{ product.city }}</a>
+                {% endif %}
+            </div>
+            <div class="description">
+                <span style="font-size: 23px">Descripción del viaje :</span>
+                <span><br>{{ product.description }}</span>
+            </div>
+            <div class="price">
+                <span>Precio del viaje ($) :</span>
+                <span style="font-weight: bold">${{ product.price }}</span>
             </div>
         </div>
       {% endfor %}
