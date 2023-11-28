@@ -5,10 +5,8 @@ from django.contrib import admin
 from .models import Product
 
 @admin.register(Product)
-
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('country', 'city', 'start_date', 'end_date')
-    list_filter = ('country', 'city', 'start_date', 'end_date' )
-    list_editable = ('start_date', 'end_date')
-    ordering = ('country', 'city', 'start_date', 'end_date')
-  
+    list_display = ('name', 'price', 'available', 'start_date', 'end_date')
+    list_filter = ('available', 'city', 'start_date', 'end_date' )
+    list_editable = ('start_date', 'end_date', 'price', 'available')
+    exclude = ['slug', ]
