@@ -5,12 +5,9 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
 from product.models import Product
-from .models import Category
-
+from .models import Category, OrderItem
 from .cart import Cart
-from store.models import Order, OrderItem
-from product.models import Product
-from .forms import OrderCreateForm
+from .forms import OrderCreateForm, AddProductForm
 from core.models import RouteJetUser
 from .utils import stripe_payment
 
@@ -54,27 +51,40 @@ def payment_canceled(request):
 @require_POST
 def cart_add(request, product_id):
   cart = Cart(request)
+  origin = request.GET.get('origin', None)
   product = get_object_or_404(Product, id=product_id)
-  if cart[product_id]['quantity'] >= product.num_products:
-    return render(request, 'store/cart.html', {
-      'cart': cart,
-      'add_to_car_error': f'No hay suficientes viajes a {product.city}',
-    })
-  cart.add(product=product)
-  return redirect('store:cart_detail')
+  form = AddProductForm(request.POST, cart=cart, product=product)
+  if form.is_valid():
+    data = form.cleaned_data
+    cart.add(product=product, quantity=data['quantity'])
+    return redirect('store:cart_detail')
+  else:
+    if origin == 'detail':
+      return render(request, 'product/detail.html', {
+      'product': product,
+      'form': form
+      })
+    elif origin == 'cart':
+      return render(request, 'store/cart.html', {
+        'cart': cart,
+        'error': { 'err': True, 'msg': 'No quedan tickets'}
+      })
 
 @require_POST
 def cart_remove(request, product_id):
   cart = Cart(request)
   product = get_object_or_404(Product, id=product_id)
-  cart[product_id]['quantity'] -= 1
-  if cart[product_id]['quantity'] == 0:
+  cart.cart[str(product.id)]['quantity'] -= 1
+  if cart.cart[str(product.id)]['quantity'] == 0:
     cart.remove(product)
   return redirect('store:cart_detail')
 
 def cart_detail(request):
   cart = Cart(request)
-  return render(request, 'store/cart.html', { 'cart': cart })
+  return render(request, 'store/cart.html', { 
+    'cart': cart,
+    'error': { 'err': False, 'msg': None}
+    })
 
 def product_list(request, category_slug=None): 
   category = None

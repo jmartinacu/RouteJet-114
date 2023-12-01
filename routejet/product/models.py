@@ -6,10 +6,8 @@ from django.core.validators import MinValueValidator
 from django.utils.text import slugify
 from django.urls import reverse
 
-from store.models import Category
-
 class Product(models.Model):
-    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    category = models.ForeignKey('store.Category', related_name='products', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True, auto_created=True)

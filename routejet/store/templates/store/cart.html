@@ -40,9 +40,13 @@
             </form>
           </td>
           <td>
-            <form action="{% url "store:cart_add" product.id %}" method="post">
-              <input type="submit" value="Agregar">
+            {% if error.err %}
+              <p>{{ error.msg }}</p> 
+            {% endif %}
+            <form action="{% url "store:cart_add" product.id %}?origin=cart" method="post">
               {% csrf_token %}
+              <input type="hidden" name="quantity" value="1">
+              <button type="submit">Añade</button>
             </form>
           </td>
         </tr> 
@@ -58,7 +62,7 @@
   {% endif %}
 
   <p>
-    <a href="{% url "core:index" %}">
+    <a href="{% url "store:product_list" %}">
       <button type="button" class="btn btn-success" style="margin-top:100px">Seguir comprando</button>
     </a>
     <a href="{% url "store:order_create" %}" >
