@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
 from product.models import Product
+from .models import Order
 from .models import Category, OrderItem
 from .cart import Cart
 from .forms import OrderCreateForm, AddProductForm
@@ -106,3 +107,13 @@ def search_products(request):
   if query:
     results = Product.objects.filter(Q(city__icontains=query) )
   return render(request, 'core/product_filter.html', {'results': results, 'query': query})
+
+def seguimiento(request):
+  return render(request, 'store/order_search.html')
+
+def search_order(request):
+  query = request.GET.get('q')
+  results = []
+  if query:
+    results = Order.objects.filter(Q(email__iexact=query) )
+  return render(request, 'store/order_filter.html', {'results': results, 'query': query})
