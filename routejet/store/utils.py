@@ -20,7 +20,7 @@ def stripe_payment(request, order):
     session_data['line_items'].append({
       'price_data': {
         'unit_amount': int(item.price * Decimal('100')),
-        'currentcy': 'usd',
+        'currency': 'usd',
         'product_data': {
           'name': item.product.city,
         },

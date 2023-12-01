@@ -26,7 +26,22 @@
       </section>
   </article>
   <nav class="detail-nav-submit">
-    <button><a href="">Añade al carrito</a></button>
+    <form action="{% url "store:cart_add" product_id=product.id %}?origin=detail" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      {% if form.errors %}
+        <div>
+          {% comment %} <p>Errores: </p>
+          <ul>
+            {% for error in form.errors %}
+              <li>{{ error }}</li> 
+            {% endfor %}
+          </ul> {% endcomment %}
+        </div>   
+      {% endif %}
+      <button type="submit">Añadir al carrito</button>
+    </form>
+    {% comment %} TODO {% endcomment %}
     <button><a href="">Compra ahora </a></button>
   </nav>
 {% endblock content %}
