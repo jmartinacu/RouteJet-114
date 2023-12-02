@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .views import order_detail
 
 app_name = 'store'
 
@@ -16,4 +17,5 @@ urlpatterns = [
   path('payment/completed', views.payment_completed, name='payment_completed'),
   path('payment/canceled', views.payment_canceled, name='payment_canceled'),
   path('seguimiento/',views.seguimiento,name='seguimiento'),
+  path('order/<int:order_id>/', order_detail, name='order_detail'),
 ]
