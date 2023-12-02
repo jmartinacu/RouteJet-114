@@ -21,7 +21,8 @@
     <nav>
       {% if request.user.is_authenticated %}
         <a class="btn btn-outline-success" href="{% url "core:logout" %}" role="button">Cerrar Sesión</a>
-      {% else %}
+        <a class="btn btn-outline-success" href="{% url "store:history" %}" role="button">Historial</a>
+        {% else %}
         <a class="btn btn-outline-success" href="{% url "core:signup" %}" role="button">Registro</a>
         <a class="btn btn-outline-success" href="{% url "core:login" %}" role="button">Iniciar Sesion</a>
       {% endif %}

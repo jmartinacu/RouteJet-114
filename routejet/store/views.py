@@ -3,13 +3,17 @@ from django.views.decorators.http import require_POST
 from django.urls import reverse
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 
+from store.models import Order, OrderItem
 from product.models import Product
 from .models import Category, OrderItem
 from .cart import Cart
 from .forms import OrderCreateForm, AddProductForm
 from core.models import RouteJetUser
 from .utils import stripe_payment
+
+from core.forms import OrderSearchForm
 
 def get_or_none(classmodel, **kwargs):
   try:
@@ -106,3 +110,35 @@ def search_products(request):
   if query:
     results = Product.objects.filter(Q(city__icontains=query) )
   return render(request, 'core/product_filter.html', {'results': results, 'query': query})
+
+@login_required(login_url='/login')
+def history(request):
+  form = OrderSearchForm(request.GET)
+  orders = Order.objects.filter(email=request.user.email)
+
+  if form.is_valid():
+      search_query = form.cleaned_data['search_query']
+      if search_query:
+            state_mapping = dict(Order.ShipmentState.choices)
+            orders = orders.filter(
+                Q(first_name__icontains=search_query) |
+                Q(last_name__icontains=search_query) |
+                Q(email__icontains=search_query) |
+                Q(city__icontains=search_query) |
+                Q(address__icontains=search_query) |
+                Q(state__in=[k for k, v in state_mapping.items() if v.lower().startswith(search_query.lower())]) |  # Buscar por opciones legibles
+                Q(id__icontains=search_query)
+            )
+
+  return render(request, 'store/history.html', {'orders': orders, 'form': form})
+
+def getProductsbyOrders(orders):
+    products=[]
+    for order in orders:
+        order_products= OrderItem.objects.filter(order=order)
+        products=[product.product for product in order_products]
+    return products
+
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'store/order_detail.html', {'order': order})
