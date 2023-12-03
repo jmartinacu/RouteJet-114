@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Order, OrderItem
-from .models import Category
+from .models import Category, Claim
 
 class OrderItemInLine(admin.TabularInline):
   model = OrderItem
@@ -18,3 +18,11 @@ class CategoryAdmin(admin.ModelAdmin):
   list_display = ['country', 'slug']
   exclude = ['slug', ]
 
+@admin.register(Claim)
+class ClaimAdmin(admin.ModelAdmin):
+    list_display = ['id', 'order', 'user_email', 'claim_text', 'created']
+    list_filter = ['created']
+
+    def user_email(self, obj):
+        return obj.order.email
+    user_email.short_description = 'User Email'
