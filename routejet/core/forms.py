@@ -31,3 +31,6 @@ class SignUpForm(UserCreationForm):
   password2 = forms.CharField(widget=forms.PasswordInput(attrs={
     'placeholder': 'Repite tu contraseña',
   }))
+
+class OrderSearchForm(forms.Form):
+  search_query = forms.CharField(label='Buscar', required=False)
