@@ -1,0 +1,103 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %} Ficha Producto {% endblock %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/detail.css" %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock header %}
+
+{% block description %} {{ product.name }} {% endblock description %}
+
+{% block content %}
+<style>
+
+    .checked {
+      color: orange;
+    }
+      .rating {
+      margin-top: 40px;
+      border: none;
+      float: left;
+    
+    }
+    
+    .rating > label {
+       color: #9C9C9C;
+      font-size: 7px;
+      float:right;
+    }
+    
+    
+    .rating > label:before {
+      margin: 5px;
+      font-size: 2em;
+      font-family: FontAwesome;
+      content: "\f005";
+      display: inline-block;
+    }
+    
+    .rating > input {
+      display: none;
+    }
+    
+    .rating > input:checked ~ label,
+    .rating:not(:checked) > label:hover,
+    .rating:not(:checked) > label:hover ~ label {
+      color: #F79426;
+    }
+    
+    .rating > input:checked + label:hover,
+    .rating > input:checked ~ label:hover,
+    .rating > label:hover ~ input:checked ~ label,
+    .rating > input:checked ~ label:hover ~ label {
+      color: #FECE31;
+    }
+    
+    
+    #star{
+    font-size: 10px;
+    color:grey;
+    }
+    
+    #check-star{
+    font-size: 10px;
+    }
+    
+</style>
+<h3>Opiniones</h3>
+<p>{{product.name}} tiene {{ reviews|length }} opiniones: </p>
+{% for x in reviews%}
+<p>{{ x.user }}</p>
+<p>{{ x.description }}</p>
+ {% if x.valoration > 0 %}
+                  <i class="fa fa-star {% if x.valoration  < 1 %} no-checked {% else %} checked {% endif %} " id="check-star"></i>
+                  <i class="fa fa-star {% if x.valoration  < 2 %} no-checked {% else %} checked {% endif %} " id="check-star"></i>
+                  <i class="fa fa-star {% if x.valoration  < 3 %} no-checked {% else %} checked {% endif %} " id="check-star"></i>
+                  <i class="fa fa-star {% if x.valoration  < 4 %} no-checked {% else %} checked {% endif %} " id="check-star"></i>
+                  <i class="fa fa-star {% if x.valoration  < 5 %} no-checked {% else %} checked {% endif %} " id="check-star"></i>
+                <hr>
+                {% else %}
+
+                 <i class="fa fa-star " id="star"></i>
+                 <i class="fa fa-star" id="star"></i>
+                 <i class="fa fa-star" id="star"></i>
+                 <i class="fa fa-star" id="star"></i>
+                 <i class="fa fa-star" id="star"></i>
+                        &nbsp;<span>Este producto aun no tiene opiniones</span>
+
+                <hr>
+
+                {% endif %}
+{% endfor %}
+
+<form method="post" action="{{product.get_absolute_url2}} ">
+    {% csrf_token %}
+
+    {{form2.as_p}}
+    <input type="submit" value="Opinar">
+</form>
+
+{% endblock content %}

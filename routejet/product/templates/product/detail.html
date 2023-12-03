@@ -6,6 +6,7 @@
 
 {% block header %}
   <link rel="stylesheet" href="{% static "css/detail.css" %}">
+
 {% endblock header %}
 
 {% block description %} {{ product.name }} {% endblock description %}
@@ -44,4 +45,6 @@
     {% comment %} TODO {% endcomment %}
     <button><a href="">Compra ahora </a></button>
   </nav>
+
+  <a class = "btn btn-outline-success" href =" {{product.get_absolute_url2}} "> Opina </a>
 {% endblock content %}
