@@ -29,7 +29,7 @@ def order_create(request):
                                  price=item['price'], 
                                  quantity=item['quantity'])
       cart.clear()
-      if order.stripe:
+      if not order.payment_on_delivery:
         session = stripe_payment(request, order)
         return redirect(session.url, code=303)
       else: 
