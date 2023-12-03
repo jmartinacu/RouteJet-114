@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+from celery.schedules import crontab
+from datetime import datetime
 
 env = environ.Env(
   DEBUG=(bool, False)
@@ -154,3 +156,25 @@ STRIPE_API_VERSION = env('STRIPE_API_VERSION')
 CART_SESSION_ID = 'cart'
 
 AUTH_USER_MODEL = 'core.RouteJetUser'
+
+#CELERY
+
+CELERY_BEAT_SCHEDULE = {
+  'Task_change_state_orders_schedule' : {
+    'task': 'store.tasks.task_change_state_orders_every_day',
+    'schedule': crontab(minute=1),
+    # 'schedule': crontab(hour=0, minute=1) Configuracion para que corra todos los dias a las 00:01 de la mañana
+  }
+}
+
+# EMAIL
+
+EMAIL_HOST = env('EMAIL_HOST')
+
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+EMAIL_PORT = env.int('EMAIL_PORT')
+
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
