@@ -162,8 +162,7 @@ AUTH_USER_MODEL = 'core.RouteJetUser'
 CELERY_BEAT_SCHEDULE = {
   'Task_change_state_orders_schedule' : {
     'task': 'store.tasks.task_change_state_orders_every_day',
-    'schedule': crontab(minute=1),
-    # 'schedule': crontab(hour=0, minute=1) Configuracion para que corra todos los dias a las 00:01 de la mañana
+    'schedule': crontab(hour=0, minute=1),
   }
 }
 
