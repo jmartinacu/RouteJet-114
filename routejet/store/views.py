@@ -9,7 +9,7 @@ from .models import Category, OrderItem
 from .cart import Cart
 from .forms import OrderCreateForm, AddProductForm
 from core.models import RouteJetUser
-from .utils import stripe_payment
+from .utils import stripe_payment, reduce_order_num_products
 
 def get_or_none(classmodel, **kwargs):
   try:
@@ -24,16 +24,31 @@ def order_create(request):
     if form.is_valid():
       order = form.save()
       for item in cart:
+        product_id = item['product'].id
+        product = Product.objects.get(id=product_id)
+        num_tickets = product.num_products - item['quantity']
+        if num_tickets < 0:
+          cart.remove(product)
+          if num_tickets == 0:
+            msg = f'No quedan tickets del {product.name}'
+          else:
+            msg = f'Solamente quedan {product.num_products} tickets del {product.name}'
+          return render(request, 'store/cart.html', {
+            'cart': cart,
+            'error': { 'err': True, 'msg': msg}
+          })
         OrderItem.objects.create(order=order, 
                                  product=item['product'], 
                                  price=item['price'], 
                                  quantity=item['quantity'])
+      
+      reduce_order_num_products(cart)
       cart.clear()
       if not order.payment_on_delivery:
         session = stripe_payment(request, order)
         return redirect(session.url, code=303)
       else: 
-        return redirect(reverse('core:index'))
+        return redirect('core:index')
   else:
     user = get_or_none(RouteJetUser, username=request.user.username)
     if user == None:
@@ -67,7 +82,7 @@ def cart_add(request, product_id):
     elif origin == 'cart':
       return render(request, 'store/cart.html', {
         'cart': cart,
-        'error': { 'err': True, 'msg': 'No quedan tickets'}
+        'error': { 'err': True, 'msg': f'No quedan tickets del {product.name}'}
       })
 
 @require_POST

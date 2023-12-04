@@ -3,8 +3,18 @@ import stripe
 from django.conf import settings
 from django.urls import reverse
 
+from product.models import Product
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 stripe.api_version = settings.STRIPE_API_VERSION
+
+def reduce_order_num_products(cart):
+  for item in cart:
+    product_id = item['product'].id
+    product = Product.objects.get(id=product_id)
+    product.num_products = product.num_products - item['quantity']
+    product.save()
+
 
 def stripe_payment(request, order):
   success_url = request.build_absolute_uri(reverse('store:payment_completed'))
