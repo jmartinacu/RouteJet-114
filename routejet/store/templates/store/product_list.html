@@ -2,21 +2,117 @@
 
 {% load static %}
 
-{% block title %} Catalogo {% endblock %}
+{% block title %} Catálogo {% endblock title %}
 
 {% block header %}
   <link rel="stylesheet" href="{% static "store/css/product_list.css" %}">
+  <style>
+    h3 {
+      padding-left: 15px;
+      padding-top: 20px;
+    }
+
+    .product-image {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 5px;
+      transition: transform 0.2s;
+    }
+
+    .product-image:hover {
+      transform: scale(1.05);
+    }
+
+    .product_list-article-main {
+      display: flex;
+      justify-content: space-around;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product_list-section-categories {
+      flex: 1;
+      padding: 0 15px;
+    }
+
+    .product_list-section-categories ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .product_list-section-categories li {
+      padding: 5px;
+      margin-bottom: 5px;
+    }
+
+    .product_list-section-categories a {
+      text-decoration: none;
+      color: black;
+      font-size: 16px;
+    }
+
+    .product_list-section-categories li.selected {
+      background-color: #ddd;
+    }
+
+    .product_list-section-products {
+      flex: 2;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    .item {
+      width: calc(40% - 20px);
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .image {
+      text-align: center;
+    }
+
+    .image img {
+      width: 100%;
+      height: auto;
+    }
+
+    .city,
+    .description,
+    .price {
+      margin-top: 10px;
+    }
+
+    .city a {
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .description span,
+    .price span {
+      font-size: 12px;
+    }
+
+    .price span {
+      font-weight: bold;
+    }
+  </style>
 {% endblock header %}
 
-{% block description %}Catalogo de viajes{% endblock description %}
+{% block description %}Catálogo de viajes{% endblock description %}
 
 {% block content %}
   <article class="product_list-article-main">
     <section class="product_list-section-categories">
-      <h3>Categorias</h3>
+      <h3>Categorías</h3>
       <ul>
         <li {% if not category %} class="selected" {% endif %}>
-          <a href="{% url "store:product_list" %}"> All </a>
+          <a href="{% url "store:product_list" %}"> Todos </a>
         </li>
         {% for c in categories %}
           <li {% if category.slug == c.slug %} class="selected" {% endif %}>
@@ -28,32 +124,26 @@
     <section class="product_list-section-products">
       {% for product in products %}
         <div class="item">
-            {% comment %} <div class="unavailable-city">
-                {% if not product.available %}
-                <a href="{{ product.get_absolute_url }}" class="unavailable-city">{{ product.city }}</a>
-                {% endif %}
-            </div> {% endcomment %}
-            <div class="container">
-              <div class="image">
-                  <a href="{{ product.get_absolute_url }}">
-                      <img class="product-image" src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" style="width: 350px; height: 200px;">
-
-                  </a>
-              </div>
-              <div class="city">
-                  {% if product.available %}
-                    <a href="{{ product.get_absolute_url }}">{{ product.city }}</a>
-                  {% endif %}
-              </div>
-              <div class="description">
-                  <span style="font-size: 23px">Descripción del viaje :</span>
-                  <span><br>{{ product.description }}</span>
-              </div>
-              <div class="price">
-                  <span>Precio del viaje ($) :</span>
-                  <span style="font-weight: bold">${{ product.price }}</span>
-              </div>
+          <div class="container">
+            <div class="image">
+              <a href="{{ product.get_absolute_url }}">
+                <img class="product-image" src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" alt="{{ product.city }} Image">
+              </a>
             </div>
+            <div class="city">
+              {% if product.available %}
+                <a href="{{ product.get_absolute_url }}">{{ product.city }}</a>
+              {% endif %}
+            </div>
+            <div class="description">
+              <span>Descripción del viaje:</span>
+              <br>{{ product.description }}
+            </div>
+            <div class="price">
+              <span>Precio del viaje ($):</span>
+              <span style="font-weight: bold">${{ product.price }}</span>
+            </div>
+          </div>
         </div>
       {% endfor %}
     </section>

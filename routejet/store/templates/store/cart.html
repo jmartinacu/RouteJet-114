@@ -5,71 +5,110 @@
 {% block description %}Tu carrito de compra{% endblock description %}
 
 {% block content %}
-
   {% if cart.len == 0 %}
-    <h1>El carro esta vacío</h1>
+    <h1>El carro está vacío</h1>
   {% else %}
-  <table class="cart-table-cart">
-    <thead>
-      <tr>
-        <th>Imagen</th>
-        <th>Producto</th>
-        <th>Cantidad</th>
-        <th>Precio producto</th>
-        <th>Precio total</th>
-        <th>Eliminar</th>
-        <th>Agregar</th>
-      </tr>
-    </thead>
-  </table>
-  <tbody>
-    {% for item in cart %}
-      {% with product=item.product %}
-        <tr>
-          <td>
-            <img src="{% if product.image %}{{ product.image.url }}{% endif %}" alt="Image del viaje">
-          </td>
-          <td> {{ product.name }} </td>
-          <td> {{ item.quantity }} </td>
-          <td> {{ product.price }}</td>
-          <td> {{ item.total_price }}</td>
-          <td>
-            <form action="{% url "store:cart_remove" product.id %}" method="post">
-              <input type="submit" value="Eliminar">
-              {% csrf_token %}
-            </form>
-          </td>
-          <td>
-            {% if error.err %}
-              <p>{{ error.msg }}</p> 
-            {% endif %}
-            <form action="{% url "store:cart_add" product.id %}?origin=cart" method="post">
-              {% csrf_token %}
-              <input type="hidden" name="quantity" value="1">
-              <button type="submit">Añade</button>
-            </form>
-          </td>
-        </tr> 
-      {% endwith %}
-    {% endfor %}
-    <tr class="cart-tr-total">
-      <td>Total</td>
-      <td colspan="4"></td>
-      <td>{{ cart.get_total_price }}</td>
-    </tr>
-  </tbody>
+    <div class="container">
+      <div class="table-wrap">
+        <table class="table table-responsive table-borderless">
+          <thead>
+            <th>Imagen</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+            <th>Eliminar</th>
+            <th>Agregar</th>
+          </thead>
+          <tbody>
+            {% for item in cart %}
+              {% with product=item.product %}
+                <tr class="align-middle alert border-bottom" role="alert">
+                  <td class="text-center">
+                    <img class="pic" src="{% if product.image %}{{ product.image.url }}{% endif %}" alt="Imagen del viaje" width="80" height="60">
+                  </td>
+                  <td>
+                    <div>
+                      <p class="m-0 fw-bold">{{ product.name }}</p>
+                      <p class="m-0 text-muted">{{ product.description }}</p>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="fw-600">${{ product.price }}</div>
+                  </td>
+                  <td class="d-">
+                    <input class="input" type="text" value="{{ item.quantity }}">
+                  </td>
+                  <td>
+                    ${{ item.total_price }}
+                  </td>
+                  <td>
+                    <form action="{% url "store:cart_remove" product.id %}" method="post">
+                      <input type="submit" value="Eliminar" class="btn btn-danger">
+                      {% csrf_token %}
+                    </form>
+                  </td>
+                  <td>
+                    {% if error.err %}
+                      <p>{{ error.msg }}</p>
+                    {% endif %}
+                    <form action="{% url "store:cart_add" product.id %}?origin=cart" method="post">
+                      {% csrf_token %}
+                      <input type="hidden" name="quantity" value="1">
+                      <button type="submit" class="btn btn-success">Añadir</button>
+                    </form>
+                  </td>
+                </tr>
+              {% endwith %}
+            {% endfor %}
+            <tr class="cart-tr-total">
+              <td colspan="5" style="text-align: right; font-weight: bold; padding-right:10px ">Total</td>
+              <td colspan="2" style="font-weight: bold ">{{ cart.get_total_price }}</td>
+            </tr>
+          </tbody>
+        </table>
 
+        <div class="cart-buttons" style="padding-top: 20px ;padding-bottom:20px">
+          <a href="{% url "store:product_list" %}">
+            <button type="button" class="btn btn-primary">Seguir comprando</button>
+          </a>
+          <a href="{% url "store:order_create" %}">
+            <button type="button" class="btn btn-success">Finalizar compras</button>
+          </a>
+        </div>
+      </div>
+    </div>
   {% endif %}
-
-  <p>
-    <a href="{% url "store:product_list" %}">
-      <button type="button" class="btn btn-success" style="margin-top:100px">Seguir comprando</button>
-    </a>
-    <a href="{% url "store:order_create" %}" >
-      <button type="button" class="btn btn-success" style="margin-top:100px">Finalizar compras</button>
-    </a>
-  </p>
 {% endblock content %}
 
-  
+<style>
+  .table thead {
+    background-color: #21cf95;
+    color: white;
+  }
 
+  .table tbody td {
+    padding: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .input {
+    width: 30px;
+    height: 30px;
+    color: black;
+    font-weight: 600;
+    outline: none;
+    padding: 8px;
+  }
+
+  .btn-danger,
+  .btn-success,
+  .btn-primary {
+    font-weight: bold;
+  }
+
+  .cart-buttons {
+    text-align: center;
+  }
+</style>
