@@ -37,6 +37,17 @@
     .purchase-now {
       margin-right: 10px;
     }
+     .product-image {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 5px;
+      transition: transform 0.2s;
+      max-width: 60%;
+      height: 150px; /* Ajusta la altura según tus necesidades */
+      object-fit: cover; 
+      
+
+    }
   </style>
 {% endblock header %}
 
@@ -46,7 +57,8 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-md-6">
-<img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" alt="{{ product.name }}" class="img-fluid rounded" style="max-width: 300px; height: auto; padding-bottom:30px">
+      <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" alt="{{ product.name }}" class="img-fluid rounded"
+                  style="max-width: 300px;  border: 5px solid #ddd; padding: 5px; ">
       </div>
       <div class="col-md-6">
         <div class="product-details">
