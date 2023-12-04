@@ -15,5 +15,7 @@ urlpatterns = [
   path('cart/remove/<int:product_id>/', views.cart_remove, name='cart_remove'),
   path('payment/completed', views.payment_completed, name='payment_completed'),
   path('payment/canceled', views.payment_canceled, name='payment_canceled'),
-  path('webhook/', webhooks.stripe_webhook, name='stripe_webhook')
+  path('webhook/', webhooks.stripe_webhook, name='stripe_webhook'),
+  path('history/', views.history, name='history'),
+  path('order/<int:order_id>/', views.order_detail, name='order_detail'),
 ]
