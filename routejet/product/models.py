@@ -5,7 +5,7 @@ from django.forms import ValidationError
 from django.core.validators import MinValueValidator
 from django.utils.text import slugify
 from django.urls import reverse
-
+from core.models import RouteJetUser
 class Product(models.Model):
     category = models.ForeignKey('store.Category', related_name='products', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
@@ -50,6 +50,9 @@ class Product(models.Model):
     
     def get_absolute_url(self):
         return reverse("product:product_detail", args=[self.id, self.slug])
+    def get_absolute_url2(self):
+        return reverse("product:review", args=[self.id, self.slug])
+    
     
     
 @receiver(post_delete, sender=Product)
@@ -64,6 +67,15 @@ def post_save_image(sender, instance, **kwargs):
         instance.img.delete(save=False)
     except:
         pass
+
+class Review(models.Model):
+    user=models.ForeignKey(RouteJetUser,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    description=models.CharField(max_length=200)
+    valoration=models.IntegerField()
+
+    def __str__(self):
+        return str(self.user.username)
 
     
    
