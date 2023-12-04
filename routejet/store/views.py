@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
-from django.urls import reverse
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -90,6 +89,7 @@ def cart_remove(request, product_id):
   cart = Cart(request)
   product = get_object_or_404(Product, id=product_id)
   cart.cart[str(product.id)]['quantity'] -= 1
+  request.session.modified = True
   if cart.cart[str(product.id)]['quantity'] == 0:
     cart.remove(product)
   return redirect('store:cart_detail')
