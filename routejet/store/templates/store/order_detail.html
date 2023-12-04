@@ -15,12 +15,12 @@
     </div>
 
     <div class="col-md-6">
-      <h4>Información de pago</h4>
-      {% if order.stripe_payment %}
+      <h4>Información de Pago</h4>
+      {% if order.stripe %}
         <p><strong>ID de pago:</strong> {{ order.stripe_payment.stripe_checkout_id }}</p>
         <p><strong>Pago realizado:</strong> {% if order.stripe_payment.payment_bool %}Sí{% else %}No{% endif %}</p>
       {% else %}
-        <p><em>Pago contrareembolso</em></p>
+        <p><em>Pago contra reembolso.</em></p>
       {% endif %}
     </div>
   </div>
@@ -57,7 +57,6 @@
     <div class="col-md-6">
       <h4>Estado de envío</h4>
       <p><strong>Estado:</strong> {{ order.get_state_display }}</p>
-      <!-- Puedes agregar lógica adicional según el estado (por ejemplo, detalles de seguimiento) -->
     </div>
   </div>
 

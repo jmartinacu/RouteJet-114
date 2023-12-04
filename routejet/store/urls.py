@@ -18,4 +18,5 @@ urlpatterns = [
   path('payment/canceled', views.payment_canceled, name='payment_canceled'),
   path('seguimiento/',views.seguimiento,name='seguimiento'),
   path('order/<int:order_id>/', order_detail, name='order_detail'),
+  path('history/', views.history, name='history'),
 ]
