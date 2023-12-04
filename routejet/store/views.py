@@ -12,6 +12,7 @@ from .cart import Cart
 from .forms import OrderCreateForm, AddProductForm
 from core.models import RouteJetUser
 from .utils import stripe_payment
+from .tasks import task_send_email_order_created
 
 from core.forms import OrderSearchForm
 
@@ -33,6 +34,7 @@ def order_create(request):
                                  price=item['price'], 
                                  quantity=item['quantity'])
       cart.clear()
+      task_send_email_order_created.delay(order.id)
       if order.stripe:
         session = stripe_payment(request, order)
         return redirect(session.url, code=303)
