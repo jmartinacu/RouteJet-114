@@ -106,14 +106,23 @@ def product_list(request, category_slug=None):
     'categories': categories,
   })
 
-
 def search_products(request):
-  query = request.GET.get('q')
-  results = []
-  if query:
-    results = Product.objects.filter(Q(city__icontains=query) )
-  return render(request, 'core/product_filter.html', {'results': results, 'query': query})
+    query = request.GET.get('q')
+    results = []
 
+    if query:
+        filter_arg = Q(city__icontains=query) | Q(name__icontains=query)
+
+        try:
+            # Attempt to convert the query to a float (for price)
+            price_query = float(query)
+            filter_arg |= Q(price=price_query) | Q(price__lte=price_query)
+        except ValueError:
+            pass
+
+        results = Product.objects.filter(filter_arg)
+
+    return render(request, 'store/product_filter.html', {'results': results, 'query': query})
 def seguimiento(request):
   return render(request, 'store/order_search.html')
 
