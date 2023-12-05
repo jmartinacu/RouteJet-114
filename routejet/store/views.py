@@ -48,6 +48,7 @@ def order_create_without_cart(request, product_id):
                                 price=product.price, 
                                 quantity=1)
       reduce_order_num_products_not_cart(product.id, quantity)
+      task_send_email_order_created.delay(order.id)
       if not order.payment_on_delivery:
         session = stripe_payment(request, order)
         return redirect(session.url, code=303)
