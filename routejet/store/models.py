@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.urls import reverse
+from django.conf import settings
 
 class Order(models.Model):
   class ShipmentState(models.TextChoices):
@@ -15,7 +16,8 @@ class Order(models.Model):
   address = models.CharField(max_length=250)
   postal_code = models.CharField(max_length=20)
   paid = models.BooleanField(default=False)
-  stripe = models.BooleanField()
+  payment_on_delivery = models.BooleanField()
+  stripe_id = models.CharField(max_length=250, blank=True)
   state = models.CharField(
     max_length=3, 
     choices=ShipmentState.choices, 
@@ -35,6 +37,15 @@ class Order(models.Model):
   
   def get_total_cost(self):
     return sum([item.get_cost() for item in self.items.all()])
+  
+  def get_stripe_url(self):
+    if not self.stripe_id:
+      return ''
+    if '_test_' in settings.STRIPE_SECRET_KEY:
+      path = '/test/'
+    else:
+      path = '/'
+    return f'https://dashboard.stripe.com{path}payments/{self.stripe_id}'
 
 class OrderItem(models.Model):
   order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)

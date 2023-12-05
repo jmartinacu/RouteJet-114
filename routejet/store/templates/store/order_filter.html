@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+
+<style>  
+    .destino-clickable {
+      cursor: pointer;
+      text-decoration: underline;
+      color: blue;
+    }
+  </style>
+
+{% block content %}
+    <h2>Resultados de la búsqueda</h2>
+    <p>Mostrando resultados para: "{{ query }}"</p>
+
+    {% if results %}
+        <ul>
+            {% for pedido in results %}
+                <li>
+                    <td class="destino-clickable">
+                        <a href="{% url 'store:order_detail' pedido.id %}"> Pedido {{ pedido.id }} </a>
+                    </td>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se encontraron resultados.</p>
+    {% endif %}
+{% endblock %}

@@ -75,12 +75,14 @@
                 {% for error in form.errors %}
                   <p>{{ error }}</p> 
                 {% endfor %}
-        </div>
-          
+              </div>
             {% endif %}
             <button type="submit" class="btn btn-success">Añadir al carrito</button>
-            <a href="#" class="btn btn-primary purchase-now">Compra ahora</a>
-
+          </form>
+          <form action="{% url "store:order_create_without_cart" product.id %}" method="get">
+            <label for="quantity">Cantidad: </label>
+            <input type="number" name="quantity" id="quantity">
+            <button type="submit">Compra ahora</button>
           </form>
         </div>
       </div>
