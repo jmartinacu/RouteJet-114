@@ -42,9 +42,13 @@
       {% endif %}
       <button type="submit">Añadir al carrito</button>
     </form>
-    {% comment %} TODO {% endcomment %}
-    <button><a href="">Compra ahora </a></button>
+    <form action="{% url "store:order_create_without_cart" product.id %}" method="get">
+      <label for="quantity">Cantidad: </label>
+      <input type="number" name="quantity" id="quantity">
+      <button type="submit">Compra ahora</button>
+    </form>
   </nav>
 
   <a class = "btn btn-outline-success" href =" {{product.get_absolute_url2}} "> Opina </a>
+
 {% endblock content %}
