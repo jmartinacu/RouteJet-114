@@ -10,7 +10,7 @@ from .models import Category, OrderItem
 from .cart import Cart
 from .forms import OrderCreateForm, AddProductForm
 from core.models import RouteJetUser
-from .utils import stripe_payment, reduce_order_num_products
+from .utils import stripe_payment, reduce_order_num_products_cart, reduce_order_num_products_not_cart
 
 from core.forms import OrderSearchForm
 
@@ -20,7 +20,52 @@ def get_or_none(classmodel, **kwargs):
   except:
     return None
 
-def order_create(request):
+def order_create_without_cart(request, product_id):
+  cart = Cart(request)
+  product = Product.objects.get(id=product_id)
+  quantity = request.GET.get('quantity', None)
+  if quantity == '':
+    quantity = 1
+  if request.method == 'POST':
+    form = OrderCreateForm(request.POST)
+    if form.is_valid():
+      product_db = Product.objects.get(id=product_id)
+      num_tickets = product_db.num_products - int(quantity)
+      if num_tickets < 0:
+        if num_tickets == 0:
+          msg = f'No quedan tickets del {product.name}'
+        else:
+          msg = f'Solamente quedan {product.num_products} tickets del {product.name}'
+        return render(request, 'store/cart.html', {
+          'cart': cart,
+          'error': { 'err': True, 'msg': msg}
+        })
+      order = form.save()
+      OrderItem.objects.create(order=order, 
+                                product=product, 
+                                price=product.price, 
+                                quantity=1)
+      reduce_order_num_products_not_cart(product.id, quantity)
+      if not order.payment_on_delivery:
+        session = stripe_payment(request, order)
+        return redirect(session.url, code=303)
+      else: 
+        return redirect('core:index')
+  else: 
+    user = get_or_none(RouteJetUser, username=request.user.username)
+    if user == None:
+      form = OrderCreateForm()
+    else: 
+      form = OrderCreateForm(initial={'email' : user.email, 'address' : user.address, 'city' : user.city})
+    print('Quantity: ', quantity)
+    return render(request, 'store/overview_without_cart.html', {
+      'product': product, 
+      'quantity': quantity, 
+      'form': form,
+    })
+
+
+def order_create_with_cart(request):
   cart = Cart(request)
   if request.method == 'POST':
     form = OrderCreateForm(request.POST)
@@ -31,6 +76,7 @@ def order_create(request):
         product = Product.objects.get(id=product_id)
         num_tickets = product.num_products - item['quantity']
         if num_tickets < 0:
+          order.delete()
           cart.remove(product)
           if num_tickets == 0:
             msg = f'No quedan tickets del {product.name}'
@@ -45,7 +91,7 @@ def order_create(request):
                                  price=item['price'], 
                                  quantity=item['quantity'])
       
-      reduce_order_num_products(cart)
+      reduce_order_num_products_cart(cart)
       cart.clear()
       if not order.payment_on_delivery:
         session = stripe_payment(request, order)
