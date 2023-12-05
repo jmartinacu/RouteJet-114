@@ -15,9 +15,11 @@ def product_detail(request, id, slug):
   return render(request, 'product/detail.html', {
     'product': product, 
     'form': form,
+    'cart': cart,
   })
 
 def rate(request, id, slug):
+    cart = Cart(request)
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
     user = request.user
     reviews = Review.objects.filter(product=product)
@@ -33,7 +35,7 @@ def rate(request, id, slug):
     else:
         form2 = ReviewForm()
 
-    return render(request, 'product/review.html', {'product': product, 'reviews': reviews, 'form2': form2})
+    return render(request, 'product/review.html', {'product': product, 'reviews': reviews, 'form2': form2, 'cart': cart})
 
 
 

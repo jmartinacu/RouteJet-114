@@ -48,7 +48,7 @@ def order_create_without_cart(request, product_id):
                                 price=product.price, 
                                 quantity=1)
       reduce_order_num_products_not_cart(product.id, quantity)
-      task_send_email_order_created.delay(order.id)
+      # task_send_email_order_created.delay(order.id)
       if not order.payment_on_delivery:
         session = stripe_payment(request, order)
         return redirect(session.url, code=303)
@@ -62,6 +62,7 @@ def order_create_without_cart(request, product_id):
       form = OrderCreateForm(initial={'email' : user.email, 'address' : user.address, 'city' : user.city})
     print('Quantity: ', quantity)
     return render(request, 'store/overview_without_cart.html', {
+      'cart': cart,
       'product': product, 
       'quantity': quantity, 
       'form': form,
@@ -95,7 +96,7 @@ def order_create_with_cart(request):
                                  quantity=item['quantity'])
       
       reduce_order_num_products_cart(cart)
-      task_send_email_order_created.delay(order.id)
+      # task_send_email_order_created.delay(order.id)
       cart.clear()
       if not order.payment_on_delivery:
         session = stripe_payment(request, order)
@@ -111,10 +112,12 @@ def order_create_with_cart(request):
     return render(request, 'store/overview.html', {'cart': cart, 'form': form})
 
 def payment_completed(request):
-  return render(request, 'store/completed.html')
+  cart = Cart(request)
+  return render(request, 'store/completed.html', {'cart': cart})
 
 def payment_canceled(request):
-  return render(request, 'store/canceled.html')
+  cart = Cart(request)
+  return render(request, 'store/canceled.html', {'cart': cart})
 
 @require_POST
 def cart_add(request, product_id):
@@ -156,6 +159,7 @@ def cart_detail(request):
     })
 
 def product_list(request, category_slug=None): 
+  cart = Cart(request)
   category = None
   categories = Category.objects.all()
   products = Product.objects.filter(available=True)
@@ -166,28 +170,33 @@ def product_list(request, category_slug=None):
     'products': products,
     'category': category,
     'categories': categories,
+    'cart': cart,
   })
 
 
 def search_products(request):
   query = request.GET.get('q')
+  cart = Cart(request)
   results = []
   if query:
     results = Product.objects.filter(Q(city__icontains=query) )
-  return render(request, 'core/product_filter.html', {'results': results, 'query': query})
+  return render(request, 'core/product_filter.html', {'results': results, 'query': query, 'cart': cart})
 
 def tracking(request):
-  return render(request, 'store/order_search.html')
+  cart = Cart(request)
+  return render(request, 'store/order_search.html', {'cart': cart})
 
 def search_order(request):
+  cart = Cart(request)
   query = request.GET.get('q')
   results = []
   if query:
     results = Order.objects.filter(Q(email__iexact=query) )
-  return render(request, 'store/order_filter.html', {'results': results, 'query': query})
+  return render(request, 'store/order_filter.html', {'results': results, 'query': query, 'cart': cart})
 
 @login_required(login_url='/login')
 def history(request):
+  cart = Cart(request)
   form = OrderSearchForm(request.GET)
   orders = Order.objects.filter(email=request.user.email)
 
@@ -205,7 +214,7 @@ def history(request):
                 Q(id__icontains=search_query)
             )
 
-  return render(request, 'store/history.html', {'orders': orders, 'form': form})
+  return render(request, 'store/history.html', {'orders': orders, 'form': form, 'cart': cart})
 
 def getProductsbyOrders(orders):
     products=[]
@@ -215,5 +224,6 @@ def getProductsbyOrders(orders):
     return products
 
 def order_detail(request, order_id):
+    cart = Cart(request)
     order = get_object_or_404(Order, id=order_id)
-    return render(request, 'store/order_detail.html', {'order': order})
+    return render(request, 'store/order_detail.html', {'order': order, 'cart': cart})
