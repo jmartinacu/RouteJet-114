@@ -1,0 +1,39 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
+{% endblock header %}
+
+{% block content %}
+
+<style>
+    index {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+    
+      .index h3,
+      .index form {
+        margin-top: 20px;
+        margin-left:200px;
+      }
+</style>
+<div class="index">
+    <h3>Introduce tu correo para ver tus pedidos</h3>
+    <form action="{% url 'store:search_order' %}" role="search" method="get">
+      {% csrf_token %}
+      <label for="search">
+          <input type="search" name="q" placeholder="Introduce tu correo">
+      </label>
+      <div>
+        <button type="submit" class="btn btn-custom btn-lg text-body">Buscar pedidos</button>
+      </div>
+    </form>
+  
+  </div>
+
+{% endblock content %}

@@ -1,0 +1,72 @@
+{% extends "core/base.html" %}
+
+{% block title %} Detalles del pedido {{ order.id }} {% endblock title %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <h2 class="mb-3">Detalles del pedido {{ order.id }}</h2>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Información del cliente</h4>
+      <p><strong>Usuario:</strong> {{ order.first_name }} {{ order.last_name }}</p>
+      <p><strong>Email:</strong> {{ order.email }}</p>
+    </div>
+
+    <div class="col-md-6">
+      <h4>Información de Pago</h4>
+      {% if order.stripe %}
+        <p><strong>ID de pago:</strong> {{ order.stripe_payment.stripe_checkout_id }}</p>
+        <p><strong>Pago realizado:</strong> {% if order.stripe_payment.payment_bool %}Sí{% else %}No{% endif %}</p>
+      {% else %}
+        <p><em>Pago contra reembolso.</em></p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h4>Productos del pedido</h4>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in order.items.all %}
+            <tr>
+              <td>{{ item.product.name }}</td>
+              <td>{{ item.product.price }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <h4>Dirección de envío</h4>
+      <p><strong>Ciudad:</strong> {{ order.city }}</p>
+      <p><strong>Dirección:</strong> {{ order.address }}</p>
+    </div>
+
+    <div class="col-md-6">
+      <h4>Estado de envío</h4>
+      <p><strong>Estado:</strong> {{ order.get_state_display }}</p>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h4>Total</h4>
+      <p><strong>Precio final:</strong> {{ order.get_total_cost }}</p>
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}

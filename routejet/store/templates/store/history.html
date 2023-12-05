@@ -1,0 +1,60 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %} Historial de compras {% endblock title %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
+{% endblock header %}
+
+{% block description %}
+<h2>Historial de reservas</h2>
+{% endblock description %}
+
+{% block content %}
+<form method="get" style="padding-top: 20px ; padding-left:20px">
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
+
+
+<h2 class="text-center">Historial de reservas</h2>
+  <table class="table mx-auto">
+    <thead>
+      <tr>
+        <th>ID del pedido</th>
+        <th>Nombre del cliente</th>
+        <th>Estado</th>
+        <th>Ciudad</th>
+        <th>Dirección</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+        <tr>
+          <td class="destino-clickable"><a href="{% url "store:order_detail" order.id %}">{{ order.id }}</a></td>
+          <td>{{ order.first_name }}</td>
+          <td>{{ order.get_state_display }}</td>
+          <td>{{ order.city }}</td>
+          <td>{{ order.address }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .table {
+    width: 80%;
+    margin: auto;
+  }
+
+  .destino-clickable {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;
+  }
+</style>
+
+</script>{% endblock content %}

@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import environ
+from celery.schedules import crontab
+from datetime import datetime
+
+env = environ.Env(
+  DEBUG=(bool, False)
+)
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +29,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ahyop#*)k0ns=qk=x+%&(+qyh2@(v$^-x4hutwb&)9c4a5#q3#'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -61,7 +69,7 @@ ROOT_URLCONF = 'routejet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'core' / 'templates'], 
+        'DIRS': [], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,6 +141,41 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CART_SESSION_ID = 'cart'
+LOGIN_REDIRECT_URL = "/"
+
+# User model
 
 AUTH_USER_MODEL = 'core.RouteJetUser'
+
+CART_SESSION_ID = 'cart'
+
+# STRIPE 
+
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
+
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+
+STRIPE_API_VERSION = env('STRIPE_API_VERSION')
+
+STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')
+
+#CELERY
+
+CELERY_BEAT_SCHEDULE = {
+  'Task_change_state_orders_schedule' : {
+    'task': 'store.tasks.task_change_state_orders_every_day',
+    'schedule': crontab(hour=0, minute=1),
+  }
+}
+
+# EMAIL
+
+EMAIL_HOST = env('EMAIL_HOST')
+
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+EMAIL_PORT = env.int('EMAIL_PORT')
+
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-with, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{% endblock title %} - RouteJet</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,25 +20,28 @@
     </a>
     <nav>
       {% if request.user.is_authenticated %}
-        <a class="btn btn-outline-success" onClick="window.location.href='/logout'" role="button">Cerrar Sesión</a>
-      {% else %}
+        <a class="btn btn-outline-success" href="{% url "core:logout" %}" role="button">Cerrar Sesión</a>
+        <a class="btn btn-outline-success" href="{% url "store:history" %}" role="button">Historial</a>
+        {% else %}
         <a class="btn btn-outline-success" href="{% url "core:signup" %}" role="button">Registro</a>
         <a class="btn btn-outline-success" href="{% url "core:login" %}" role="button">Iniciar Sesion</a>
+        <a class="btn btn-outline-success" href="{% url "store:tracking" %}" role="button">Encontrar pedido</a>
       {% endif %}
+        <a class="btn btn-outline-success" href="{% url "store:product_list" %}" role="button">Catalogo</a>
     </nav>
     </section>
     <section class="base-header-secondary">
       <h2>{% block description %}{% endblock description %}</h2>
-        <div id="header">
-          <a href="{% url "store:cart_detail" %}">
-           <img 
-             src="{% static "images/shopping_cart.png" %}"
-             width="30"
-             height="30"
-             style="margin-left:800px"
-           >
-          </a>
-         </div>
+      <div id="header">
+        <a href="{% url "store:cart_detail" %}">
+          <img 
+            src="{% static "images/shopping_cart.png" %}"
+            width="30"
+            height="30"
+            style="margin-left:800px"
+          >
+        </a>
+      </div>
   </header>
   <main>
     {% block content %}

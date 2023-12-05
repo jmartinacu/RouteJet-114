@@ -1,0 +1,23 @@
+<!-- nombre_de_tu_plantilla.html -->
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <h2>Resultados de la búsqueda</h2>
+    <p>Mostrando resultados para: "{{ query }}"</p>
+
+    {% if results %}
+        <ul>
+            {% for producto in results %}
+                <li>
+                    <strong>{{ producto.city }}, {{ producto.country }}</strong><br>
+                    Descripción: {{ producto.description }}<br>
+                    Precio: {{ producto.price }}<br>
+                    Imagen: {{ producto.image }}<br>
+                    <!-- Agrega más campos según sea necesario -->
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se encontraron resultados.</p>
+    {% endif %}
+{% endblock %}

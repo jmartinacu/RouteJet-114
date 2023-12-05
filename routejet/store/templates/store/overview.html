@@ -2,51 +2,80 @@
 
 {% load static %}
 
-{% block title %} Escaparate {% endblock title %}
+{% block title %} Pedido {% endblock title %}
 
 {% block header %}
   <link rel="stylesheet" href="{% static "css/index.css" %}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 {% endblock header %}
 
 {% block description %}
-<h2>Proceso de compra</h2>
+  <h2>Proceso de compra</h2>
 {% endblock description %}
 
-
 {% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="p-3">
+          <form method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <div class=" p-3">
-        <form method="POST" class=>
-          {% csrf_token %}
-          {{ form.as_p }}
-          <p><input type='submit' value="Place order"></p>
-        </form>
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th scope="row">Nombre:</th>
+                  <td>{{ form.first_name }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Apellido:</th>
+                  <td>{{ form.last_name }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Correo Electrónico:</th>
+                  <td>{{ form.email }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Dirección:</th>
+                  <td>{{ form.address }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Código Postal:</th>
+                  <td>{{ form.postal_code }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Ciudad:</th>
+                  <td>{{ form.city }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Stripe:</th>
+                  <td>{{ form.stripe }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <button type="submit" class="btn btn-primary">Realizar pedido</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="p-3">
+          <h3>Tu pedido:</h3>
+          <ul class="list-group">
+            {% for item in cart %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <h5>{{ item.product.city }}, {{ item.product.country }}</h5>
+                  <p>{{ item.price }}€ x {{ item.quantity }}</p>
+                </div>
+                <small>{{ item.product.start_date }}/{{ item.product.end_date }}</small>
+              </li>
+            {% endfor %}
+          </ul>
+          <p class="mt-3">Total: {{ cart.get_total_price }}€</p>
+        </div>
       </div>
     </div>
-      <div class="col-md-6">
-          <div class="p-3">
-              <h3>Resumen de tu compra </h3>
-              {% for p in productos  %}
-              <div class="row">
-                <div class="col">
-                  <h5> {{p.city}},{{p.country}}  </h5>
-                </div>
-                <div class="col">
-                  <h6> {{p.start_date}}/{{p.end_date}}  </h6>
-                </div>
-                <div class="col">
-                  <h6> {{p.price}}€ </h6>
-                </div>
-            </div>
-            {% endfor %}
-            {% comment %} {% if order.shipping_type == 'NORMAL' %} settings.NORMAL_PRICE {% else %} settings.{% endif %} {% endcomment %}
-            <p>Precio de envío: {{ shipping_price }}</p>
-          </div>
-      </div>
   </div>
-</div>
-
 {% endblock content %}
