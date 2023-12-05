@@ -5,7 +5,9 @@ from django.forms import ValidationError
 from django.core.validators import MinValueValidator
 from django.utils.text import slugify
 from django.urls import reverse
+
 from core.models import RouteJetUser
+
 class Product(models.Model):
     category = models.ForeignKey('store.Category', related_name='products', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)

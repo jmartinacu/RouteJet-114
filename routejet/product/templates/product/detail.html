@@ -2,49 +2,92 @@
 
 {% load static %}
 
-{% block title %} Ficha Producto {% endblock %}
+{% block title %} Ficha Producto {% endblock title %}
 
 {% block header %}
   <link rel="stylesheet" href="{% static "css/detail.css" %}">
+  <!-- Agrega el enlace a Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-TX5NqxEyOYZ+KqXgXJPXWc+bKFgPxbY7P2HDV0eOR0zUvUjDm1qss6IRmbYSlAg7" crossorigin="anonymous">
+  <style>
+    .product-details {
+      margin-top: 20px;
+    }
 
+    .product-details h1 {
+      font-size: 24px;
+    }
+
+    .product-details h2 {
+      font-size: 18px;
+    }
+
+    .price {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .detail-nav-submit {
+      margin-top: 20px;
+    }
+
+    .detail-nav-submit form {
+      margin-bottom: 10px;
+    }
+
+    .purchase-now {
+      margin-right: 10px;
+    }
+     .product-image {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 5px;
+      transition: transform 0.2s;
+      max-width: 60%;
+      height: 150px; /* Ajusta la altura según tus necesidades */
+      object-fit: cover; 
+      
+
+    }
+  </style>
 {% endblock header %}
 
 {% block description %} {{ product.name }} {% endblock description %}
 
 {% block content %}
-  <article class="detail-article-main">
-      <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
-      <section>
-        <h1>
-          <a href="{{ product.category.get_absolute_url }}">
-            Pais {{ product.category }}
-          </a>
-        </h1>
-        <h2>Ciudad: {{ product.city }}</h2>
-        <p class="price">Precio: {{ product.price }}€</p>
-        <p>Numero de tickets: {{ product.num_products }}</p>
-        {{ product.description|linebreaks }}
-      </section>
-  </article>
-  <nav class="detail-nav-submit">
-    <form action="{% url "store:cart_add" product_id=product.id %}?origin=detail" method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      {% if form.errors %}
-        <div>
-          {% comment %} <p>Errores: </p>
-          <ul>
-            {% for error in form.errors %}
-              <li>{{ error }}</li> 
-            {% endfor %}
-          </ul> {% endcomment %}
-        </div>   
-      {% endif %}
-      <button type="submit">Añadir al carrito</button>
-    </form>
-    {% comment %} TODO {% endcomment %}
-    <button><a href="">Compra ahora </a></button>
-  </nav>
-
-  <a class = "btn btn-outline-success" href =" {{product.get_absolute_url2}} "> Opina </a>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6">
+      <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" alt="{{ product.name }}" class="img-fluid rounded"
+                  style="max-width: 300px;  border: 5px solid #ddd; padding: 5px; ">
+      </div>
+      <div class="col-md-6">
+        <div class="product-details">
+          <h1>{{ product.name }}</h1>
+          <h2 class="text-muted">Ciudad: {{ product.city }}</h2>
+          <p class="price">Precio: {{ product.price }}€</p>
+          <p class="numero de tickets">Numero de tickets: {{ product.num_products }}</p>
+          <p class="descripción">Descripción:  {{ product.description }}</p>
+          <form action="{% url "store:cart_add" product_id=product.id %}?origin=detail" method="post" class="mb-3">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if form.errors %}
+              <div class="alert alert-danger">
+                {% for error in form.errors %}
+                  <p>{{ error }}</p> 
+                {% endfor %}
+              </div>
+            {% endif %}
+            <button type="submit" class="btn btn-success">Añadir al carrito</button>
+          </form>
+          <form action="{% url "store:order_create_without_cart" product.id %}" method="get">
+            <label for="quantity">Cantidad: </label>
+            <input type="number" name="quantity" id="quantity">
+            <button type="submit">Compra ahora</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Agrega el script de Bootstrap al final del cuerpo del documento -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8+ua/Ci8q+OXG7jOxLw25LsiM/X8HEF7SPZSW6Cf0xg1Qq0+Yj4yzP5PxWo=" crossorigin="anonymous"></script>
 {% endblock content %}

@@ -17,7 +17,7 @@
       <h3>¿Dónde te gustaría viajar?</h3>
       <form action="{% url 'store:search_products' %}" role="search" method="get">
         {% csrf_token %}
-        <label for="search">
+        <label for="search" style="padding-left: 190px;">
             <input type="search" name="q" placeholder="Busca tu destino">
         </label>
       </form>
