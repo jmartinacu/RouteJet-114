@@ -13,11 +13,12 @@
 {% endblock description %}
 
 {% block content %}
-<form method="get">
+<form method="get" style="padding-top: 20px ; padding-left:20px">
   {{ form.as_p }}
-  <button type="submit">Buscar</button>
+  <button type="submit" class="btn btn-primary">Buscar</button>
 </form>
 <a href="{% url 'store:claim_history' %}" class="btn btn-primary">Reclamaciónes</a>
+
 
 <h2 class="text-center">Historial de reservas</h2>
   <table class="table mx-auto">

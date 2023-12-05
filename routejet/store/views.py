@@ -1,17 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
-from django.urls import reverse
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 from store.models import Order, OrderItem, Claim
 from product.models import Product
+from .models import Order
 from .models import Category, OrderItem
 from .cart import Cart
 from .forms import OrderCreateForm, AddProductForm, ClaimForm
 from core.models import RouteJetUser
-from .utils import stripe_payment
+from .utils import stripe_payment, reduce_order_num_products_cart, reduce_order_num_products_not_cart
+from .tasks import task_send_email_order_created
 
 from core.forms import OrderSearchForm
 
@@ -21,23 +22,86 @@ def get_or_none(classmodel, **kwargs):
   except:
     return None
 
-def order_create(request):
+def order_create_without_cart(request, product_id):
+  cart = Cart(request)
+  product = Product.objects.get(id=product_id)
+  quantity = request.GET.get('quantity', None)
+  if quantity == '':
+    quantity = 1
+  if request.method == 'POST':
+    form = OrderCreateForm(request.POST)
+    if form.is_valid():
+      product_db = Product.objects.get(id=product_id)
+      num_tickets = product_db.num_products - int(quantity)
+      if num_tickets < 0:
+        if num_tickets == 0:
+          msg = f'No quedan tickets del {product.name}'
+        else:
+          msg = f'Solamente quedan {product.num_products} tickets del {product.name}'
+        return render(request, 'store/cart.html', {
+          'cart': cart,
+          'error': { 'err': True, 'msg': msg}
+        })
+      order = form.save()
+      OrderItem.objects.create(order=order, 
+                                product=product, 
+                                price=product.price, 
+                                quantity=1)
+      reduce_order_num_products_not_cart(product.id, quantity)
+      task_send_email_order_created.delay(order.id)
+      if not order.payment_on_delivery:
+        session = stripe_payment(request, order)
+        return redirect(session.url, code=303)
+      else: 
+        return redirect('core:index')
+  else: 
+    user = get_or_none(RouteJetUser, username=request.user.username)
+    if user == None:
+      form = OrderCreateForm()
+    else: 
+      form = OrderCreateForm(initial={'email' : user.email, 'address' : user.address, 'city' : user.city})
+    print('Quantity: ', quantity)
+    return render(request, 'store/overview_without_cart.html', {
+      'product': product, 
+      'quantity': quantity, 
+      'form': form,
+    })
+
+
+def order_create_with_cart(request):
   cart = Cart(request)
   if request.method == 'POST':
     form = OrderCreateForm(request.POST)
     if form.is_valid():
       order = form.save()
       for item in cart:
+        product_id = item['product'].id
+        product = Product.objects.get(id=product_id)
+        num_tickets = product.num_products - item['quantity']
+        if num_tickets < 0:
+          order.delete()
+          cart.remove(product)
+          if num_tickets == 0:
+            msg = f'No quedan tickets del {product.name}'
+          else:
+            msg = f'Solamente quedan {product.num_products} tickets del {product.name}'
+          return render(request, 'store/cart.html', {
+            'cart': cart,
+            'error': { 'err': True, 'msg': msg}
+          })
         OrderItem.objects.create(order=order, 
                                  product=item['product'], 
                                  price=item['price'], 
                                  quantity=item['quantity'])
+      
+      reduce_order_num_products_cart(cart)
+      task_send_email_order_created.delay(order.id)
       cart.clear()
-      if order.stripe:
+      if not order.payment_on_delivery:
         session = stripe_payment(request, order)
         return redirect(session.url, code=303)
       else: 
-        return redirect(reverse('core:index'))
+        return redirect('core:index')
   else:
     user = get_or_none(RouteJetUser, username=request.user.username)
     if user == None:
@@ -71,7 +135,7 @@ def cart_add(request, product_id):
     elif origin == 'cart':
       return render(request, 'store/cart.html', {
         'cart': cart,
-        'error': { 'err': True, 'msg': 'No quedan tickets'}
+        'error': { 'err': True, 'msg': f'No quedan tickets del {product.name}'}
       })
 
 @require_POST
@@ -79,6 +143,7 @@ def cart_remove(request, product_id):
   cart = Cart(request)
   product = get_object_or_404(Product, id=product_id)
   cart.cart[str(product.id)]['quantity'] -= 1
+  request.session.modified = True
   if cart.cart[str(product.id)]['quantity'] == 0:
     cart.remove(product)
   return redirect('store:cart_detail')
@@ -110,6 +175,16 @@ def search_products(request):
   if query:
     results = Product.objects.filter(Q(city__icontains=query) )
   return render(request, 'core/product_filter.html', {'results': results, 'query': query})
+
+def tracking(request):
+  return render(request, 'store/order_search.html')
+
+def search_order(request):
+  query = request.GET.get('q')
+  results = []
+  if query:
+    results = Order.objects.filter(Q(email__iexact=query) )
+  return render(request, 'store/order_filter.html', {'results': results, 'query': query})
 
 @login_required(login_url='/login')
 def history(request):

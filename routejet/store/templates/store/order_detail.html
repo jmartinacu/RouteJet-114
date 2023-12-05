@@ -1,16 +1,16 @@
 {% extends "core/base.html" %}
 
-{% block title %} Detalles del Pedido {{ order.order.id }} {% endblock title %}
+{% block title %} Detalles del pedido {{ order.id }} {% endblock title %}
 
 {% block content %}
 
 <div class="container mt-4">
-  <h2 class="mb-3">Detalles  del Pedido {{ order.id }}</h2>
+  <h2 class="mb-3">Detalles del pedido {{ order.id }}</h2>
 
   <div class="row">
     <div class="col-md-6">
-      <h4>Información del Cliente</h4>
-      <p><strong>Usuario:</strong> {{ order.first_name }} {{ order.last_name }} </p>
+      <h4>Información del cliente</h4>
+      <p><strong>Usuario:</strong> {{ order.first_name }} {{ order.last_name }}</p>
       <p><strong>Email:</strong> {{ order.email }}</p>
     </div>
 
@@ -27,25 +27,19 @@
 
   <div class="row mt-4">
     <div class="col-md-12">
-      <h4>Productos en el pedido</h4>
+      <h4>Productos del pedido</h4>
       <table class="table">
         <thead>
           <tr>
             <th>Producto</th>
-            <th>Precio por unidad</th>
-            <th>Cantidad</th>
-            <th>Precio total</th>
-            <th>Descripción</th>
+            <th>Precio</th>
           </tr>
         </thead>
         <tbody>
           {% for item in order.items.all %}
             <tr>
               <td>{{ item.product.name }}</td>
-              <td>{{ item.price }}</td>
-              <td>{{ item.quantity }}</td>
-              <td>{{ item.get_cost }}</td>
-              <td>{{ item.product.description }}</td>
+              <td>{{ item.product.price }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -55,13 +49,13 @@
 
   <div class="row mt-4">
     <div class="col-md-6">
-      <h4>Dirección de Envío</h4>
+      <h4>Dirección de envío</h4>
       <p><strong>Ciudad:</strong> {{ order.city }}</p>
       <p><strong>Dirección:</strong> {{ order.address }}</p>
     </div>
 
     <div class="col-md-6">
-      <h4>Estado de Envío</h4>
+      <h4>Estado de envío</h4>
       <p><strong>Estado:</strong> {{ order.get_state_display }}</p>
     </div>
   </div>
@@ -69,7 +63,7 @@
   <div class="row mt-4">
     <div class="col-md-12">
       <h4>Total</h4>
-      <p><strong>Total Price:</strong> {{ order.get_total_cost }}</p>
+      <p><strong>Precio final:</strong> {{ order.get_total_cost }}</p>
     </div>
   </div>
 
