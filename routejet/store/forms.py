@@ -33,6 +33,5 @@ class AddProductForm(forms.Form):
     return cleaned_data
 
 class ClaimForm(forms.Form):
-    order_id = forms.IntegerField()
-    #Se genera un area de texto para que el usuario pueda escribir su reclamo
-    claim_text = forms.CharField(widget=forms.Textarea)
+    order_id = forms.IntegerField(label="Id Reclamación", widget=forms.TextInput(attrs={'class': 'form-control'}))
+    claim_text = forms.CharField(label="Descripcion", widget=forms.Textarea(attrs={'class': 'form-control'}))
