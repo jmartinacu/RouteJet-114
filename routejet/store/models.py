@@ -5,12 +5,7 @@ from django.urls import reverse
 from django.conf import settings
 
 
-FREE_THRESHOLD = 400
 
-SHIPPING_PRICE = {
-  'NORMAL': 3.99,
-  'EXPRESS': 7.99,
-}
 class Order(models.Model):
   class ShipmentState(models.TextChoices):
     PREADMISSION = "PA", _("Pre-admisión")
@@ -29,11 +24,6 @@ class Order(models.Model):
     max_length=3, 
     choices=ShipmentState.choices, 
     default=ShipmentState.PREADMISSION
-  )
-  shipping_type = models.CharField(
-    max_length=7,
-    choices=ShippingType.choices,
-    default=ShippingType.NORMAL,
   )
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
