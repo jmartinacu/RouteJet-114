@@ -5,6 +5,64 @@
 {% block description %}Pago cancelado{% endblock description %}
 
 {% block content %}
-  <h1>Tu pago no ha sido procesado</h1>
-  <p>Ha habido un error durante el proceso de pago</p>
+  <style>
+    /* Estilos para hacer el mensaje más grande y moverlo más abajo */
+    #react-container {
+      margin-top: 50px; /* Ajusta según sea necesario */
+      text-align: center;
+    }
+
+    .message {
+      font-size: 2.5em; /* Ajusta según sea necesario */
+    }
+
+    .cancel-icon {
+      color: #ff6b6b; /* Cambia el color según tus preferencias */
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+  </style>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 offset-md-2 text-center">
+        <div id="react-container" class="component-container">
+          <span class="cancel-icon">
+            <!-- Utilizando un ícono de FontAwesome -->
+            <i class="fas fa-times-circle"></i>
+            <!-- Asegúrate de incluir FontAwesome en tu proyecto -->
+          </span>
+          <h1 class="mt-5">Pago Cancelado</h1>
+          <p class="lead">Ha habido un error durante el proceso de pago</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Incluir FontAwesome (asegúrate de tenerlo instalado o usa un enlace CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  {# Incluir React y ReactDOM #}
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+  {# Renderizar el componente React en el contenedor #}
+  <script>
+    const reactContainer = document.getElementById('react-container');
+
+    // Componente React directamente en la plantilla
+    const HTMLComponent = () => {
+      return (
+        <div class="component-container">
+          <span class="cancel-icon">
+            <i class="fas fa-times-circle"></i>
+          </span>
+          <h1 class="mt-5">Pago Cancelado</h1>
+          <p class="lead">Ha habido un error durante el proceso de pago</p>
+        </div>
+      );
+    };
+
+    ReactDOM.render(React.createElement(HTMLComponent), reactContainer);
+  </script>
 {% endblock content %}

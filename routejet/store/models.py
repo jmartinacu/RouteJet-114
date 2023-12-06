@@ -91,8 +91,27 @@ class Category(models.Model):
         verbose_name = 'category'
         verbose_name_plural = 'categories'
 
-    def __str__(self):
-        return self.country
+class Claim(models.Model):
+    
+    PENDING_REVIEW = 'Pending'
+    IN_PROCESS = 'In Process'
+    RESOLVED = 'Resolved'
+    CLOSED = 'Closed'
 
-    def get_absolute_url(self):
-        return reverse("store:product_list_by_category", args=[self.slug])
+    CLAIM_STATES = [
+        (PENDING_REVIEW, 'Pendiente de revisión'),
+        (IN_PROCESS, 'En proceso'),
+        (RESOLVED, 'Resuelta'),
+        (CLOSED, 'Cerrada'),
+    ]
+
+    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    claim_text = models.TextField()
+    state = models.CharField(max_length=20, choices=CLAIM_STATES, default=PENDING_REVIEW)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Claim #{self.id} - Order #{self.order.id}"
+    #Las reclamaciones se ordenan por fecha de creación en orden descendente
+    class Meta:
+        ordering = ['-created']

@@ -19,11 +19,18 @@ def task_send_email_order_created(order_id):
 def task_change_state_orders_every_day():
   orders = Order.objects.exclude(state='D')
   for order in orders:
-    if order.state == 'PA' and order.paid:
+    if (order.state == 'PA' and order.paid) or (order.state == 'PA' and order.payment_on_delivery):
       order.state = 'OTW'
       order.save()
-    elif order.paid:
+    elif order.paid or order.payment_on_delivery:
       order.state = 'D'
       order.save()
   return 'success'
+
+@app.task
+def task_payment_on_delivery_paid_every_day():
+  orders = Order.objects.filter(payment_on_delivery=True, state='D')
+  for order in orders:
+    order.paid = True
+    order.save()
   

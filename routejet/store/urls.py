@@ -20,5 +20,8 @@ urlpatterns = [
   path('webhook/', webhooks.stripe_webhook, name='stripe_webhook'),
   path('order/tracking/',views.tracking,name='tracking'),
   path('order/<int:order_id>/', views.order_detail, name='order_detail'),
+  path('create_claim/', views.create_claim, name='create_claim'),
+  path('claim_history/', views.claim_history, name='claim_history'),
   path('history/', views.history, name='history'),
+
 ]

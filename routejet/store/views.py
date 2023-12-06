@@ -4,12 +4,12 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
-from store.models import Order, OrderItem
+from store.models import Order, OrderItem, Claim
 from product.models import Product
 from .models import Order
 from .models import Category, OrderItem
 from .cart import Cart
-from .forms import OrderCreateForm, AddProductForm
+from .forms import OrderCreateForm, AddProductForm, ClaimForm
 from core.models import RouteJetUser
 from .utils import stripe_payment, reduce_order_num_products_cart, reduce_order_num_products_not_cart
 from .tasks import task_send_email_order_created
@@ -62,6 +62,7 @@ def order_create_without_cart(request, product_id):
       form = OrderCreateForm(initial={'email' : user.email, 'address' : user.address, 'city' : user.city})
     print('Quantity: ', quantity)
     return render(request, 'store/overview_without_cart.html', {
+      'cart': cart,
       'product': product, 
       'quantity': quantity, 
       'form': form,
@@ -111,10 +112,12 @@ def order_create_with_cart(request):
     return render(request, 'store/overview.html', {'cart': cart, 'form': form})
 
 def payment_completed(request):
-  return render(request, 'store/completed.html')
+  cart = Cart(request)
+  return render(request, 'store/completed.html', {'cart': cart})
 
 def payment_canceled(request):
-  return render(request, 'store/canceled.html')
+  cart = Cart(request)
+  return render(request, 'store/canceled.html', {'cart': cart})
 
 @require_POST
 def cart_add(request, product_id):
@@ -156,6 +159,7 @@ def cart_detail(request):
     })
 
 def product_list(request, category_slug=None): 
+  cart = Cart(request)
   category = None
   categories = Category.objects.all()
   products = Product.objects.filter(available=True)
@@ -166,28 +170,43 @@ def product_list(request, category_slug=None):
     'products': products,
     'category': category,
     'categories': categories,
+    'cart': cart,
   })
 
-
 def search_products(request):
-  query = request.GET.get('q')
-  results = []
-  if query:
-    results = Product.objects.filter(Q(city__icontains=query) )
-  return render(request, 'core/product_filter.html', {'results': results, 'query': query})
+    cart = Cart(request)
+    query = request.GET.get('q')
+    results = []
+
+    if query:
+        filter_arg = Q(city__icontains=query) | Q(name__icontains=query)
+
+        try:
+            # Attempt to convert the query to a float (for price)
+            price_query = float(query)
+            filter_arg |= Q(price=price_query) | Q(price__lte=price_query)
+        except ValueError:
+            pass
+
+        results = Product.objects.filter(filter_arg)
+
+    return render(request, 'store/product_filter.html', {'results': results, 'query': query, 'cart': cart})
 
 def tracking(request):
-  return render(request, 'store/order_search.html')
+  cart = Cart(request)
+  return render(request, 'store/order_search.html', {'cart': cart})
 
 def search_order(request):
+  cart = Cart(request)
   query = request.GET.get('q')
   results = []
   if query:
     results = Order.objects.filter(Q(email__iexact=query) )
-  return render(request, 'store/order_filter.html', {'results': results, 'query': query})
+  return render(request, 'store/order_filter.html', {'results': results, 'query': query, 'cart': cart})
 
 @login_required(login_url='/login')
 def history(request):
+  cart = Cart(request)
   form = OrderSearchForm(request.GET)
   orders = Order.objects.filter(email=request.user.email)
 
@@ -205,7 +224,7 @@ def history(request):
                 Q(id__icontains=search_query)
             )
 
-  return render(request, 'store/history.html', {'orders': orders, 'form': form})
+  return render(request, 'store/history.html', {'orders': orders, 'form': form, 'cart': cart})
 
 def getProductsbyOrders(orders):
     products=[]
@@ -215,5 +234,51 @@ def getProductsbyOrders(orders):
     return products
 
 def order_detail(request, order_id):
+    cart = Cart(request)
     order = get_object_or_404(Order, id=order_id)
-    return render(request, 'store/order_detail.html', {'order': order})
+    return render(request, 'store/order_detail.html', {'order': order, 'cart': cart})
+
+@login_required
+def create_claim(request):
+    cart = Cart(request)
+    if request.method == 'POST':
+        form = ClaimForm(request.POST)
+        if form.is_valid():
+            order_id = form.cleaned_data['order_id']
+            claim_text = form.cleaned_data['claim_text']
+            
+            # Verifica si existe una orden con la ID proporcionada
+            try:
+                # Intenta obtener la orden, maneja la excepción si no se encuentra
+                order = Order.objects.get(id=order_id)
+            except Order.DoesNotExist:
+                form.add_error('order_id', 'La orden no existe.')
+                return render(request, 'store/create_claim.html', {'form': form})
+
+             # Verifica que la orden esté relacionada con el usuario actual
+            if order.email != request.user.email:
+                form.add_error('order_id', 'La orden no está relacionada con el usuario actual.')
+                return render(request, 'store/create_claim.html', {'form': form})
+            
+            # Verifica si ya existe una reclamación para la misma orden
+            existing_claim = Claim.objects.filter(order=order).first()
+            if existing_claim:
+                form.add_error('order_id', 'Ya existe una reclamación para esta orden.')
+                return render(request, 'store/create_claim.html', {'form': form})
+
+            # Crea la reclamación utilizando la relación con Order
+            claim = Claim(order=order, claim_text=claim_text)
+            claim.save()
+
+            return redirect('core:index')  # Puedes definir una URL de éxito
+    else:
+        form = ClaimForm()
+
+    return render(request, 'store/create_claim.html', {'form': form, 'cart': cart})
+
+@login_required
+def claim_history(request):
+    cart = Cart(request)
+    user_orders = Order.objects.filter(email=request.user.email)
+    claims = Claim.objects.filter(order__in=user_orders)
+    return render(request, 'store/claim_history.html', {'claims': claims, 'cart': cart})
