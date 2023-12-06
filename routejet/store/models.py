@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
-from django.urls import reverse
 from django.conf import settings
 from decimal import *
 
@@ -50,7 +49,7 @@ class Order(models.Model):
             items_price += Decimal(settings.EXPRESS_SHIPMENT_PRICE)
         elif items_price < Decimal(settings.FREE_SHIPMENT_PRICE) and self.ShippingType.NORMAL == self.shipping_type:
             items_price += Decimal(settings.NORMAL_SHIPMENT_PRICE)
-        return items_price
+        return Decimal("%.2f" % round(items_price, 2))
     
     def get_shipping_cost(self):
         shipping_cost = Decimal(0)
@@ -58,7 +57,7 @@ class Order(models.Model):
             shipping_cost += Decimal(settings.EXPRESS_SHIPMENT_PRICE)
         elif self.get_total_cost() < Decimal(settings.FREE_SHIPMENT_PRICE) and self.ShippingType.NORMAL == self.shipping_type:
             shipping_cost += Decimal(settings.NORMAL_SHIPMENT_PRICE)
-        return shipping_cost
+        return Decimal("%.2f" % round(shipping_cost, 2))
     
 
     def get_stripe_url(self):

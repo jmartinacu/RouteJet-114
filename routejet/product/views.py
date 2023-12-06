@@ -26,6 +26,10 @@ def rate(request, id, slug):
 
     if request.method == 'POST':
         form2 = ReviewForm(request.POST)
+        print(user)
+        if request.user.is_anonymous:
+          form2 = ReviewForm()
+          return render(request, 'product/review.html', {'product': product, 'reviews': reviews, 'form2': form2, 'cart': cart})
         if form2.is_valid():
             valoration = form2.cleaned_data['valoration']
             description = form2.cleaned_data['description']
