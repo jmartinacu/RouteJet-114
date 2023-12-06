@@ -1,5 +1,6 @@
 {% extends "core/base.html" %}
 
+
 {% load static %}
 
 {% block title %} Historial de compras {% endblock title %}
@@ -13,12 +14,22 @@
 {% endblock description %}
 
 {% block content %}
-<form method="get" style="padding-top: 20px ; padding-left:20px">
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-primary">Buscar</button>
+<form method="get" class="d-flex" style="padding-left: 80px; padding-top: 20px;">
+  <div class="input-group" style="padding-left: 60px;">
+    {{ form.search_query }}
+    <div style="margin-left: 20px;"> 
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-search"></i> Buscar
+      </button>
+    </div>
+    <div style="padding-left: 20px ;">
+      <a   href="{% url 'store:claim_history' %}" class="btn btn-primary">Reclamaciónes</a>
+    </div>
+    
+  </div>
+  
 </form>
-<a href="{% url 'store:claim_history' %}" class="btn btn-primary">Reclamaciónes</a>
-
+ 
 
 <h2 class="text-center">Historial de reservas</h2>
   <table class="table mx-auto">

@@ -48,7 +48,7 @@ def order_create_without_cart(request, product_id):
                                 price=product.price, 
                                 quantity=1)
       reduce_order_num_products_not_cart(product.id, quantity)
-      task_send_email_order_created.delay(order.id)
+      # task_send_email_order_created.delay(order.id)
       if not order.payment_on_delivery:
         session = stripe_payment(request, order)
         return redirect(session.url, code=303)
@@ -165,7 +165,7 @@ def product_list(request, category_slug=None):
   products = Product.objects.filter(available=True)
   if category_slug:
     category = get_object_or_404(Category, slug=category_slug)
-    products = Product.objects.filter(category=category)
+    products = Product.objects.filter(category=category, available=True)
   return render(request, 'store/product_list.html', {
     'products': products,
     'category': category,

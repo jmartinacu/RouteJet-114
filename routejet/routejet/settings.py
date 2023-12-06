@@ -16,6 +16,12 @@ import environ
 from celery.schedules import crontab
 from datetime import datetime
 
+
+USE_I18N = True
+LANGUAGE_CODE = 'es'
+TIME_ZONE = 'America/Bogota'
+
+
 env = environ.Env(
   DEBUG=(bool, False)
 )
@@ -62,6 +68,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+
 ]
 
 ROOT_URLCONF = 'routejet.urls'
@@ -148,6 +156,12 @@ LOGIN_REDIRECT_URL = "/"
 AUTH_USER_MODEL = 'core.RouteJetUser'
 
 CART_SESSION_ID = 'cart'
+
+FREE_SHIPMENT_PRICE = 400
+
+NORMAL_SHIPMENT_PRICE = 3.99
+
+EXPRESS_SHIPMENT_PRICE = 7.99
 
 # STRIPE 
 
