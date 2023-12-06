@@ -162,10 +162,14 @@ STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')
 #CELERY
 
 CELERY_BEAT_SCHEDULE = {
-  'Task_change_state_orders_schedule' : {
+  'Task_change_state_orders_schedule': {
     'task': 'store.tasks.task_change_state_orders_every_day',
     'schedule': crontab(hour=0, minute=1),
-  }
+  },
+  'Task_payment_on_delivery_paid_schedule': {
+    'task': 'store.tasks.task_payment_on_delivery_paid_every_day',
+    'schedule': crontab(hour=1, minute=1),
+  },
 }
 
 # EMAIL
