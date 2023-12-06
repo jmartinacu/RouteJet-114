@@ -48,7 +48,7 @@ def order_create_without_cart(request, product_id):
                                 price=product.price, 
                                 quantity=1)
       reduce_order_num_products_not_cart(product.id, quantity)
-      task_send_email_order_created.delay(order.id)
+      # task_send_email_order_created.delay(order.id)
       if not order.payment_on_delivery:
         session = stripe_payment(request, order)
         return redirect(session.url, code=303)
@@ -96,7 +96,7 @@ def order_create_with_cart(request):
                                  quantity=item['quantity'])
       
       reduce_order_num_products_cart(cart)
-      task_send_email_order_created.delay(order.id)
+      # task_send_email_order_created.delay(order.id)
       cart.clear()
       if not order.payment_on_delivery:
         session = stripe_payment(request, order)
@@ -173,18 +173,25 @@ def product_list(request, category_slug=None):
     'cart': cart,
   })
 
-
 def search_products(request):
-  query = request.GET.get('q')
-  cart = Cart(request)
-  results = []
-  if query:
-    results = Product.objects.filter(Q(city__icontains=query) )
-  return render(request, 'core/product_filter.html', {'results': results, 'query': query, 'cart': cart})
+    query = request.GET.get('q')
+    results = []
 
-def tracking(request):
-  cart = Cart(request)
-  return render(request, 'store/order_search.html', {'cart': cart})
+    if query:
+        filter_arg = Q(city__icontains=query) | Q(name__icontains=query)
+
+        try:
+            # Attempt to convert the query to a float (for price)
+            price_query = float(query)
+            filter_arg |= Q(price=price_query) | Q(price__lte=price_query)
+        except ValueError:
+            pass
+
+        results = Product.objects.filter(filter_arg)
+
+    return render(request, 'store/product_filter.html', {'results': results, 'query': query})
+def seguimiento(request):
+  return render(request, 'store/order_search.html')
 
 def search_order(request):
   cart = Cart(request)

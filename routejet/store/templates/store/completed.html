@@ -1,10 +1,82 @@
 {% extends "core/base.html" %}
 
-{% block title %} Pago {% endblock title %}
+{% block title %} Pago Completado {% endblock title %}
 
-{% block description %}Pago completado{% endblock description %}
+{% block description %} Tu pago ha sido procesado exitosamente {% endblock description %}
 
 {% block content %}
-  <h1>Tu pago ha sido completado</h1>
-  <p>Tu proceso de pago ha sido procesado exitosamente</p>
+  <style>
+    /* Estilos para hacer el mensaje más grande y moverlo más abajo */
+    #react-container {
+      margin-top: 50px; /* Ajusta según sea necesario */
+    }
+
+    .message {
+      font-size: 2.5em; /* Ajusta según sea necesario */
+    }
+
+    .additional-messages {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .additional-message {
+      font-size: 1.3em; /* Ajusta según sea necesario */
+      margin: 0 10px; /* Espacio alrededor de cada mensaje adicional */
+      white-space: nowrap; /* Evita que los mensajes se rompan en varias líneas */
+    }
+  </style>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 offset-md-2 text-center">
+        <h1 class="mt-5">¡Pago Completado!</h1>
+        <p class="lead">Tu proceso de pago ha sido procesado exitosamente.</p>
+      
+        {# Contenido React directamente en la plantilla #}
+        <div id="react-container" class="component-container">
+          <span class="icon" style="font-size: 8em;">✈️</span>
+          <p class="message">Gracias por realizar tu compra con Route-Jet</p>
+
+          <div class="additional-messages">
+            <span class="additional-message">¡Buen viaje y disfruta!</span>
+            <span class="additional-message">Bon voyage !</span>
+            <span class="additional-message">Gute Reise!</span>
+            <span class="additional-message">良い旅を！</span> <!-- Añadido mensaje en japonés -->
+            <span class="additional-message">فلسطين حرة!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {# Incluir React y ReactDOM #}
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+  {# Renderizar el componente React en el contenedor #}
+  <script>
+    const reactContainer = document.getElementById('react-container');
+
+    // Componente React directamente en la plantilla
+    const HTMLComponent = () => {
+      return (
+        <div class="component-container">
+          <span class="icon" style="font-size: 3em;">✈️</span>
+          <p class="message">Gracias por realizar tu compra con Route-Jet</p>
+
+          <div class="additional-messages">
+            <span class="additional-message">¡Buen viaje y disfruta!</span>
+            <span class="additional-message">Bon voyage!</span>
+            <span class="additional-message">Gute Reise!</span>
+            <span class="additional-message">良い旅を！</span> <!-- Añadido mensaje en japonés -->
+            <span class="additional-message">فلسطين حرة!</span>
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.render(React.createElement(HTMLComponent), reactContainer);
+  </script>
 {% endblock content %}
