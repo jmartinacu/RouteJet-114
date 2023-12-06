@@ -48,7 +48,7 @@ def order_create_without_cart(request, product_id):
                                 price=product.price, 
                                 quantity=1)
       reduce_order_num_products_not_cart(product.id, quantity)
-      # task_send_email_order_created.delay(order.id)
+      task_send_email_order_created.delay(order.id)
       if not order.payment_on_delivery:
         session = stripe_payment(request, order)
         return redirect(session.url, code=303)
@@ -96,7 +96,7 @@ def order_create_with_cart(request):
                                  quantity=item['quantity'])
       
       reduce_order_num_products_cart(cart)
-      # task_send_email_order_created.delay(order.id)
+      task_send_email_order_created.delay(order.id)
       cart.clear()
       if not order.payment_on_delivery:
         session = stripe_payment(request, order)
@@ -174,6 +174,7 @@ def product_list(request, category_slug=None):
   })
 
 def search_products(request):
+    cart = Cart(request)
     query = request.GET.get('q')
     results = []
 
@@ -189,9 +190,11 @@ def search_products(request):
 
         results = Product.objects.filter(filter_arg)
 
-    return render(request, 'store/product_filter.html', {'results': results, 'query': query})
-def seguimiento(request):
-  return render(request, 'store/order_search.html')
+    return render(request, 'store/product_filter.html', {'results': results, 'query': query, 'cart': cart})
+
+def tracking(request):
+  cart = Cart(request)
+  return render(request, 'store/order_search.html', {'cart': cart})
 
 def search_order(request):
   cart = Cart(request)
@@ -233,10 +236,11 @@ def getProductsbyOrders(orders):
 def order_detail(request, order_id):
     cart = Cart(request)
     order = get_object_or_404(Order, id=order_id)
-    return render(request, 'store/order_detail.html', {'order': order})
+    return render(request, 'store/order_detail.html', {'order': order, 'cart': cart})
 
 @login_required
 def create_claim(request):
+    cart = Cart(request)
     if request.method == 'POST':
         form = ClaimForm(request.POST)
         if form.is_valid():
@@ -270,10 +274,11 @@ def create_claim(request):
     else:
         form = ClaimForm()
 
-    return render(request, 'store/create_claim.html', {'form': form})
+    return render(request, 'store/create_claim.html', {'form': form, 'cart': cart})
 
 @login_required
 def claim_history(request):
+    cart = Cart(request)
     user_orders = Order.objects.filter(email=request.user.email)
     claims = Claim.objects.filter(order__in=user_orders)
-    return render(request, 'store/claim_history.html', {'claims': claims})
+    return render(request, 'store/claim_history.html', {'claims': claims, 'cart': cart})

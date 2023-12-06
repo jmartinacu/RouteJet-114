@@ -11,7 +11,7 @@ class OrderCreateForm(forms.ModelForm):
     fields=['first_name', 'last_name', 'email', 'address', 'postal_code', 'city', 'payment_on_delivery']
 
 class AddProductForm(forms.Form):
-  quantity = forms.IntegerField(min_value=0, initial=1)
+  quantity = forms.IntegerField(min_value=0, initial=1, label='Cantidad')
 
   def __init__(self, *args, **kwargs):
     self.cart = kwargs.pop('cart', None)
