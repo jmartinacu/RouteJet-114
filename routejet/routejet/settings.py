@@ -16,6 +16,12 @@ import environ
 from celery.schedules import crontab
 from datetime import datetime
 
+
+USE_I18N = True
+LANGUAGE_CODE = 'es'
+TIME_ZONE = 'America/Bogota'
+
+
 env = environ.Env(
   DEBUG=(bool, False)
 )
@@ -62,6 +68,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+
 ]
 
 ROOT_URLCONF = 'routejet.urls'
@@ -179,3 +187,7 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = env.int('EMAIL_PORT')
 
 EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
+
+FREE_SHIPMENT_PRICE = 400
+NORMAL_SHIPMENT_PRICE = 3,99
+EXPRESS_SHIPMENT_PRICE = 7,99

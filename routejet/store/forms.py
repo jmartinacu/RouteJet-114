@@ -8,7 +8,7 @@ from .cart import Cart
 class OrderCreateForm(forms.ModelForm):
   class Meta:
     model=Order
-    fields=['first_name', 'last_name', 'email', 'address', 'postal_code', 'city', 'payment_on_delivery']
+    fields=['first_name', 'last_name', 'email', 'address', 'postal_code', 'city', 'payment_on_delivery','shipping_type']
 
 class AddProductForm(forms.Form):
   quantity = forms.IntegerField(min_value=0, initial=1)
