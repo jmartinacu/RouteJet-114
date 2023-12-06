@@ -23,6 +23,9 @@ class SignUpForm(UserCreationForm):
   username = forms.CharField(widget=forms.TextInput(attrs={
     'placeholder': 'Usuario',
   }))
+  first_name = forms.CharField(max_length=30, help_text='Enter your first name.')
+    
+  last_name = forms.CharField(max_length=30, help_text='Enter your last name.')
 
   password1 = forms.CharField(widget=forms.PasswordInput(attrs={
     'placeholder': 'Contraseña',
