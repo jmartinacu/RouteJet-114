@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.urls import reverse
 from django.conf import settings
+from decimal import *
 
 class Order(models.Model):
     class ShipmentState(models.TextChoices):
@@ -11,8 +12,8 @@ class Order(models.Model):
         DELIVERED = "D", _("Entregado")
 
     class ShippingType(models.TextChoices):
-       NORMAL = 'normal', _('Normal')
-       EXPRESS = 'express', _('Express')
+       NORMAL = 'N', _('Normal')
+       EXPRESS = 'E', _('Express')
 
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -29,7 +30,7 @@ class Order(models.Model):
         default=ShipmentState.PREADMISSION
     )
     shipping_type = models.CharField(
-        max_length=10,
+        max_length=1,
         choices=ShippingType.choices,
         default=ShippingType.NORMAL,  
     )
@@ -45,11 +46,19 @@ class Order(models.Model):
 
     def get_total_cost(self):
         items_price = sum([item.get_cost() for item in self.items.all()])
-        if self.shipping_type == ShippingType.EXPRESS:
-            items_price += settings.EXPRESS_SHIPMENT_PRICE
-        elif items_price < settings.FREE_SHIPMENT_PRICE and ShippingType.NORMAL == self.shipping_type:
-            items_price += settings.NORMAL_SHIPMENT_PRICE
+        if self.shipping_type == self.ShippingType.EXPRESS:
+            items_price += Decimal(settings.EXPRESS_SHIPMENT_PRICE)
+        elif items_price < Decimal(settings.FREE_SHIPMENT_PRICE) and self.ShippingType.NORMAL == self.shipping_type:
+            items_price += Decimal(settings.NORMAL_SHIPMENT_PRICE)
         return items_price
+    
+    def get_shipping_cost(self):
+        shipping_cost = Decimal(0)
+        if self.shipping_type == self.ShippingType.EXPRESS:
+            shipping_cost += Decimal(settings.EXPRESS_SHIPMENT_PRICE)
+        elif self.get_total_cost() < Decimal(settings.FREE_SHIPMENT_PRICE) and self.ShippingType.NORMAL == self.shipping_type:
+            shipping_cost += Decimal(settings.NORMAL_SHIPMENT_PRICE)
+        return shipping_cost
     
 
     def get_stripe_url(self):

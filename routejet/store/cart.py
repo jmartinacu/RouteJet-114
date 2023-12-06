@@ -57,16 +57,6 @@ class Cart:
   def get_total_price(self):
     return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
   
-  def get_total_cost_with_delivery(self, shipping_type):
-          total_cost = self.get_total_price()
-
-          if shipping_type == Order.ShippingType.EXPRESS:
-              total_cost += 7.99
-          elif shipping_type == Order.ShippingType.NORMAL and total_cost < 400:
-              total_cost += 3.99
-
-          return total_cost
-  
   def clear(self):
     del self.session[settings.CART_SESSION_ID]
     self.save()

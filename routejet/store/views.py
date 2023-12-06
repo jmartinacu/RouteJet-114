@@ -95,7 +95,7 @@ def order_create_with_cart(request):
                                  quantity=item['quantity'])
       
       reduce_order_num_products_cart(cart)
-       # task_send_email_order_created.delay(order.id)
+      task_send_email_order_created.delay(order.id)
       cart.clear()
       if not order.payment_on_delivery:
         session = stripe_payment(request, order)
@@ -161,7 +161,7 @@ def product_list(request, category_slug=None):
   products = Product.objects.filter(available=True)
   if category_slug:
     category = get_object_or_404(Category, slug=category_slug)
-    products = Product.objects.filter(category=category)
+    products = Product.objects.filter(category=category, available=True)
   return render(request, 'store/product_list.html', {
     'products': products,
     'category': category,
