@@ -1,0 +1,28 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %} Crear Reclamación {% endblock title %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
+{% endblock header %}
+
+{% block description %}
+  <h2 class="text-center">Crear Reclamación</h2>
+{% endblock description %}
+
+{% block content %}
+  <div class="container text-center">
+    <form method="post" action="{% url "store:create_claim" %}" class="mx-auto">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Enviar Reclamación</button>
+    </form>
+      <style>
+        .errorlist {
+          color: red;
+        }
+      </style>
+  </div>
+{% endblock content %}

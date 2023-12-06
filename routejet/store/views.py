@@ -4,12 +4,12 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
-from store.models import Order, OrderItem
+from store.models import Order, OrderItem, Claim
 from product.models import Product
 from .models import Order
 from .models import Category, OrderItem
 from .cart import Cart
-from .forms import OrderCreateForm, AddProductForm
+from .forms import OrderCreateForm, AddProductForm, ClaimForm
 from core.models import RouteJetUser
 from .utils import stripe_payment, reduce_order_num_products_cart, reduce_order_num_products_not_cart
 from .tasks import task_send_email_order_created
@@ -233,4 +233,47 @@ def getProductsbyOrders(orders):
 def order_detail(request, order_id):
     cart = Cart(request)
     order = get_object_or_404(Order, id=order_id)
-    return render(request, 'store/order_detail.html', {'order': order, 'cart': cart})
+    return render(request, 'store/order_detail.html', {'order': order})
+
+@login_required
+def create_claim(request):
+    if request.method == 'POST':
+        form = ClaimForm(request.POST)
+        if form.is_valid():
+            order_id = form.cleaned_data['order_id']
+            claim_text = form.cleaned_data['claim_text']
+            
+            # Verifica si existe una orden con la ID proporcionada
+            try:
+                # Intenta obtener la orden, maneja la excepción si no se encuentra
+                order = Order.objects.get(id=order_id)
+            except Order.DoesNotExist:
+                form.add_error('order_id', 'La orden no existe.')
+                return render(request, 'store/create_claim.html', {'form': form})
+
+             # Verifica que la orden esté relacionada con el usuario actual
+            if order.email != request.user.email:
+                form.add_error('order_id', 'La orden no está relacionada con el usuario actual.')
+                return render(request, 'store/create_claim.html', {'form': form})
+            
+            # Verifica si ya existe una reclamación para la misma orden
+            existing_claim = Claim.objects.filter(order=order).first()
+            if existing_claim:
+                form.add_error('order_id', 'Ya existe una reclamación para esta orden.')
+                return render(request, 'store/create_claim.html', {'form': form})
+
+            # Crea la reclamación utilizando la relación con Order
+            claim = Claim(order=order, claim_text=claim_text)
+            claim.save()
+
+            return redirect('core:index')  # Puedes definir una URL de éxito
+    else:
+        form = ClaimForm()
+
+    return render(request, 'store/create_claim.html', {'form': form})
+
+@login_required
+def claim_history(request):
+    user_orders = Order.objects.filter(email=request.user.email)
+    claims = Claim.objects.filter(order__in=user_orders)
+    return render(request, 'store/claim_history.html', {'claims': claims})

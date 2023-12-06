@@ -31,4 +31,7 @@ class AddProductForm(forms.Form):
         msg =  f'Solamente quedan { product.num_products - cart_product["quantity"]} tickets'
       self.add_error('quantity', msg)
     return cleaned_data
-    
+
+class ClaimForm(forms.Form):
+    order_id = forms.IntegerField(label="Id Reclamación", widget=forms.TextInput(attrs={'class': 'form-control'}))
+    claim_text = forms.CharField(label="Descripcion", widget=forms.Textarea(attrs={'class': 'form-control'}))
