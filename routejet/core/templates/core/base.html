@@ -32,6 +32,7 @@
     </section>
     <section class="base-header-secondary">
       <h2>{% block description %}{% endblock description %}</h2>
+      {% if cart.len > 0 %}
       <div id="header">
         <a href="{% url "store:cart_detail" %}">
           <img 
@@ -42,6 +43,18 @@
           >
         </a>
       </div>
+      {% else %}
+      <div id="header">
+        <a href="{% url "store:cart_detail" %}">
+          <img 
+            src="{% static "images/not_shopping_cart.png" %}"
+            width="30"
+            height="30"
+            style="margin-left:800px"
+          >
+        </a>
+      </div>
+      {% endif %}
   </header>
   <main>
     {% block content %}
@@ -83,7 +96,7 @@
               <i class="fas fa-gem me-3"></i> Universidad de Sevilla
             </h6>
             <p>
-              Somos una de las universidades más antiguas, teniendo mas de 500 años de historia, y la tercera universidad mas grande de España
+                 Somos una de las universidades más antiguas, teniendo mas de 500 años de historia, y la tercera universidad mas grande de España
             </p>
           </div>
           <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">

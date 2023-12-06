@@ -93,11 +93,17 @@
                 {% endif %}
 {% endfor %}
 
+ {% if request.user.is_authenticated %}
+<h3>Opina sobre {{product.name}}</h3>
 <form method="post" action="{{product.get_absolute_url2}} ">
     {% csrf_token %}
 
     {{form2.as_p}}
     <input type="submit" value="Opinar">
 </form>
+
+{% else %}
+<p>Para opinar debes estar registrado</p>
+{% endif %}
 
 {% endblock content %}
