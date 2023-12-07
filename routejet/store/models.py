@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.conf import settings
+from django.urls import reverse
 from decimal import *
 
 class Order(models.Model):
@@ -92,6 +93,12 @@ class Category(models.Model):
         if self.slug != self.country:
             self.slug = slugify(self.country)
         super(Category, self).save(*args, **kwargs)
+    
+    def __str__(self) -> str:
+        return self.country
+
+    def get_absolute_url(self):
+        return reverse("store:product_list_by_category", args=[self.slug])
 
     class Meta:
         ordering = ['country']

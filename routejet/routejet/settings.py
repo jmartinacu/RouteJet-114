@@ -14,11 +14,11 @@ from pathlib import Path
 import os
 import environ
 from celery.schedules import crontab
-from datetime import datetime
-
 
 USE_I18N = True
+
 LANGUAGE_CODE = 'es'
+
 TIME_ZONE = 'America/Bogota'
 
 
