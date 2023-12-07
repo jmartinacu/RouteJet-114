@@ -3,8 +3,10 @@ from decimal import Decimal
 
 from product.models import Product
 
+
+
 class Cart:
-  def __init__(self, request) -> None:
+  def __init__(self, request ,shipping_type=None) -> None:
     """ 
     Initialize the cart
     """
@@ -13,6 +15,8 @@ class Cart:
     if not cart:
       cart = self.session[settings.CART_SESSION_ID] = {}
     self.cart = cart
+    
+    self.shipping_type = shipping_type 
 
   def add(self, product, quantity=1, override_quantity=False):
     product_id = str(product.id)

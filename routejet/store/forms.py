@@ -8,10 +8,10 @@ from .cart import Cart
 class OrderCreateForm(forms.ModelForm):
   class Meta:
     model=Order
-    fields=['first_name', 'last_name', 'email', 'address', 'postal_code', 'city', 'payment_on_delivery']
+    fields=['first_name', 'last_name', 'email', 'address', 'postal_code', 'city', 'payment_on_delivery','shipping_type']
 
 class AddProductForm(forms.Form):
-  quantity = forms.IntegerField(min_value=0, initial=1)
+  quantity = forms.IntegerField(min_value=0, initial=1, label='Cantidad')
 
   def __init__(self, *args, **kwargs):
     self.cart = kwargs.pop('cart', None)
@@ -31,4 +31,7 @@ class AddProductForm(forms.Form):
         msg =  f'Solamente quedan { product.num_products - cart_product["quantity"]} tickets'
       self.add_error('quantity', msg)
     return cleaned_data
-    
+
+class ClaimForm(forms.Form):
+    order_id = forms.IntegerField(label="Id Reclamación", widget=forms.TextInput(attrs={'class': 'form-control'}))
+    claim_text = forms.CharField(label="Descripcion", widget=forms.Textarea(attrs={'class': 'form-control'}))

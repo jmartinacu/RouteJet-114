@@ -16,6 +16,12 @@ import environ
 from celery.schedules import crontab
 from datetime import datetime
 
+
+USE_I18N = True
+LANGUAGE_CODE = 'es'
+TIME_ZONE = 'America/Bogota'
+
+
 env = environ.Env(
   DEBUG=(bool, False)
 )
@@ -61,6 +67,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+
 ]
 
 ROOT_URLCONF = 'routejet.urls'
@@ -148,6 +156,12 @@ AUTH_USER_MODEL = 'core.RouteJetUser'
 
 CART_SESSION_ID = 'cart'
 
+FREE_SHIPMENT_PRICE = 400
+
+NORMAL_SHIPMENT_PRICE = 3.99
+
+EXPRESS_SHIPMENT_PRICE = 7.99
+
 # STRIPE 
 
 STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
@@ -161,10 +175,14 @@ STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')
 #CELERY
 
 CELERY_BEAT_SCHEDULE = {
-  'Task_change_state_orders_schedule' : {
+  'Task_change_state_orders_schedule': {
     'task': 'store.tasks.task_change_state_orders_every_day',
     'schedule': crontab(hour=0, minute=1),
-  }
+  },
+  'Task_payment_on_delivery_paid_schedule': {
+    'task': 'store.tasks.task_payment_on_delivery_paid_every_day',
+    'schedule': crontab(hour=1, minute=1),
+  },
 }
 
 # EMAIL

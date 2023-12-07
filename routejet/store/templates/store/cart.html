@@ -1,12 +1,16 @@
 {% extends "core/base.html" %}
 
+
 {% block title %} Carrito {% endblock title %}
 
 {% block description %}Tu carrito de compra{% endblock description %}
 
 {% block content %}
-  {% if cart.len == 0 %}
-    <h1>El carro está vacío</h1>
+{% if cart.len == 0 %}
+<div style="text-align: center;">
+  <h1>El carro está vacío</h1>
+
+</div>
   {% else %}
     <div class="container">
       <div class="table-wrap">
@@ -112,3 +116,4 @@
     text-align: center;
   }
 </style>
+

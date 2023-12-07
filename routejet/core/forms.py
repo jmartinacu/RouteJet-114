@@ -42,4 +42,4 @@ class SignUpForm(UserCreationForm):
   }))
 
 class OrderSearchForm(forms.Form):
-  search_query = forms.CharField(label='Buscar', required=False)
+  search_query = forms.CharField(label='', required=False)
