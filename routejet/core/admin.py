@@ -4,8 +4,15 @@ from django.contrib import admin
 
 from .models import RouteJetUser
 
+
 @admin.register(RouteJetUser)
-
 class RouteJetUserAdmin(admin.ModelAdmin):
-  list_display= ('username', 'email', 'city', 'address', 'is_active', 'is_staff', 'is_superuser')
-
+    list_display = (
+        'username',
+        'email',
+        'city',
+        'address',
+        'is_active',
+        'is_staff',
+        'is_superuser'
+    )
