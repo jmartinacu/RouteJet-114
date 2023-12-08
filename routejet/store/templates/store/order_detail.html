@@ -16,11 +16,11 @@
 
     <div class="col-md-6">
       <h4>Información de Pago</h4>
-      {% if order.stripe %}
-        <p><strong>ID de pago:</strong> {{ order.stripe_payment.stripe_checkout_id }}</p>
-        <p><strong>Pago realizado:</strong> {% if order.stripe_payment.payment_bool %}Sí{% else %}No{% endif %}</p>
-      {% else %}
+      {% if order.payment_on_delivery %}
         <p><em>Pago contra reembolso.</em></p>
+      {% else %}
+        <p><strong>ID de pago:</strong> {{ order.stripe_id }}</p>
+        <p><strong>Pago realizado:</strong> {% if order.paid %}Sí{% else %}No{% endif %}</p>
       {% endif %}
     </div>
   </div>

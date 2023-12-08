@@ -4,12 +4,14 @@ from django.contrib import admin
 
 from .models import Product, Review
 
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'available', 'start_date', 'end_date')
-    list_filter = ('available', 'city', 'start_date', 'end_date' )
+    list_filter = ('available', 'city', 'start_date', 'end_date')
     list_editable = ('start_date', 'end_date', 'price', 'available')
     exclude = ['slug', ]
+
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):

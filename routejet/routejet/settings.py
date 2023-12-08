@@ -23,7 +23,7 @@ TIME_ZONE = 'America/Bogota'
 
 
 env = environ.Env(
-  DEBUG=(bool, False)
+    DEBUG=(bool, False)
 )
 environ.Env.read_env()
 
@@ -43,13 +43,12 @@ DEBUG = env('DEBUG')
 ALLOWED_HOSTS = []
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes', 
+    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -76,7 +75,7 @@ ROOT_URLCONF = 'routejet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [], 
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -162,7 +161,7 @@ NORMAL_SHIPMENT_PRICE = 3.99
 
 EXPRESS_SHIPMENT_PRICE = 7.99
 
-# STRIPE 
+# STRIPE
 
 STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
 
@@ -172,17 +171,17 @@ STRIPE_API_VERSION = env('STRIPE_API_VERSION')
 
 STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')
 
-#CELERY
+# CELERY
 
 CELERY_BEAT_SCHEDULE = {
-  'Task_change_state_orders_schedule': {
-    'task': 'store.tasks.task_change_state_orders_every_day',
-    'schedule': crontab(hour=0, minute=1),
-  },
-  'Task_payment_on_delivery_paid_schedule': {
-    'task': 'store.tasks.task_payment_on_delivery_paid_every_day',
-    'schedule': crontab(hour=1, minute=1),
-  },
+    'Task_change_state_orders_schedule': {
+        'task': 'store.tasks.task_change_state_orders_every_day',
+        'schedule': crontab(hour=0, minute=1),
+    },
+    'Task_payment_on_delivery_paid_schedule': {
+        'task': 'store.tasks.task_payment_on_delivery_paid_every_day',
+        'schedule': crontab(hour=1, minute=1),
+    },
 }
 
 # EMAIL
