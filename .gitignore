@@ -164,3 +164,9 @@ cython_debug/
 .vscode
 
 routejet/media/products/*
+!routejet/media/products/barcelona.jpeg
+!routejet/media/products/berlin.jpeg
+!routejet/media/products/madrid.jpeg
+!routejet/media/products/mexico.jpeg
+!routejet/media/products/sevilla.jpeg
+!routejet/media/products/tokyo.jpeg
