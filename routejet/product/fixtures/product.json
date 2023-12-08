@@ -1,0 +1,157 @@
+[
+
+
+    {
+        "model": "store.category",
+        "pk": 1,
+        "fields": {
+          "country": "España",
+          "slug": "espana"
+        }
+      },
+      {
+        "model": "store.category",
+        "pk": 2,
+        "fields": {
+          "country": "Japón",
+          "slug": "japon"
+        }
+      },
+      {
+        "model": "store.category",
+        "pk": 3,
+        "fields": {
+          "country": "Alemania",
+          "slug": "alemania"
+        }
+      },
+      {
+        "model": "store.category",
+        "pk": 4,
+        "fields": {
+          "country": "Mexico",
+          "slug": "mexico"
+        }
+      },
+    {
+        "model": "product.Product",
+        "pk": 1,
+        "fields": {
+            "category": 1,
+            "name": "Viaje a Barcelona",
+            "city": "Barcelona",
+            "slug": "viaje-a-barcelona",
+            "image": "/products/barcelona.jpeg",
+            "description": "Experimenta la belleza de Barcelona con nuestro increíble paquete de viaje.",
+            "price": "140.00",
+            "available": true,
+            "num_products": 250,
+            "start_date": "2025-01-01",
+            "end_date": "2025-01-09",
+            "created": "2023-12-08T00:00:00Z",
+            "updated": "2023-12-08T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.Product",
+        "pk": 2,
+        "fields": {
+            "category": 1,
+            "name": "Viaje a Sevilla",
+            "city": "Sevilla",
+            "slug": "viaje-a-sevilla",
+            "image": "/products/sevilla.jpeg",
+            "description": "Experimenta el arte de la capital Andaluza.",
+            "price": "70.00",
+            "available": true,
+            "num_products": 130,
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-02",
+            "created": "2023-12-08T00:00:00Z",
+            "updated": "2023-12-08T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.Product",
+        "pk": 3,
+        "fields": {
+            "category": 1,
+            "name": "Viaje a Madrid",
+            "city": "Madrid",
+            "slug": "viaje-a-madrid",
+            "image": "/products/madrid.jpeg",
+            "description": "Ven con nosotros a la capital de España.",
+            "price": "200",
+            "available": true,
+            "num_products": 500,
+            "start_date": "2023-01-01",
+            "end_date": "2023-01-15",
+            "created": "2023-12-08T00:00:00Z",
+            "updated": "2023-12-08T00:00:00Z"
+        }
+        
+    } ,
+    {
+        "model": "product.Product",
+        "pk": 4,
+        "fields": {
+            "category": 3,
+            "name": "Viaje a Berlin",
+            "city": "Berlin",
+            "slug": "viaje-a-berlin",
+            "image": "/products/berlin.jpg",
+            "description": "Ven a la capital de Alemania Berlin ,una de las ciudades mas innovadoras de Europa.",
+            "price": "500",
+            "available": true,
+            "num_products": 500,
+            "start_date": "2023-01-07",
+            "end_date": "2023-01-15",
+            "created": "2023-12-08T00:00:00Z",
+            "updated": "2023-12-08T00:00:00Z"
+        }
+        
+    },
+    {
+        "model": "product.Product",
+        "pk": 5,
+        "fields": {
+            "category": 2,
+            "name": "Viaje a Tokyo",
+            "city": "Tokyo",
+            "slug": "viaje-a-tokyo",
+            "image": "/products/tokyo.jpg",
+            "description": "Ven a la capital de Japón Tokyo ,una de las ciudades mas espectaculares del mundo.",
+            "price": "1000",
+            "available": true,
+            "num_products": 500,
+            "start_date": "2023-01-07",
+            "end_date": "2023-01-30",
+            "created": "2023-12-08T00:00:00Z",
+            "updated": "2023-12-08T00:00:00Z"
+        }
+        
+    },
+    {
+        "model": "product.Product",
+        "pk": 6,
+        "fields": {
+            "category": 4,
+            "name": "Viaje a Ciudad de Mexico",
+            "city": "Mexico",
+            "slug": "viaje-a-mexico",
+            "image": "/products/mexico.jpeg",
+            "description": "Ven a la capital de Mexico se respira la cultura y el arte en esta ciudad.",
+            "price": "1020",
+            "available": true,
+            "num_products": 500,
+            "start_date": "2023-02-07",
+            "end_date": "2023-03-01",
+            "created": "2023-12-08T00:00:00Z",
+            "updated": "2023-12-08T00:00:00Z"
+        }
+        
+    }
+
+
+   
+]
