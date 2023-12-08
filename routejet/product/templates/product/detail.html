@@ -67,6 +67,8 @@
           <p class="price">Precio: {{ product.price }}€</p>
           <p class="numero de tickets">Numero de tickets: {{ product.num_products }}</p>
           <p class="descripción">Descripción:  {{ product.description }}</p>
+          <p class="Fecha de Inicio">Desde {{ product.start_date }} , hasta  {{ product.end_date }}.</p>
+         
           
           <form action="{% url "store:cart_add" product_id=product.id %}?origin=detail" method="post" class="mb-3">
             <div style= " padding-bottom:40px ">
