@@ -91,9 +91,9 @@
           </form> 
           <form action="{% url "store:order_create_without_cart" product.id %}" method="get" >
             <label for="quantity" >Cantidad :     </label>
-            <input type="number" name="quantity" id="quantity" min="1" required>
+            <input type="number" name="quantity" id="quantity" min="1" value="1" required>
             <button type="submit" class="btn btn-primary mr-2" class="d-flex align-items-center">
-            <i class="fas fa-shopping-cart"></i>  Comprar   Ahora
+            <i class="fas fa-shopping-cart"></i>  Comprar ahora
             </button>
           </form>
         </div>

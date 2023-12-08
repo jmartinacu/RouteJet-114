@@ -1,15 +1,19 @@
 # core/views.py
-from django.contrib.auth.views import LoginView
-from django.views.generic.edit import CreateView
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from store.cart import Cart
 
 from .forms import SignUpForm 
+from product.models import Product
 
 def home(request):
   cart = Cart(request)
-  return render(request, 'core/index.html',{"usuario":request.user, 'cart': cart})
+  featured_cities = ['Viaje a Barcelona', 'Viaje a Madrid', 'Viaje a Sevilla']
+  featured_products = Product.objects.filter(name__in=featured_cities)
+  return render(request, 'core/index.html',{
+    'cart': cart, 
+    'featured_products': featured_products
+  })
 
 def signup(request):
   cart = Cart(request)
