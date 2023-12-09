@@ -21,10 +21,10 @@ LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'America/Bogota'
 
-
 env = environ.Env(
     DEBUG=(bool, False)
 )
+
 environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -172,6 +172,8 @@ STRIPE_API_VERSION = env('STRIPE_API_VERSION')
 STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')
 
 # CELERY
+
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://localhost:6377')
 
 CELERY_BEAT_SCHEDULE = {
     'Task_change_state_orders_schedule': {
