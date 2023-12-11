@@ -2,15 +2,33 @@ services:
 
   web:
     build: .
-    working_dir: /routejet
-    command: celery -A routejet worker --beat && python manage.py runserver 0.0.0.0:8000
+    working_dir: /routejet/
+    command: sh launch_docker.sh
     restart: always
     volumes:
       - .:/routejet
     ports: 
       - "8000:8000"
     environment:
-      - CELERY_BROKER_URL=redis://redis:6379
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_BACKEND_URL=redis://redis:6379/0
+      - DJANGO_SUPERUSER_EMAIL=admin@gmail.com
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_PASSWORD=admin
+    depends_on:
+      - redis 
+      - celery
+  
+  celery:
+    build: .
+    working_dir: /routejet/routejet
+    command: celery -A routejet worker --beat
+    restart: always
+    volumes:
+      - .:/routejet
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_BACKEND_URL=redis://redis:6379/0
     depends_on:
       - redis
 

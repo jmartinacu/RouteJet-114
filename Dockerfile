@@ -12,4 +12,4 @@ RUN pip install -r requirements.txt
 
 COPY . /routejet/
 
-RUN python routejet/manage.py loaddata product.json
+RUN rm -rf /routejet/celerybeat.pid
