@@ -1,0 +1,35 @@
+body {
+    background-size: cover;
+    background-position: center;
+}
+
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.login-form {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 400px;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+
+}
+
+.login-logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color:#28a745; 
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-btn {
+    background-color:#28a745; 
+    color: #ffffff;
+            
+}
