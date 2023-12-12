@@ -67,7 +67,7 @@ class Product(models.Model):
 
 
 @receiver(post_delete, sender=Product)
-def post_save_image(_sender, instance, **kwargs):
+def post_save_image(sender, instance, **kwargs):
     """ Clean Old Image file """
     try:
         instance.image.delete(save=False)

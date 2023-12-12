@@ -21,10 +21,10 @@ LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'America/Bogota'
 
-
 env = environ.Env(
     DEBUG=(bool, False)
 )
+
 environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,7 +40,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -137,6 +137,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
@@ -172,6 +173,16 @@ STRIPE_API_VERSION = env('STRIPE_API_VERSION')
 STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')
 
 # CELERY
+
+CELERY_BROKER_URL = env(
+    'CELERY_BROKER_URL',
+    default='redis://localhost:6377/0'
+)
+
+CELERY_RESULT_BACKEND = env(
+    'CELERY_BACKEND_URL',
+    default='redis://localhost:6377/0'
+)
 
 CELERY_BEAT_SCHEDULE = {
     'Task_change_state_orders_schedule': {

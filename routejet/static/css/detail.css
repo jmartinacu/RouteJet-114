@@ -1,0 +1,19 @@
+.detail-article-main {
+  display: grid;
+  grid-template-columns: 0.7fr 1fr;
+}
+
+article > section {
+  align-self: center;
+}
+
+.detail-nav-submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.detail-nav-submit > :first-child {
+  margin-right: 10px;
+}
+
