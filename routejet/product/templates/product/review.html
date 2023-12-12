@@ -1,0 +1,163 @@
+
+
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %} Ficha Producto {% endblock %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/detail.css" %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif; /* Cambia 'Roboto' por la fuente que prefieras */
+    }
+
+    .checked {
+      color: orange;
+    }
+
+    .opinion-section {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    .opinion-form,
+
+    .opinion-card {
+      border-radius: 10px;
+      padding: 15px;
+      max-width: 600px;
+      margin: 0 auto;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .opinion-form {
+      flex-basis: 40%;
+      background-color: #f9f9f9; /* Color de fondo para la caja de opinar */
+      margin-right: 20px;
+      max-height:600px;
+
+    }
+
+    .opinion-card {
+      flex-basis: 50%;
+      background-color: #e6f7ff;
+      margin-left: 20px;
+
+    }
+
+    .opinion-card hr {
+      margin-top: 10px;
+      margin-bottom: 50px;
+      max-width: 40px;
+
+    }
+
+    .rating {
+      margin-top: 10px;
+      border: none;
+      float: left;
+    }
+
+    .rating > label {
+      color: #9C9C9C;
+      font-size: 1.0em;
+      float: right;
+      margin-bottom: 10px;
+    }
+
+    .rating > label:before {
+      margin-bottom: 15px;
+      font-size: 1.0em;
+      font-family: FontAwesome;
+      content: "\f005";
+      display: inline-block;
+    }
+
+    .rating > input {
+      display: none;
+      margin: 0 auto;
+    }
+
+    .rating > input:checked ~ label,
+    .rating:not(:checked) > label:hover,
+    .rating:not(:checked) > label:hover ~ label {
+      color: #F79426;
+    }
+
+    .rating > input:checked + label:hover,
+    .rating > input:checked ~ label:hover,
+    .rating > label:hover ~ input:checked ~ label,
+    .rating > input:checked ~ label:hover ~ label {
+      color: #FECE31;
+    }
+
+    #star {
+      color: grey;
+    }
+
+    #check-star {
+      font-size: 1em;
+    }
+  </style>
+{% endblock header %}
+
+{% block description %} {{ product.name }} {% endblock description %}
+
+{% block content %}
+  <h2 style= "padding-left:670px ">Opiniones</h2>
+  <div class="opinion-section">
+    <div class="opinion-form">
+      <p>{{ product.name }} tiene {{ reviews|length }} opiniones:</p>
+      <div class="opinion-form">
+        <h3>Opina sobre {{ product.name }}</h3>
+        <form method="post" action="{{ product.get_absolute_url2 }}">
+          {% csrf_token %}
+          {{ form2.as_p }}
+          <button type="submit" class="btn btn-primary">Opinar</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="opinion-card">
+      {% for x in reviews %}
+        <div class="opinion-card">
+          <p>{{ x.user }}</p>
+          <p>{{ x.description }}</p>
+          {% if x.valoration > 0 %}
+            <div class="rating">
+              <input type="radio" id="star5" name="rating{{ forloop.counter }}" value="5" {% if x.valoration == 5 %}checked{% endif %} disabled />
+              <label for="star5"></label>
+              <input type="radio" id="star4" name="rating{{ forloop.counter }}" value="4" {% if x.valoration == 4 %}checked{% endif %} disabled />
+              <label for="star4"></label>
+              <input type="radio" id="star3" name="rating{{ forloop.counter }}" value="3" {% if x.valoration == 3 %}checked{% endif %} disabled />
+              <label for="star3"></label>
+              <input type="radio" id="star2" name="rating{{ forloop.counter }}" value="2" {% if x.valoration == 2 %}checked{% endif %} disabled />
+              <label for="star2"></label>
+              <input type="radio" id="star1" name="rating{{ forloop.counter }}" value="1" {% if x.valoration == 1 %}checked{% endif %} disabled />
+              <label for="star1"></label>
+            </div>
+            <hr>
+          {% else %}
+            <div class="rating">
+              <input type="radio" id="star" name="rating{{ forloop.counter }}" value="1" disabled />
+              <label for="star"></label>
+            </div>
+            <hr>
+            <span>Este producto aún no tiene opiniones</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      {% if request.user.is_authenticated %}
+        <!-- Contenido adicional si el usuario está autenticado -->
+      {% else %}
+        <p>Para opinar debes estar registrado</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock content %}

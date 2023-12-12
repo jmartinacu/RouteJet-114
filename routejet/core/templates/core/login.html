@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %} Inicia Sesión {% endblock title %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/login.css" %}">
+{% endblock header %}
+
+{% block content %}
+  <div class="login-container">
+    <div class="login-form">
+      <div class="login-logo">
+        <i class="fas fa-crow me-2" style="color: #007bff;"></i> Iniciar Sesión
+      </div>
+
+      <form method="post" action="{% url 'core:login' %}">
+        {% csrf_token %}
+
+        <div class="mb-4">
+          <label for="form2Example18" class="form-label" style="width: 100%; margin: 0 auto; text-align: center; margin-bottom: 10px;">Nombre de usuario</label>
+          <div class="input-container" style="width: 80%; margin: 0 auto; text-align: center;">
+                  {{ form.username }}
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="form2Example28" class="form-label" style="width: 100%; margin: 0 auto; text-align: center;     margin-bottom: 10px;">Contraseña</label>
+          <div class="input-container" style="width: 80%; margin: 0 auto; text-align: center;">
+          {{ form.password }}
+           </div>
+
+        </div>
+
+        <div class="mb-4">
+          <button class="btn btn-info btn-lg btn-block login-btn"  type="submit">Enviar</button>
+        </div>
+
+        <p>No tienes una cuenta todavía? <a href="{% url 'core:signup' %}" class="link-info">Regístrate aquí</a></p>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

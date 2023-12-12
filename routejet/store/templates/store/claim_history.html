@@ -1,0 +1,52 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %} Historial de Reclamaciones {% endblock title %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
+{% endblock header %}
+
+{% block description %}
+  <h2>Historial de Reclamaciones</h2>
+{% endblock description %}
+
+{% block content %}
+<div style="padding-right: 20px ;">
+  <a href="{% url 'store:create_claim' %}" class="btn btn-primary">Crear reclamación</a>
+</div>
+  <table class="table mx-auto">
+    <thead>
+      <tr>
+        <th>ID de la reclamación</th>
+        <th>Orden asociada</th>
+        <th>Texto de la reclamación</th>
+        <th>Fecha de creación</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for claim in claims %}
+        <tr>
+          <td>{{ claim.id }}</td>
+          <td><a href="{% url 'store:order_detail' claim.order.id %}">{{ claim.order.id }}</a></td>
+          <td>{{ claim.claim_text }}</td>
+          <td>{{ claim.created }}</td>
+          <td>{{ claim.get_state_display }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <style>
+    .table {
+      width: 80%;
+      margin: auto;
+    }
+    .btn-primary {
+    margin-top: 5px;
+    float: right; 
+    }
+  </style>
+{% endblock content %}

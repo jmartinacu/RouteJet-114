@@ -1,0 +1,29 @@
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+}
+
+.card {
+    border-radius: 15px;
+    width: 400px; 
+    margin: auto; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+    margin-right: 500px;
+    margin-top: 80px;
+    margin-bottom: 20px;
+}
+
+.gradient-custom-3 {
+    background: linear-gradient(to right, #fc00ff, #00dbde);
+}
+
+.text-body {
+    color: #000 !important; /* Ajusta el color del texto según tus preferencias */
+}
+
+.btn-custom {
+    background: linear-gradient(to right, #4e73df, #9453a3) !important;            
+    color: #fff !important;
+}

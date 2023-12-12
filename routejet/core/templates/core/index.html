@@ -1,0 +1,82 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %} Escaparate {% endblock title %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
+{% endblock header %}
+
+{% block description %}¿Quienes somos?{% endblock description %}
+
+
+{% block content %}
+  <article>
+    <div class="index-div-first-section-header">
+      <h3>¿Dónde te gustaría viajar?</h3>
+      <form action="{% url 'store:search_products' %}" role="search" method="get">
+        {% csrf_token %}
+        <label for="search" style="padding-left: 190px;">
+            <input type="search" name="q" placeholder="Busca tu destino">
+        </label>
+      </form>
+    
+    </div>
+    <section class="index-section-description">
+      <p>
+        En <strong>RouteJet</strong>, nos dedicamos a hacer realidad tus viajes soñados. Con una pasión por la excelencia y la satisfacción del cliente, ofrecemos rutas exclusivas y experiencias inolvidables
+      </p>
+      <img 
+        src="{% static "images/mundo.jpeg" %}" 
+        alt="Imagen de los monumentos mas importantes"
+        width="500"
+        height="250"
+      >
+    </section>
+    <h3 class="index-div-second-section-header">Destinos destacados:</h3>
+    <section class="index-section-images">
+      {% for product in featured_products %}
+      <div class="index-div-image">
+        <h4>{{ product.city }}</h4>
+        <a href="{{ product.get_absolute_url }}">
+          <img 
+            src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" 
+            alt="{{ product.name }}"
+            width="400"
+            height="200"
+          >
+        </a>
+      </div>
+      {% endfor %}
+      {% comment %} <div class="index-div-image">
+        <h4>Sevilla</h4>
+        <img 
+          src="{% static "images/sevilla.jpeg" %}" 
+          alt="Image de Sevilla"
+          width="400"
+          height="200"
+        >
+      </div>
+
+      <div class="index-div-image">
+        <h4>Barcelona</h4>
+        <img 
+          src="{% static "images/barcelona.jpeg" %}" 
+          alt="Image de Barcelona"
+          width="400"
+          height="200"
+        >
+      </div>
+      <div class="index-div-image">
+        <h4>Madrid</h4>
+        <img 
+          src="{% static "images/madrid.jpeg" %}" 
+          alt="Image de Madrid"
+          width="400"
+          height="200"
+        >
+      </div> {% endcomment %}
+    </section>
+  </article>
+{% endblock content %}

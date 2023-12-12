@@ -11,6 +11,21 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import environ
+from celery.schedules import crontab
+
+USE_I18N = True
+
+LANGUAGE_CODE = 'es'
+
+TIME_ZONE = 'America/Bogota'
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +35,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ahyop#*)k0ns=qk=x+%&(+qyh2@(v$^-x4hutwb&)9c4a5#q3#'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,10 +53,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
-    'feedback',
     'product',
     'store',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,6 +66,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+
 ]
 
 ROOT_URLCONF = 'routejet.urls'
@@ -70,6 +87,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'routejet.wsgi.application'
 
@@ -119,9 +137,72 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
+STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = "/"
+
+# User model
+
+AUTH_USER_MODEL = 'core.RouteJetUser'
+
+CART_SESSION_ID = 'cart'
+
+FREE_SHIPMENT_PRICE = 400
+
+NORMAL_SHIPMENT_PRICE = 3.99
+
+EXPRESS_SHIPMENT_PRICE = 7.99
+
+# STRIPE
+
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
+
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+
+STRIPE_API_VERSION = env('STRIPE_API_VERSION')
+
+STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')
+
+# CELERY
+
+CELERY_BROKER_URL = env(
+    'CELERY_BROKER_URL',
+    default='redis://localhost:6377/0'
+)
+
+CELERY_RESULT_BACKEND = env(
+    'CELERY_BACKEND_URL',
+    default='redis://localhost:6377/0'
+)
+
+CELERY_BEAT_SCHEDULE = {
+    'Task_change_state_orders_schedule': {
+        'task': 'store.tasks.task_change_state_orders_every_day',
+        'schedule': crontab(hour=0, minute=1),
+    },
+    'Task_payment_on_delivery_paid_schedule': {
+        'task': 'store.tasks.task_payment_on_delivery_paid_every_day',
+        'schedule': crontab(hour=1, minute=1),
+    },
+}
+
+# EMAIL
+
+EMAIL_HOST = env('EMAIL_HOST')
+
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+EMAIL_PORT = env.int('EMAIL_PORT')
+
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
