@@ -65,7 +65,6 @@ def order_create_without_cart(request, product_id):
                          'email': user.email, 'address': user.address,
                          'postal_code': user.postal_code, 'city': user.city
                          })
-        print('Quantity: ', quantity)
         return render(request, 'store/overview_without_cart.html', {
             'cart': cart,
             'product': product,
