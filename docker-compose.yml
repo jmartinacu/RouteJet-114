@@ -30,6 +30,22 @@ services:
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_BACKEND_URL=redis://redis:6379/0
+      - DEBUG=False
+    depends_on:
+      - redis 
+      - celery
+  
+  celery:
+    build: .
+    working_dir: /app/routejet
+    command: celery -A routejet worker --beat
+    restart: always
+    volumes:
+      - .:/routejet
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_BACKEND_URL=redis://redis:6379/0
+
     depends_on:
       - redis
 
