@@ -14,6 +14,7 @@ services:
       - DJANGO_SUPERUSER_EMAIL=admin@gmail.com
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_PASSWORD=admin
+      - DJANGO_SETTINGS_MODULE=routejet.settings.local
       - DEBUG=False
     depends_on:
       - redis 
@@ -28,6 +29,7 @@ services:
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_BACKEND_URL=redis://redis:6379/0
+      - DJANGO_SETTINGS_MODULE=routejet.settings.local
       - DEBUG=False
     depends_on:
       - redis

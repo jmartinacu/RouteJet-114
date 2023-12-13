@@ -113,7 +113,10 @@ def order_create_with_cart(request):
             form = OrderCreateForm()
         else:
             form = OrderCreateForm(
-                initial={'email': user.email, 'address': user.address, 'city': user.city})
+                initial={'first_name': user.first_name, 'last_name': user.last_name,
+                         'email': user.email, 'address': user.address,
+                         'postal_code': user.postal_code, 'city': user.city
+                         })
         return render(request, 'store/overview.html', {'cart': cart, 'form': form})
 
 
