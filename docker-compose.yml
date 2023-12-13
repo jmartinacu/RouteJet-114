@@ -2,7 +2,7 @@ services:
 
   web:
     build: .
-    command: sh launch_docker.sh
+    command: sh launch.sh
     restart: always
     volumes:
       - .:/app
