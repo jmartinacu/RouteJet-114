@@ -7,13 +7,11 @@ WORKDIR /app
 
 RUN pip install --upgrade pip
 
-COPY ../../requirements.txt /app/
+COPY requirements.txt /app/
 RUN pip install -r requirements.txt
 
-COPY ../../ /app/
+COPY . /app/
 
 RUN rm -f /app/routejet/celerybeat.pid
 
 CMD ["sh", "launch.sh"]
-
-EXPOSE 5000
