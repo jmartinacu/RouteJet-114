@@ -14,4 +14,6 @@ COPY . /app/
 
 RUN rm -f /app/routejet/celerybeat.pid
 
+WORKDIR /app/routejet
+
 CMD ["celery", "-A", "routejet", "worker", "--beat"]

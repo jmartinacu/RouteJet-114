@@ -5,4 +5,5 @@ stripe==4.0.2
 celery==5.2.7
 redis==5.0.1
 psycopg2==2.9.9
+whitenoise==6.6.0
 gunicorn==21.2.0

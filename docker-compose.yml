@@ -2,12 +2,10 @@ services:
 
   web:
     build: .
-    command: sh launch.sh
+    command: sh launch_docker.sh
     restart: always
     volumes:
       - .:/app
-    expose:
-      - "5000"
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_BACKEND_URL=redis://redis:6379/0
@@ -48,5 +46,7 @@ services:
       - .:/app
     ports:
       - "80:80"
+    expose:
+      - "80"
     depends_on:
       - web
