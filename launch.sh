@@ -1,5 +1,5 @@
 #!/bin/sh
-cd /routejet/
+cd routejet/
 ./manage.py makemigrations
 ./manage.py migrate
 ./manage.py createsuperuser --noinput
