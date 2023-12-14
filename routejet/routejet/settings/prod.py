@@ -29,10 +29,9 @@ DATABASES = {
     }
 }
 
-# ALLOWED_ORIGINS = [
-#     f'https://{os.environ.get("RENDER_EXTERNAL_HOSTNAME")}'  # pylint: disable=E0602
-# ]
-ALLOWED_ORIGINS = ['*']
+ALLOWED_ORIGINS = [
+    f'https://{os.environ.get("RENDER_EXTERNAL_HOSTNAME")}'  # pylint: disable=E0602
+]
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'Strict'
 CSRF_TRUSTED_ORIGINS = ALLOWED_ORIGINS.copy()
