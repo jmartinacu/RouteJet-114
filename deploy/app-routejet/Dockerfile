@@ -1,4 +1,7 @@
-FROM python:3.10
+FROM nginx:1.23.1
+
+RUN apt-get update -y
+RUN apt-get install python3.10.1 -y
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -15,7 +18,5 @@ COPY . /app/
 RUN rm -f /app/routejet/celerybeat.pid
 
 EXPOSE 80
-EXPOSE 5432
-EXPOSE 6379
 
-ENTRYPOINT ["sh", "launch.sh"]
+CMD ["sh", "launch.sh"]

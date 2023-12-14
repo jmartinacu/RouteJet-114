@@ -1,3 +1,4 @@
+import os
 import stripe
 from django.conf import settings
 from django.http import HttpResponse
@@ -5,11 +6,16 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import Order
 
+module_settings = os.environ.get('DJANGO_SETTINGS_MODULE')
+
 
 @csrf_exempt
 def stripe_webhook(request):
     payload = request.body
-    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    if module_settings == 'routejet.settings.prod':
+        sig_header = request.META['HTTPS_STRIPE_SIGNATURE']
+    else:
+        sig_header = request.META['HTTP_STRIPE_SIGNATURE']
     event = None
     try:
         event = stripe.Webhook.construct_event(

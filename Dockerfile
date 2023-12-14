@@ -12,4 +12,4 @@ RUN pip install -r requirements.txt
 
 COPY . /app/
 
-RUN rm -f /app/routejet/celerybeat.pid
+RUN rm -f /app/routejet/*.pid
