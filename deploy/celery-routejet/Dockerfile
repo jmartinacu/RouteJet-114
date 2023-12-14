@@ -16,4 +16,8 @@ RUN rm -f /app/routejet/celerybeat.pid
 
 WORKDIR /app/routejet
 
-CMD ["celery", "-A", "routejet", "worker", "--beat"]
+EXPOSE 5432
+EXPOSE 6379
+
+ENTRYPOINT ["celery", "-A", "routejet", "worker", "--beat"]
+

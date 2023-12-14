@@ -14,4 +14,8 @@ COPY . /app/
 
 RUN rm -f /app/routejet/celerybeat.pid
 
-CMD ["sh", "launch.sh"]
+EXPOSE 80
+EXPOSE 5432
+EXPOSE 6379
+
+ENTRYPOINT ["sh", "launch.sh"]
